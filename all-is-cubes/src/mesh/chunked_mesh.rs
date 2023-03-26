@@ -672,13 +672,7 @@ where
     Tex: TextureAllocator,
 {
     fn new(position: ChunkPos<CHUNK_SIZE>) -> Self {
-        Self {
-            position,
-            mesh: SpaceMesh::default(),
-            render_data: D::default(),
-            block_dependencies: Vec::new(),
-            update_debug: false,
-        }
+        todo!()
     }
 
     #[inline]
@@ -695,12 +689,7 @@ where
         &mut self,
         indices_only: bool,
     ) -> ChunkMeshUpdate<'_, D, Vert, Tex::Tile, CHUNK_SIZE> {
-        ChunkMeshUpdate {
-            position: self.position,
-            mesh: &self.mesh,
-            render_data: &mut self.render_data,
-            indices_only,
-        }
+        todo!()
     }
 
     fn recompute_mesh(
@@ -710,43 +699,7 @@ where
         options: &MeshOptions,
         block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>,
     ) {
-        let compute_start: Option<Instant> = LOG_CHUNK_UPDATES.then(Instant::now);
-        let bounds = self.position.bounds();
-        self.mesh.compute(space, bounds, options, block_meshes);
-
-        // Logging
-        if let Some(start) = compute_start {
-            let duration_ms = Instant::now().duration_since(start).as_secs_f32() * 1000.0;
-
-            let chunk_origin = bounds.lower_bounds();
-            let vertices = self.mesh.vertices().len();
-            if vertices == 0 {
-                log::trace!(
-                    "meshed {:?}+ in {:.3} ms, 0",
-                    chunk_origin.custom_format(ConciseDebug),
-                    duration_ms,
-                );
-            } else {
-                log::trace!(
-                    "meshed {:?}+ in {:.3} ms, {} in {:.3} µs/v",
-                    chunk_origin.custom_format(ConciseDebug),
-                    duration_ms,
-                    vertices,
-                    duration_ms * (1000.0 / vertices as f32),
-                );
-            }
-        }
-        self.update_debug = !self.update_debug;
-
-        // Record the block meshes we incorporated into the chunk mesh.
-        self.block_dependencies.clear();
-        self.block_dependencies.extend(
-            self.mesh
-                .blocks_used_iter()
-                .map(|index| (index, block_meshes.meshes[usize::from(index)].version)),
-        );
-
-        chunk_todo.recompute_mesh = false;
+        todo!()
     }
 
     /// Sort the existing indices of `self.transparent_range(DepthOrdering::Within)` for
@@ -757,32 +710,11 @@ where
     /// Returns whether anything was done, i.e. whether the new indices should be copied
     /// to the GPU.
     pub fn depth_sort_for_view(&mut self, view_position: Point3<Vert::Coordinate>) -> bool {
-        // Subtract chunk origin because the mesh coordinates are in chunk-relative
-        // coordinates but the incoming view position is in world coordinates.
-        // TODO: This makes poor use of the precision of Vert::Coordinate (probably f32).
-        // Instead we should explicitly accept relative coordinates.
-        self.mesh.depth_sort_for_view(
-            view_position
-                - self
-                    .position
-                    .bounds()
-                    .lower_bounds()
-                    .to_vec()
-                    .cast()
-                    .unwrap(),
-        )
+        todo!()
     }
 
     fn stale_blocks(&self, block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>) -> bool {
-        self.block_dependencies
-            .iter()
-            .any(|&(index, version)| block_meshes.meshes[usize::from(index)].version != version)
-        // Note: We could also check here to avoid recomputing the mesh while we're still
-        // working on blocks that the mesh needs,
-        // && self.block_dependencies.iter().all(|&(index, _version)| {
-        //     block_meshes.meshes[usize::from(index)].version != BlockMeshVersion::NotReady
-        // })
-        // but empirically, I tried that and the startup performance is near-identical.
+        todo!()
     }
 }
 
