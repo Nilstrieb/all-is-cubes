@@ -76,23 +76,7 @@ where
     Tex::Tile: PartialEq,
 {
     pub fn new(space: URef<Space>) -> Self {
-        let space_borrowed = space.read().unwrap();
-        let todo = CsmTodo::initially_dirty();
-        let todo_rc = Arc::new(Mutex::new(todo));
-        space_borrowed.listen(TodoListener(Arc::downgrade(&todo_rc)));
-
-        Self {
-            space,
-            todo: todo_rc,
-            block_meshes: VersionedBlockMeshes::new(),
-            chunks: FnvHashMap::default(),
-            chunk_chart: ChunkChart::new(0.0),
-            view_chunk: ChunkPos(Point3::new(0, 0, 0)),
-            did_not_finish_chunks: true,
-            last_mesh_options: None,
-            zero_time: Instant::now(),
-            complete_time: None,
-        }
+        todo!()
     }
 
     /// Returns a reference to the [`Space`] this watches.
@@ -113,7 +97,7 @@ where
     ///
     /// TODO: Define the order
     pub fn iter_chunks(&self) -> impl Iterator<Item = &ChunkMesh<D, Vert, Tex, CHUNK_SIZE>> {
-        self.chunks.values()
+        [].into_iter()
     }
 
     /// Iterate over the [`ChunkMesh`]es that are in view from the given camera,
@@ -125,16 +109,7 @@ where
         camera: &'a Camera,
     ) -> impl Iterator<Item = &'a ChunkMesh<D, Vert, Tex, CHUNK_SIZE>> + DoubleEndedIterator + 'a
     {
-        // TODO: can we make fewer details (like view_direction_mask) public, now that this method exists? Should we?
-        self.chunk_chart
-            .chunks(self.view_chunk(), camera.view_direction_mask())
-            // Chunk existence lookup is faster than the frustum culling test,
-            // so we do that first.
-            .filter_map(|pos| self.chunk(pos))
-            .filter(|chunk| {
-                !camera.options().use_frustum_culling
-                    || camera.aab_in_view(chunk.position.bounds().into())
-            })
+        [].into_iter()
     }
 
     /// Retrieves a [`ChunkMesh`] for the specified chunk position, if one exists.
@@ -145,7 +120,7 @@ where
         &self,
         position: ChunkPos<CHUNK_SIZE>,
     ) -> Option<&ChunkMesh<D, Vert, Tex, CHUNK_SIZE>> {
-        self.chunks.get(&position)
+        todo!()
     }
 
     /// Recompute meshes of all blocks that need it, and the nearest chunks that need it.
@@ -169,188 +144,7 @@ where
     where
         F: FnMut(ChunkMeshUpdate<'_, D, Vert, Tex::Tile, CHUNK_SIZE>),
     {
-        let update_start_time = Instant::now();
-
-        let graphics_options = camera.options();
-        let mesh_options = MeshOptions::new(graphics_options);
-        let view_point = camera.view_position();
-
-        let view_chunk = point_to_chunk(view_point);
-        let view_chunk_is_different = self.view_chunk != view_chunk;
-        self.view_chunk = view_chunk;
-
-        let mut todo = self.todo.lock().unwrap();
-
-        let space = &*if let Ok(space) = self.space.read() {
-            space
-        } else {
-            // TODO: report error
-            return CsmUpdateInfo {
-                prep_time: Instant::now().duration_since(update_start_time),
-                ..CsmUpdateInfo::default()
-            };
-        };
-
-        if Some(&mesh_options) != self.last_mesh_options.as_ref() {
-            todo.all_blocks_and_chunks = true;
-            self.last_mesh_options = Some(mesh_options);
-        }
-        let mesh_options = self.last_mesh_options.as_ref().unwrap();
-
-        if todo.all_blocks_and_chunks {
-            todo.all_blocks_and_chunks = false;
-            todo.blocks
-                .extend(0..(space.block_data().len() as BlockIndex));
-            self.block_meshes.clear();
-            // We don't need to clear self.chunks because they will automatically be considered
-            // stale by the new block versioning value.
-
-            self.zero_time = Instant::now();
-            self.complete_time = None;
-        }
-
-        self.chunk_chart.resize_if_needed(camera.view_distance());
-
-        let prep_to_update_meshes_time = Instant::now();
-
-        let block_updates = self.block_meshes.update(
-            &mut todo.blocks,
-            space,
-            block_texture_allocator,
-            mesh_options,
-            // TODO: don't hardcode this figure here, let the caller specify it
-            deadline.checked_sub(Duration::from_micros(500)).unwrap(),
-        );
-        let all_done_with_blocks = todo.blocks.is_empty();
-
-        // We are now done with todo preparation, and block mesh updates,
-        // and can start updating chunk meshes.
-
-        let block_update_to_chunk_scan_time = Instant::now();
-
-        // Drop out-of-range chunks from todo.chunks and self.chunks.
-        // We do this before allocating new ones to keep maximum memory usage lower.
-        if view_chunk_is_different {
-            // TODO: Implement an algorithm to efficiently update when moving to an adjacent chunk.
-            // Not urgently needed, though.
-            let cache_distance = FreeCoordinate::from(CHUNK_SIZE);
-            let retention_distance_squared =
-                (camera.view_distance().ceil() + cache_distance).powi(2) as i32;
-            self.chunks.retain(|pos, _| {
-                pos.min_distance_squared_from(view_chunk) <= retention_distance_squared
-            });
-            todo.chunks.retain(|pos, _| {
-                pos.min_distance_squared_from(view_chunk) <= retention_distance_squared
-            });
-        }
-
-        // Update some chunk geometry.
-        let chunk_bounds = space.bounds().divide(CHUNK_SIZE);
-        let mut chunk_mesh_generation_times = TimeStats::default();
-        let mut chunk_mesh_callback_times = TimeStats::default();
-        let mut did_not_finish = false;
-        for p in self.chunk_chart.chunks(view_chunk, OctantMask::ALL) {
-            if !chunk_bounds.contains_cube(p.0) {
-                // Chunk not in the Space
-                continue;
-            }
-
-            let this_chunk_start_time = Instant::now();
-            if this_chunk_start_time > deadline {
-                did_not_finish = true;
-                break;
-            }
-
-            let chunk_entry = self.chunks.entry(p);
-            // If the chunk needs updating or never existed, update it.
-            if (todo
-                .chunks
-                .get(&p)
-                .map(|ct| ct.recompute_mesh)
-                .unwrap_or(false)
-                && !self.did_not_finish_chunks)
-                || matches!(chunk_entry, Vacant(_))
-                || matches!(
-                    chunk_entry,
-                    Occupied(ref oe) if oe.get().stale_blocks(&self.block_meshes))
-            {
-                //let compute_start = Instant::now();
-                let chunk = chunk_entry.or_insert_with(|| {
-                    // Remember that we want to track dirty flags for this chunk.
-                    todo.chunks.insert(p, ChunkTodo::CLEAN);
-                    // Generate new chunk.
-                    ChunkMesh::new(p)
-                });
-                chunk.recompute_mesh(
-                    todo.chunks.get_mut(&p).unwrap(), // TODO: can we eliminate the double lookup with a todo entry?
-                    space,
-                    mesh_options,
-                    &self.block_meshes,
-                );
-                let compute_end_update_start = Instant::now();
-                chunk_render_updater(chunk.borrow_for_update(false));
-
-                chunk_mesh_generation_times +=
-                    TimeStats::one(compute_end_update_start.duration_since(this_chunk_start_time));
-                chunk_mesh_callback_times +=
-                    TimeStats::one(Instant::now().duration_since(compute_end_update_start));
-            }
-        }
-        self.did_not_finish_chunks = did_not_finish;
-        let chunk_scan_end_time = Instant::now();
-
-        // Update the drawing order of transparent parts of the chunk the camera is in.
-        let depth_sort_end_time = if let Some(chunk) = self.chunks.get_mut(&view_chunk) {
-            if chunk.depth_sort_for_view(view_point.cast::<Vert::Coordinate>().unwrap()) {
-                chunk_render_updater(chunk.borrow_for_update(true));
-                Some(Instant::now())
-            } else {
-                None
-            }
-        } else {
-            None
-        };
-
-        let complete = all_done_with_blocks && !did_not_finish;
-        if complete && self.complete_time.is_none() {
-            let t = Instant::now();
-            log::debug!(
-                "SpaceRenderer({space}): all meshes done in {time}",
-                space = self.space().name(),
-                time = t.duration_since(self.zero_time).custom_format(StatusText)
-            );
-            self.complete_time = Some(t);
-        }
-
-        let mut flaws = Flaws::empty();
-        if !complete {
-            // TODO: Make this a little less strict; if we timed out but there is nothing in todo
-            // and we were previously complete, then there isn't actually any flaw.
-            flaws |= Flaws::UNFINISHED;
-        }
-
-        CsmUpdateInfo {
-            flaws,
-            total_time: depth_sort_end_time
-                .unwrap_or(chunk_scan_end_time)
-                .duration_since(update_start_time),
-            prep_time: prep_to_update_meshes_time.duration_since(update_start_time),
-            chunk_scan_time: chunk_scan_end_time
-                .saturating_duration_since(block_update_to_chunk_scan_time)
-                .saturating_sub(chunk_mesh_generation_times.sum + chunk_mesh_callback_times.sum),
-            chunk_mesh_generation_times,
-            chunk_mesh_callback_times,
-            depth_sort_time: depth_sort_end_time.map(|t| t.duration_since(chunk_scan_end_time)),
-            block_updates,
-
-            // TODO: remember this rather than computing it
-            chunk_count: self.chunks.len(),
-            chunk_total_cpu_byte_size: self
-                .chunks
-                .values()
-                .map(|chunk| chunk.mesh().total_byte_size())
-                .sum(),
-        }
+        todo!()
     }
 
     /// Returns the chunk in which the camera from the most recent
@@ -363,20 +157,7 @@ where
     /// Produces lines that visualize the boundaries of visible nonempty chunks.
     #[doc(hidden)] // TODO: good public API?
     pub fn chunk_debug_lines(&self, camera: &Camera, output: &mut impl Extend<LineVertex>) {
-        for chunk_mesh in self.iter_in_view(camera) {
-            if !chunk_mesh.mesh.is_empty() {
-                let aab = Aab::from(chunk_mesh.position().bounds());
-                aab.wireframe_points(output);
-
-                // Additional border that wiggles when updates happen.
-                aab.expand(if chunk_mesh.update_debug {
-                    -0.05
-                } else {
-                    -0.02
-                })
-                .wireframe_points(output)
-            }
-        }
+        todo!()
     }
 }
 
