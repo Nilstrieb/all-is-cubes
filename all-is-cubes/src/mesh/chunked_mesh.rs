@@ -446,59 +446,6 @@ where
     update_debug: bool,
 }
 
-impl<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> ChunkMesh<D, Vert, Tex, CHUNK_SIZE>
-where
-    D: Default, // TODO: This is used for initializing `render_data`, but it might not be ideal.
-    Vert: GfxVertex,
-    Tex: TextureAllocator,
-{
-    fn new(position: ChunkPos<CHUNK_SIZE>) -> Self {
-        todo!()
-    }
-
-    #[inline]
-    pub fn mesh(&self) -> &SpaceMesh<Vert, Tex::Tile> {
-        &self.mesh
-    }
-
-    #[inline]
-    pub fn position(&self) -> ChunkPos<CHUNK_SIZE> {
-        self.position
-    }
-
-    fn borrow_for_update(
-        &mut self,
-        indices_only: bool,
-    ) -> ChunkMeshUpdate<'_, D, Vert, Tex::Tile, CHUNK_SIZE> {
-        todo!()
-    }
-
-    fn recompute_mesh(
-        &mut self,
-        chunk_todo: &mut ChunkTodo,
-        space: &Space,
-        options: &MeshOptions,
-        block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>,
-    ) {
-        todo!()
-    }
-
-    /// Sort the existing indices of `self.transparent_range(DepthOrdering::Within)` for
-    /// the given view position in world coordinates.
-    ///
-    /// This is intended to be cheap enough to do every frame.
-    ///
-    /// Returns whether anything was done, i.e. whether the new indices should be copied
-    /// to the GPU.
-    pub fn depth_sort_for_view(&mut self, view_position: Point3<Vert::Coordinate>) -> bool {
-        todo!()
-    }
-
-    fn stale_blocks(&self, block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>) -> bool {
-        todo!()
-    }
-}
-
 /// Provides mutable access to the render data of type `D` in a [`ChunkMesh`].
 ///
 /// This struct is provided to the callbacks of
@@ -594,6 +541,63 @@ impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CH
         self.0.strong_count() > 0
     }
 }
+
+/////// MOVE START
+
+impl<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> ChunkMesh<D, Vert, Tex, CHUNK_SIZE>
+where
+    D: Default, // TODO: This is used for initializing `render_data`, but it might not be ideal.
+    Vert: GfxVertex,
+    Tex: TextureAllocator,
+{
+    fn new(position: ChunkPos<CHUNK_SIZE>) -> Self {
+        todo!()
+    }
+
+    #[inline]
+    pub fn mesh(&self) -> &SpaceMesh<Vert, Tex::Tile> {
+        &self.mesh
+    }
+
+    #[inline]
+    pub fn position(&self) -> ChunkPos<CHUNK_SIZE> {
+        self.position
+    }
+
+    fn borrow_for_update(
+        &mut self,
+        indices_only: bool,
+    ) -> ChunkMeshUpdate<'_, D, Vert, Tex::Tile, CHUNK_SIZE> {
+        todo!()
+    }
+
+    fn recompute_mesh(
+        &mut self,
+        chunk_todo: &mut ChunkTodo,
+        space: &Space,
+        options: &MeshOptions,
+        block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>,
+    ) {
+        todo!()
+    }
+
+    /// Sort the existing indices of `self.transparent_range(DepthOrdering::Within)` for
+    /// the given view position in world coordinates.
+    ///
+    /// This is intended to be cheap enough to do every frame.
+    ///
+    /// Returns whether anything was done, i.e. whether the new indices should be copied
+    /// to the GPU.
+    pub fn depth_sort_for_view(&mut self, view_position: Point3<Vert::Coordinate>) -> bool {
+        todo!()
+    }
+
+    fn stale_blocks(&self, block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>) -> bool {
+        todo!()
+    }
+}
+
+
 
 /// What might be dirty about a single chunk.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
@@ -942,3 +946,5 @@ mod tests {
         );
     }
 }
+
+/////// MOVE END
