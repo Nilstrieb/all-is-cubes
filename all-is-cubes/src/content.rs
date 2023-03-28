@@ -2,29 +2,12 @@
 //!
 //! This module is private; the public interface to this stuff is the separate
 //! `all-is-cubes-content` crate.
-
-
-
-
-
-
-
-
-use crate::block::{
-    Block, Resolution,
-};
-use crate::inv::{Slot};
+use crate::block::{Block, Resolution};
+use crate::inv::Slot;
 use crate::math::{GridCoordinate, Rgba};
-
 use crate::space::{SetCubeError, Space};
 use crate::universe::Universe;
-mod draw_box;
-
-#[doc(hidden)]
-pub(crate) mod load_image;
 pub(crate) mod palette;
-#[doc(hidden)]
-pub(crate) mod testing;
 /// Generate a set of distinct [`Primitive::Atom`] blocks for use in tests.
 /// They will have distinct colors and names, and all other attributes default.
 /// They will be fully opaque.
@@ -117,25 +100,4 @@ pub(crate) fn axes(space: &mut Space) -> Result<(), SetCubeError> {
 /// the same inputs as choose the spawn position.
 pub(crate) fn free_editing_starter_inventory(flying: bool) -> Vec<Slot> {
     loop {}
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::{BlockAttributes, Primitive};
-    #[test]
-    fn make_some_blocks_0() {
-        loop {}
-    }
-    #[test]
-    fn make_some_blocks_1() {
-        loop {}
-    }
-    #[test]
-    fn make_some_blocks_2() {
-        loop {}
-    }
-    #[test]
-    fn make_some_blocks_multiple_call_equality() {
-        loop {}
-    }
 }

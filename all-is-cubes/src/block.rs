@@ -25,8 +25,6 @@ mod modifier;
 pub use modifier::*;
 mod resolution;
 pub use resolution::*;
-#[cfg(test)]
-mod tests;
 /// A [`Block`] is something that can exist in the grid of a [`Space`]; it occupies one
 /// unit cube of simulated physical space, and has a specified appearance and behavior.
 ///
@@ -293,16 +291,6 @@ impl From<Primitive> for Block {
         loop {}
     }
 }
-impl From<Block> for Cow<'_, Block> {
-    fn from(block: Block) -> Self {
-        loop {}
-    }
-}
-impl<'a> From<&'a Block> for Cow<'a, Block> {
-    fn from(block: &'a Block) -> Self {
-        loop {}
-    }
-}
 /// Convert a color to a block with default attributes.
 impl From<Rgb> for Block {
     fn from(color: Rgb) -> Self {
@@ -313,39 +301,6 @@ impl From<Rgb> for Block {
 impl From<Rgba> for Block {
     fn from(color: Rgba) -> Self {
         loop {}
-    }
-}
-/// Convert a color to a block with default attributes.
-impl From<Rgb> for Cow<'_, Block> {
-    fn from(color: Rgb) -> Self {
-        loop {}
-    }
-}
-/// Convert a color to a block with default attributes.
-impl From<Rgba> for Cow<'_, Block> {
-    fn from(color: Rgba) -> Self {
-        loop {}
-    }
-}
-#[cfg(feature = "arbitrary")]
-mod arbitrary_block {
-    use super::*;
-    use arbitrary::{size_hint, Arbitrary, Unstructured};
-    impl<'a> Arbitrary<'a> for Block {
-        fn arbitrary(u: &mut Unstructured<'a>) -> arbitrary::Result<Self> {
-            loop {}
-        }
-        fn size_hint(depth: usize) -> (usize, Option<usize>) {
-            loop {}
-        }
-    }
-    impl<'a> Arbitrary<'a> for Primitive {
-        fn arbitrary(u: &mut Unstructured<'a>) -> arbitrary::Result<Self> {
-            loop {}
-        }
-        fn size_hint(depth: usize) -> (usize, Option<usize>) {
-            loop {}
-        }
     }
 }
 /// An invisible, unselectable, inert block used as “no block”.
