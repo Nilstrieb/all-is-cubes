@@ -21,7 +21,7 @@ pub trait Behavior<
         _context: &BehaviorContext<'_, H>,
         _tick: Tick,
     ) -> UniverseTransaction {
-        UniverseTransaction::default()
+        loop {}
     }
     /// Returns [`false`] if the [`Behavior`] should be dropped because conditions under
     /// which it is useful no longer apply.
@@ -68,25 +68,18 @@ struct BehaviorSetEntry<H: BehaviorHost> {
 }
 impl<H: BehaviorHost> Clone for BehaviorSetEntry<H> {
     fn clone(&self) -> Self {
-        Self {
-            attachment: self.attachment.clone(),
-            behavior: self.behavior.clone(),
-        }
+        loop {}
     }
 }
 impl<H: BehaviorHost> Debug for BehaviorSetEntry<H> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let BehaviorSetEntry { attachment, behavior } = self;
-        behavior.fmt(f)?;
-        write!(f, " @ {attachment:?}")?;
-        Ok(())
+        loop {}
     }
 }
 impl<H: BehaviorHost> PartialEq for BehaviorSetEntry<H> {
     #[allow(clippy::vtable_address_comparisons)]
     fn eq(&self, other: &Self) -> bool {
-        self.attachment == other.attachment
-            && Arc::ptr_eq(&self.behavior, &other.behavior)
+        loop {}
     }
 }
 /// A [`Transaction`] that adds or modifies [`Behavior`]s in a [`BehaviorSet`].
@@ -104,25 +97,19 @@ struct Replace<H: BehaviorHost> {
 }
 impl<H: BehaviorHost> BehaviorSetTransaction<H> {
     pub(crate) fn is_empty(&self) -> bool {
-        self.replace.is_empty() && self.insert.is_empty()
+        loop {}
     }
     /// This function is private because the normal way it is used is via
     /// [`BehaviorContext::replace_self()`]
     fn replace(index: usize, replacement: Replace<H>) -> Self {
-        BehaviorSetTransaction {
-            replace: BTreeMap::from([(index, replacement)]),
-            ..Default::default()
-        }
+        loop {}
     }
     /// Constructs a transaction that adds a behavior to the behavior set.
     pub(crate) fn insert(
         attachment: H::Attachment,
         behavior: Arc<dyn Behavior<H>>,
     ) -> Self {
-        BehaviorSetTransaction {
-            insert: vec![BehaviorSetEntry { attachment, behavior, }],
-            ..Default::default()
-        }
+        loop {}
     }
     /// Returns an iterator over every behavior attachment added, removed, or modified by
     /// this transaction (not necessary free of duplicates).
@@ -143,32 +130,7 @@ impl<H: BehaviorHost> Transaction<BehaviorSet<H>> for BehaviorSetTransaction<H> 
         &self,
         target: &BehaviorSet<H>,
     ) -> Result<Self::CommitCheck, transaction::PreconditionFailed> {
-        let Self { replace, insert } = self;
-        for (&index, Replace { old, new: _ }) in replace {
-            if let Some(BehaviorSetEntry { attachment, behavior })
-                = target.items.get(index)
-            {
-                if attachment != &old.attachment {
-                    return Err(transaction::PreconditionFailed {
-                        location: "BehaviorSet",
-                        problem: "existing behavior attachment is not as expected",
-                    });
-                }
-                if !Arc::ptr_eq(behavior, &old.behavior) {
-                    return Err(transaction::PreconditionFailed {
-                        location: "BehaviorSet",
-                        problem: "existing behavior value is not as expected",
-                    });
-                }
-            } else {
-                return Err(transaction::PreconditionFailed {
-                    location: "BehaviorSet",
-                    problem: "behavior(s) not found",
-                });
-            }
-        }
-        let _ = insert;
-        Ok(())
+        loop {}
     }
     fn commit(
         &self,
@@ -176,11 +138,7 @@ impl<H: BehaviorHost> Transaction<BehaviorSet<H>> for BehaviorSetTransaction<H> 
         (): Self::CommitCheck,
         _outputs: &mut dyn FnMut(Self::Output),
     ) -> Result<(), transaction::CommitError> {
-        for (index, replacement) in &self.replace {
-            target.items[*index] = replacement.new.clone();
-        }
-        target.items.extend(self.insert.iter().cloned());
-        Ok(())
+        loop {}
     }
 }
 impl<H: BehaviorHost> transaction::Merge for BehaviorSetTransaction<H> {
@@ -189,57 +147,38 @@ impl<H: BehaviorHost> transaction::Merge for BehaviorSetTransaction<H> {
         &self,
         other: &Self,
     ) -> Result<Self::MergeCheck, transaction::TransactionConflict> {
-        if self.replace.keys().any(|slot| other.replace.contains_key(slot)) {
-            return Err(transaction::TransactionConflict {
-            });
-        }
-        Ok(())
+        loop {}
     }
     fn commit_merge(mut self, other: Self, (): Self::MergeCheck) -> Self {
-        self.replace.extend(other.replace);
-        self.insert.extend(other.insert);
-        self
+        loop {}
     }
 }
 impl<H: BehaviorHost> Clone for BehaviorSetTransaction<H> {
     fn clone(&self) -> Self {
-        Self {
-            replace: self.replace.clone(),
-            insert: self.insert.clone(),
-        }
+        loop {}
     }
 }
 impl<H: BehaviorHost> Default for BehaviorSetTransaction<H> {
     fn default() -> Self {
-        Self {
-            replace: Default::default(),
-            insert: Default::default(),
-        }
+        loop {}
     }
 }
 impl<H: BehaviorHost> PartialEq for BehaviorSetTransaction<H> {
     fn eq(&self, other: &Self) -> bool {
-        let Self { replace: r1, insert: i1 } = self;
-        let Self { replace: r2, insert: i2 } = other;
-        r1 == r2 && i1 == i2
+        loop {}
     }
 }
 impl<H: BehaviorHost> PartialEq for Replace<H> {
     #[allow(clippy::vtable_address_comparisons)]
     fn eq(&self, other: &Self) -> bool {
-        let Self { old: old1, new: new1 } = self;
-        let Self { old: old2, new: new2 } = other;
-        old1 == old2 && new1 == new2
+        loop {}
     }
 }
 impl<H: BehaviorHost> Eq for BehaviorSetTransaction<H> {}
 impl<H: BehaviorHost> Eq for Replace<H> {}
 impl<H: BehaviorHost> Clone for Replace<H> {
     fn clone(&self) -> Self {
-        Self {
-            old: self.old.clone(),
-            new: self.new.clone(),
-        }
+        loop {}
     }
 }
 #[cfg(test)]
