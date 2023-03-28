@@ -1,10 +1,9 @@
 //! Lesser-used helpers for [`BlockBuilder`].
 use cgmath::EuclideanSpace as _;
 use std::borrow::Cow;
-use std::sync::Arc;
+
 use crate::block::{
-    AnimationHint, Block, BlockAttributes, BlockCollision, BlockDef, BlockParts,
-    BlockPtr, Modifier, Primitive, Resolution, RotationPlacementRule, AIR,
+    AnimationHint, Block, BlockAttributes, BlockCollision, Modifier, Primitive, Resolution, RotationPlacementRule,
 };
 use crate::drawing::VoxelBrush;
 use crate::math::{GridPoint, Rgb, Rgba};

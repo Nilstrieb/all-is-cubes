@@ -1,6 +1,6 @@
-use cgmath::{EuclideanSpace as _, Point3};
-use crate::block::{self, Evoxel, Evoxels, MinEval, Modifier, Resolution::{self, R1}};
-use crate::math::{GridAab, GridArray, GridCoordinate, GridPoint};
+use cgmath::{Point3};
+use crate::block::{self, MinEval, Resolution::{self}};
+use crate::math::{GridPoint};
 use crate::universe;
 /// Data for [`Modifier::Zoom`], describing a portion of the original block that is scaled
 /// up to become the whole block.

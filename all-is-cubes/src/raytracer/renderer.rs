@@ -2,21 +2,21 @@ use std::fmt;
 use cgmath::{ElementWise, Point2, Vector2};
 use futures_core::future::BoxFuture;
 use image::RgbaImage;
-use ordered_float::NotNan;
+
 use crate::camera::{
-    AntialiasingOption, Camera, Flaws, FogOption, GraphicsOptions, HeadlessRenderer,
+    Camera, Flaws, HeadlessRenderer,
     Layers, RenderError, StandardCameras, Viewport,
 };
 use crate::character::Cursor;
-use crate::content::palette;
+
 use crate::listen::ListenableSource;
-use crate::math::Rgba;
+
 use crate::raytracer::{
-    ColorBuf, PixelBuf, RaytraceInfo, RtBlockData, RtOptionsRef, SpaceRaytracer,
+    PixelBuf, RaytraceInfo, RtBlockData, RtOptionsRef, SpaceRaytracer,
     UpdatingSpaceRaytracer,
 };
-use crate::space::Space;
-use crate::universe::URef;
+
+
 /// Builds upon [`UpdatingSpaceRaytracer`] to make a complete [`HeadlessRenderer`],
 /// following the scene and camera information in a [`StandardCameras`].
 pub struct RtRenderer<D: RtBlockData = ()> {
@@ -187,9 +187,9 @@ impl NdcRect {
 /// TODO: The design of this code (and its documentation) are slightly residual from
 /// when `trace_scene_to_image()` was a public interface. Revisit them.
 mod trace_image {
-    use super::*;
+    
     use crate::raytracer::{PixelBuf, RaytraceInfo};
-    use cgmath::Point2;
+    
     /// Compute a full image, writing it into `output`.
     ///
     /// The produced data is in the usual left-right then top-bottom raster order;
@@ -243,13 +243,13 @@ mod trace_image {
 }
 mod eg {
     use super::*;
-    use crate::camera::info_text_drawable;
+    
     use embedded_graphics::draw_target::DrawTarget;
-    use embedded_graphics::draw_target::DrawTargetExt;
+    
     use embedded_graphics::pixelcolor::BinaryColor;
-    use embedded_graphics::prelude::{OriginDimensions, Point, Size};
-    use embedded_graphics::primitives::Rectangle;
-    use embedded_graphics::Drawable;
+    use embedded_graphics::prelude::{OriginDimensions, Size};
+    
+    
     use embedded_graphics::Pixel;
     pub fn draw_info_text<T: Clone>(
         output: &mut [T],

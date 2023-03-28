@@ -1,8 +1,8 @@
-use std::cmp::Ordering;
+
 use std::fmt;
 use std::iter::FusedIterator;
 use cgmath::{EuclideanSpace as _, Point3, Vector3, Zero as _};
-use crate::math::{Face6, FreeCoordinate, Geometry, GridAab, GridCoordinate, GridPoint};
+use crate::math::{Face6, FreeCoordinate, Geometry, GridAab, GridPoint};
 use crate::mesh::LineVertex;
 /// Axis-Aligned Box data type.
 ///

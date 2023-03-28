@@ -1,8 +1,8 @@
 //! [`EvaluatedBlock`] and [`Evoxel`].
 use std::fmt;
-use cgmath::{Vector4, Zero as _};
-use crate::block::{self, BlockAttributes, Resolution, Resolution::R1};
-use crate::content::palette;
+use cgmath::{Zero as _};
+use crate::block::{self, BlockAttributes, Resolution};
+
 use crate::math::{FaceMap, GridAab, GridArray, GridPoint, OpacityCategory, Rgb, Rgba};
 use crate::universe::RefError;
 #[cfg(doc)]

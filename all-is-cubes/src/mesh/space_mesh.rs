@@ -1,6 +1,6 @@
 use bitvec::vec::BitVec;
 use cgmath::{EuclideanSpace as _, MetricSpace as _, Point3, Vector3, Zero as _};
-use ordered_float::OrderedFloat;
+
 use std::fmt::Debug;
 use std::ops::Range;
 use crate::camera::Flaws;

@@ -1,18 +1,18 @@
 //! Algorithms for collision detection with [`Space`](crate::space::Space)s.
-use std::collections::HashSet;
+
 use std::fmt;
-use cgmath::{EuclideanSpace as _, InnerSpace as _, Vector3, Zero as _};
-use super::POSITION_EPSILON;
+use cgmath::{Vector3};
+
 use crate::block::Evoxels;
-use crate::block::{BlockCollision, EvaluatedBlock, Evoxel, Resolution, Resolution::R1};
+use crate::block::{BlockCollision, EvaluatedBlock, Evoxel, Resolution};
 use crate::math::{
-    Aab, CubeFace, Face6, Face7, FreeCoordinate, Geometry, GridAab, GridArray,
+    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridArray,
     GridCoordinate, GridPoint,
 };
 use crate::mesh::LineVertex;
 use crate::raycast::{Ray, Raycaster};
 use crate::space::Space;
-use crate::util::{ConciseDebug, CustomFormat, MapExtend};
+
 /// An individual collision contact; something in a [`Space`] that a moving [`Aab`]
 /// collided with.
 ///

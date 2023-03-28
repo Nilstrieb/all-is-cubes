@@ -2,17 +2,17 @@
 //!
 //! TODO: It's unclear what the scope of this module should be.
 use std::fmt;
-use cgmath::{EuclideanSpace, InnerSpace as _, Matrix4, Point3, Transform as _};
-use crate::block::{recursive_ray, Block, EvaluatedBlock, Evoxel, Evoxels};
-use crate::content::palette;
+use cgmath::{Point3};
+use crate::block::{Block, EvaluatedBlock};
+
 use crate::math::{
-    Aab, Face7, FreeCoordinate, Geometry, GridCoordinate, GridPoint, GridVector,
+    Face7, FreeCoordinate, Geometry, GridCoordinate, GridPoint, GridVector,
 };
 use crate::mesh::LineVertex;
 use crate::raycast::Ray;
 use crate::space::{PackedLight, Space};
 use crate::universe::URef;
-use crate::util::MapExtend;
+
 /// Find the first selectable block the ray strikes and express the result in a [`Cursor`]
 /// value, or [`None`] if nothing was struck within the distance limit.
 pub fn cursor_raycast(

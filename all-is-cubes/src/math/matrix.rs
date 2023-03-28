@@ -1,14 +1,13 @@
 //! Integer-coordinate matrices.
 //! This module is private but reexported by its parent.
-use std::cmp::Ordering;
+
 use std::ops::Mul;
 use cgmath::{
     EuclideanSpace as _, InnerSpace, Matrix4, One, Transform, Vector3, Vector4, Zero as _,
 };
 pub use ordered_float::{FloatIsNan, NotNan};
 use crate::math::{
-    Face6, Face7, FreeCoordinate, GridCoordinate, GridPoint, GridRotation, GridVector,
-    Point3,
+    Face7, FreeCoordinate, GridCoordinate, GridPoint, GridRotation, GridVector,
 };
 /// A 4×3 affine transformation matrix in [`GridCoordinate`]s, rather than floats as
 /// [`cgmath::Matrix4`] requires.

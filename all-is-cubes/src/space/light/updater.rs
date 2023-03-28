@@ -1,17 +1,17 @@
 //! Lighting algorithms for `Space`. This module is closely tied to `Space`
 //! and separated out for readability, not modularity.
-use std::cmp::Ordering;
+
 use std::fmt;
-use cgmath::{EuclideanSpace as _, InnerSpace as _, Point3, Vector3};
+
 use once_cell::sync::Lazy;
 use super::debug::LightComputeOutput;
-use super::LightUpdateRequest;
+
 use crate::block::EvaluatedBlock;
-use crate::math::{Face6, FaceMap, FreeCoordinate, Geometry, GridPoint, NotNan, Rgb};
+use crate::math::{FaceMap, GridPoint, Rgb};
 use crate::raycast::{Ray, RaycastStep};
-use crate::space::light::LightUpdateRayInfo;
+
 use crate::space::{
-    GridAab, LightPhysics, PackedLight, PackedLightScalar, Space, SpaceChange,
+    GridAab, LightPhysics, PackedLight, PackedLightScalar, Space,
 };
 use crate::util::{CustomFormat, StatusText};
 /// This parameter determines to what degree absorption of light due to a block surface's

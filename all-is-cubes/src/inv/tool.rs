@@ -2,13 +2,13 @@
 use std::borrow::Cow;
 use std::sync::Arc;
 use std::{fmt, hash};
-use crate::block::{self, Block, Primitive, RotationPlacementRule, AIR};
-use crate::character::{Character, CharacterTransaction, Cursor};
+use crate::block::{Block};
+use crate::character::{Character, Cursor};
 use crate::fluff::Fluff;
-use crate::inv::{self, Icons, InventoryTransaction, StackLimit};
+use crate::inv::{self, Icons, StackLimit};
 use crate::linking::BlockProvider;
-use crate::math::{Face6, GridPoint, GridRotation};
-use crate::space::{Space, SpaceTransaction};
+use crate::math::{GridPoint};
+
 use crate::transaction::{Merge, Transaction};
 use crate::universe::{RefError, RefVisitor, URef, UniverseTransaction, VisitRefs};
 /// A `Tool` is an object which a character can use to have some effect in the game,

@@ -4,11 +4,11 @@
 //! Note that this entire module is `doc(hidden)`; pub items inside it
 //! are for intra-project use only.
 use cgmath::Vector3;
-use crate::math::{Aab, FreeCoordinate, Geometry, GridPoint};
+use crate::math::{FreeCoordinate, Geometry, GridPoint};
 use crate::mesh::LineVertex;
 use crate::raycast::Ray;
 use crate::space::PackedLight;
-use crate::util::MapExtend;
+
 /// Trait used to encourage the generation of with-debug-info and without-info versions
 /// of the lighting algorithm.
 pub trait LightComputeOutput {

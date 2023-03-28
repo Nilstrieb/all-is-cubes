@@ -1,5 +1,5 @@
 //! The [`Transaction`] trait, for modifying game objects.
-use std::any::type_name;
+
 use std::error::Error;
 use std::fmt::Debug;
 use std::sync::Arc;

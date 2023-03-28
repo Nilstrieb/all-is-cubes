@@ -1,5 +1,5 @@
 //! Data structures for light storage and algorithms.
-use std::collections::hash_map::Entry;
+
 use std::collections::BTreeSet;
 use std::fmt;
 use cgmath::{Vector3, Vector4};

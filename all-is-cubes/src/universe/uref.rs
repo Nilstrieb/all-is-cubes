@@ -7,7 +7,7 @@ use std::sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard, Weak};
 use ouroboros::self_referencing;
 use crate::transaction::{ExecuteError, PreconditionFailed, Transaction, Transactional};
 use crate::universe::InsertError;
-use crate::universe::InsertErrorKind;
+
 use crate::universe::Universe;
 use crate::universe::VisitRefs;
 use crate::universe::{Name, UniverseId};

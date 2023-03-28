@@ -1,18 +1,18 @@
 //! TODO: Maybe this file is too small
-use std::collections::btree_map::Entry::*;
+
 use std::collections::BTreeMap;
-use std::sync::Arc;
-use std::{fmt, mem};
+
+use std::{fmt};
 use crate::behavior::{self, BehaviorSet, BehaviorSetTransaction};
 use crate::block::Block;
 use crate::drawing::DrawingPlane;
 use crate::math::{GridCoordinate, GridMatrix, GridPoint};
-use crate::space::{ActivatableRegion, GridAab, SetCubeError, Space};
+use crate::space::{GridAab, Space};
 use crate::transaction::{
-    no_outputs, CommitError, Merge, NoOutput, PreconditionFailed, Transaction,
+    CommitError, Merge, NoOutput, PreconditionFailed, Transaction,
     TransactionConflict, Transactional,
 };
-use crate::util::{ConciseDebug, CustomFormat as _};
+use crate::util::{CustomFormat as _};
 impl Transactional for Space {
     type Transaction = SpaceTransaction;
 }

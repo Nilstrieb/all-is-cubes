@@ -1,17 +1,16 @@
 //! Algorithm for converting individual blocks to triangle meshes.
 //!
 //! This module is internal and reexported by its parent.
-use cgmath::{Point2, Point3, Transform as _};
+use cgmath::{Transform as _};
 use std::fmt::Debug;
-use crate::block::{AnimationChange, EvaluatedBlock, Evoxel, Evoxels, Resolution};
+use crate::block::{EvaluatedBlock};
 use crate::camera::Flaws;
 use crate::math::{
-    Face6, Face7, FaceMap, FreeCoordinate, GridAab, GridArray, GridCoordinate,
-    OpacityCategory, Rgba,
+    Face7, FaceMap, GridArray,
+    OpacityCategory,
 };
 use crate::mesh::{
-    copy_voxels_into_existing_texture, copy_voxels_to_texture, push_quad, BlockVertex,
-    GreedyMesher, MeshOptions, QuadColoring, QuadTransform, TextureAllocator, TextureTile,
+    BlockVertex, MeshOptions, TextureAllocator, TextureTile,
 };
 use crate::space::Space;
 /// Part of the triangle mesh calculated for a [`Block`], stored in a [`BlockMesh`] keyed

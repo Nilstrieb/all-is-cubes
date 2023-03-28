@@ -1,10 +1,10 @@
 //! Text-based raytracing output.
 use std::borrow::Cow;
-use cgmath::{Decomposed, Transform, Vector2, Vector3};
-use crate::camera::{eye_for_look_at, Camera, GraphicsOptions, Viewport};
+use cgmath::{Vector3};
+
 use crate::math::{FreeCoordinate, Rgba};
 use crate::raytracer::{
-    PixelBuf, RaytraceInfo, RtBlockData, RtOptionsRef, SpaceRaytracer,
+    PixelBuf, RaytraceInfo, RtBlockData, RtOptionsRef,
 };
 use crate::space::{Space, SpaceBlockData};
 /// TODO: better name, docs

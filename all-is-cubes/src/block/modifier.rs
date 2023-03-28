@@ -1,6 +1,6 @@
-use crate::block::{Block, BlockChange, EvalBlockError, Evoxels, MinEval};
+use crate::block::{Block, BlockChange, EvalBlockError, MinEval};
 use crate::listen::Listener;
-use crate::math::{GridArray, GridRotation, Rgb};
+use crate::math::{GridRotation};
 use crate::universe::{RefVisitor, VisitRefs};
 mod composite;
 pub use composite::*;

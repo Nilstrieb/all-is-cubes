@@ -4,17 +4,17 @@
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
 use std::borrow::Cow;
-use std::collections::VecDeque;
+
 use std::fmt;
 use std::sync::Arc;
-use cgmath::{EuclideanSpace as _, Point3};
+use cgmath::{EuclideanSpace as _};
 use crate::listen::{Listen, Listener};
 use crate::math::{
-    FreeCoordinate, GridAab, GridArray, GridCoordinate, GridPoint, GridRotation, Rgb,
+    GridPoint, GridRotation, Rgb,
     Rgba,
 };
 use crate::raycast::Ray;
-use crate::space::{SetCubeError, Space, SpaceChange};
+use crate::space::{SetCubeError, Space};
 use crate::universe::URef;
 mod attributes;
 pub use attributes::*;

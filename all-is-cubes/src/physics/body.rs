@@ -2,12 +2,12 @@ use cgmath::{EuclideanSpace as _, InnerSpace as _, Point3, Vector3, Zero};
 use ordered_float::NotNan;
 use std::fmt;
 use super::collision::{
-    aab_raycast, collide_along_ray, find_colliding_cubes, nudge_on_ray, Contact,
+    Contact,
 };
-use crate::block::{BlockCollision, Resolution};
-use crate::math::{Aab, Face7, FreeCoordinate, Geometry as _};
-use crate::physics::{StopAt, POSITION_EPSILON};
-use crate::raycast::Ray;
+
+use crate::math::{Aab, FreeCoordinate, Geometry as _};
+
+
 use crate::space::Space;
 use crate::time::Tick;
 use crate::transaction::{self, Transaction};

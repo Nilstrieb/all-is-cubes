@@ -4,8 +4,8 @@ use std::collections::BTreeMap;
 use std::num::NonZeroU16;
 use std::sync::Arc;
 use crate::block::Block;
-use crate::character::{Character, CharacterTransaction, Cursor};
-use crate::inv::{Icons, Tool, ToolError, ToolInput};
+use crate::character::{Character, Cursor};
+use crate::inv::{Icons, Tool, ToolError};
 use crate::linking::BlockProvider;
 use crate::transaction::{
     CommitError, Merge, PreconditionFailed, Transaction, TransactionConflict,

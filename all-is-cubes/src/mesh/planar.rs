@@ -1,12 +1,12 @@
 //! Triangulator's 2D plane operations (sliced voxels to texels and meshes).
 use std::ops::Range;
 use cgmath::{
-    ElementWise as _, EuclideanSpace as _, Matrix4, Point2, Point3, Transform as _,
+    Point2, Point3,
     Vector2,
 };
 use crate::block::Resolution;
 use crate::math::{Face6, FreeCoordinate, GridCoordinate, Rgba};
-use crate::mesh::{BlockVertex, Coloring, TextureCoordinate, TextureTile};
+use crate::mesh::{BlockVertex, TextureCoordinate, TextureTile};
 /// Data structure for the state and components of the "greedy meshing" algorithm.
 /// <https://0fps.net/2012/06/30/meshing-in-a-minecraft-game/>
 pub(crate) struct GreedyMesher {

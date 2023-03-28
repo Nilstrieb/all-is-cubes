@@ -3,7 +3,7 @@ use std::fmt;
 use cgmath::{EuclideanSpace as _, Point3, Vector3};
 use num_traits::identities::Zero;
 pub use ordered_float::{FloatIsNan, NotNan};
-use crate::util::{ConciseDebug, CustomFormat};
+use crate::util::{CustomFormat};
 mod aab;
 pub use aab::*;
 #[macro_use]

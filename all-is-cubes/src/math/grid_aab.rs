@@ -6,7 +6,7 @@ use std::ops::Range;
 use cgmath::{EuclideanSpace, Point3, Transform, Vector3};
 use crate::block::Resolution;
 use crate::math::{
-    sort_two, Aab, Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint,
+    Aab, Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint,
     GridVector,
 };
 /// An axis-aligned box with integer coordinates, whose volume is no larger than [`usize::MAX`].

@@ -1,13 +1,12 @@
 //! Player-character stuff.
 use std::collections::HashSet;
 use std::fmt;
-use std::sync::Arc;
+
 use cgmath::{
-    Angle as _, Basis3, Decomposed, Deg, ElementWise as _, EuclideanSpace as _, Matrix3,
-    Point3, Rotation3, Transform, Vector3,
+    Angle as _, ElementWise as _, EuclideanSpace as _, Rotation3, Transform, Vector3,
 };
 use num_traits::identities::Zero;
-use ordered_float::NotNan;
+
 use crate::behavior::{Behavior, BehaviorSet, BehaviorSetTransaction};
 use crate::camera::ViewTransform;
 use crate::inv::{
@@ -15,9 +14,9 @@ use crate::inv::{
     TOOL_SELECTIONS,
 };
 use crate::listen::{Listen, Listener, Notifier};
-use crate::math::{Aab, Face6, Face7, FreeCoordinate, Rgb};
+use crate::math::{FreeCoordinate, Rgb};
 use crate::physics::{Body, BodyStepInfo, BodyTransaction, Contact};
-use crate::raycast::Ray;
+
 use crate::space::Space;
 use crate::time::Tick;
 use crate::transaction::{
@@ -25,7 +24,7 @@ use crate::transaction::{
     Transactional,
 };
 use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
-use crate::util::{ConciseDebug, CustomFormat, StatusText};
+use crate::util::{CustomFormat, StatusText};
 mod cursor;
 pub use cursor::*;
 mod spawn;

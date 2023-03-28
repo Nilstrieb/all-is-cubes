@@ -9,16 +9,16 @@
 //! by the terminal UI and in unit tests via [`print_space`].
 use std::fmt;
 use cgmath::{
-    EuclideanSpace as _, InnerSpace as _, Point2, Vector2, Vector3, VectorSpace as _,
+    EuclideanSpace as _, InnerSpace as _, VectorSpace as _,
 };
-use cgmath::{Point3, Vector4};
-use ordered_float::NotNan;
+use cgmath::{Point3};
+
 #[cfg(feature = "threads")]
 use rayon::iter::{IntoParallelIterator as _, ParallelIterator as _};
-use crate::block::{Evoxels, AIR};
-use crate::camera::{Camera, GraphicsOptions, TransparencyOption};
+use crate::block::{Evoxels};
+use crate::camera::{Camera, GraphicsOptions};
 use crate::math::{
-    point_to_enclosing_cube, smoothstep, Face7, FreeCoordinate, GridAab, GridArray,
+    Face7, FreeCoordinate, GridArray,
     GridPoint, Rgb, Rgba,
 };
 use crate::raycast::Ray;
@@ -29,7 +29,7 @@ pub use pixel_buf::*;
 mod renderer;
 pub use renderer::*;
 mod surface;
-use surface::{DepthIter, DepthStep, Span, Surface, SurfaceIter, TraceStep};
+use surface::{Span, Surface};
 mod text;
 pub use text::*;
 /// Precomputed data for raytracing a single frame of a single [`Space`], and bearer of

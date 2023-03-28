@@ -1,11 +1,11 @@
-use cgmath::{EuclideanSpace as _, Point3};
-use instant::Instant;
+use cgmath::{Point3};
+
 use super::*;
 use crate::chunking::ChunkPos;
 use crate::math::GridCoordinate;
 use crate::mesh::{GfxVertex, MeshOptions, SpaceMesh, TextureAllocator};
 use crate::space::Space;
-use crate::util::{ConciseDebug, CustomFormat};
+
 impl<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> ChunkMesh<D, Vert, Tex, CHUNK_SIZE>
 where
     D: Default,

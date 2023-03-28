@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, HashMap};
 use std::hash::Hash;
-use std::mem;
+
 use crate::transaction::{Merge, TransactionConflict};
 impl<K, V> Merge for BTreeMap<K, V>
 where

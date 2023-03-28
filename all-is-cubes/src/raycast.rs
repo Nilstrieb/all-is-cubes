@@ -6,7 +6,7 @@
 //! `all_is_cubes::raytracer`.
 use cgmath::{EuclideanSpace as _, InnerSpace as _, Point3, Vector3, Zero as _};
 use crate::math::{
-    point_to_enclosing_cube, CubeFace, Face7, FreeCoordinate, Geometry, GridAab,
+    CubeFace, Face7, FreeCoordinate, Geometry, GridAab,
     GridCoordinate, GridPoint,
 };
 /// A ray; a half-infinite line segment (sometimes used as finite by the length of the

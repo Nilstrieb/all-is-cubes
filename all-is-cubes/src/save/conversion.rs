@@ -23,10 +23,10 @@ macro_rules! impl_serde_via_schema_by_ref {
 mod block {
     use super::*;
     use crate::block::{
-        Block, BlockAttributes, Composite, Modifier, Move, Primitive, Quote, Zoom,
+        Block, BlockAttributes, Modifier, Primitive,
     };
-    use crate::math::Rgba;
-    use schema::{BlockSer, ModifierSer};
+    
+    use schema::{ModifierSer};
     impl Serialize for Block {
         fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
             loop {}
@@ -110,11 +110,11 @@ mod space {
 }
 mod universe {
     use super::*;
-    use crate::block::{Block, BlockDef};
-    use crate::save::schema::MemberEntrySer;
-    use crate::space::Space;
-    use crate::universe::{Name, UBorrow, URef, Universe, UniverseIndex};
-    use schema::{MemberDe, NameSer, URefSer};
+    use crate::block::{BlockDef};
+    
+    
+    use crate::universe::{Name, URef, Universe};
+    
     impl From<&BlockDef> for schema::MemberSer {
         fn from(block_def: &BlockDef) -> Self {
             loop {}

@@ -13,10 +13,10 @@ use std::fmt;
 use std::hash::Hash;
 use std::ops::Index;
 use exhaust::Exhaust;
-use crate::block::{Block, BlockDef, Primitive};
+use crate::block::{Block};
 use crate::space::SetCubeError;
 use crate::transaction::ExecuteError;
-use crate::universe::{InsertError, Name, URef, Universe, UniverseIndex};
+use crate::universe::{InsertError, Name, Universe, UniverseIndex};
 use crate::util::YieldProgress;
 fn name_in_module<E: BlockModule>(key: &E) -> Name {
     loop {}

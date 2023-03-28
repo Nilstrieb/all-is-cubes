@@ -2,7 +2,7 @@ use std::fmt;
 use std::panic::Location;
 use std::sync::{Arc, Mutex};
 use futures_core::future::{BoxFuture, Future};
-use instant::{Duration, Instant};
+use instant::{Instant};
 /// Allows a long-running async task to report its progress, while also yielding to the
 /// scheduler (e.g. for single-threaded web environment) and introducing cancellation
 /// points.

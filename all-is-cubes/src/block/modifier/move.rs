@@ -1,10 +1,9 @@
-use cgmath::Zero;
+
 use crate::block::{
-    self, Block, BlockAttributes, BlockCollision, Evoxel, Evoxels, MinEval, Modifier,
-    Resolution::R16, AIR,
+    self, Block, MinEval, Modifier,
 };
-use crate::drawing::VoxelBrush;
-use crate::math::{Face6, GridAab, GridArray, GridCoordinate};
+
+use crate::math::{Face6};
 use crate::universe;
 /// Data for [`Modifier::Move`]; displaces the block out of the grid, cropping it.
 /// A pair of `Move`s can depict a block moving between two cubes.

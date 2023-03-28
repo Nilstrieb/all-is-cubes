@@ -1,18 +1,15 @@
 use std::fmt;
-use cgmath::{ElementWise, EuclideanSpace as _, InnerSpace, Vector3};
-use embedded_graphics::geometry::Point;
+use cgmath::{ElementWise, EuclideanSpace as _, InnerSpace};
+
 use embedded_graphics::prelude::{Drawable, Primitive};
-use embedded_graphics::primitives::{Circle, Line, PrimitiveStyleBuilder};
+
 use exhaust::Exhaust;
-use crate::block::{Block, BlockCollision, Resolution::*, AIR, AIR_EVALUATED};
-use crate::content::load_image::{default_srgb, include_image, space_from_image};
-use crate::drawing::VoxelBrush;
+
+
+
 use crate::linking::{BlockModule, BlockProvider};
-use crate::math::{
-    cube_to_midpoint, Face7, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint,
-    GridRotation, GridVector, Rgb, Rgba,
-};
-use crate::space::Space;
+
+
 use crate::universe::Universe;
 #[cfg(doc)]
 use crate::inv::Tool;

@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 use std::fmt;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool};
 use std::sync::{Arc, RwLock, Weak};
 use crate::listen::{Listen, Listener};
 /// A [`Listener`] which discards all messages and is suitable for filling

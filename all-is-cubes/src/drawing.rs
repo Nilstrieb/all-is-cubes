@@ -15,7 +15,7 @@
 //!     and rectangles have inclusive upper bounds (whereas our [`GridAab`]s have
 //!     exclusive upper bounds).
 use cgmath::{EuclideanSpace as _, Transform as _};
-use embedded_graphics::geometry::{Dimensions, Point, Size};
+use embedded_graphics::geometry::{Dimensions, Point};
 use embedded_graphics::pixelcolor::{PixelColor, Rgb888, RgbColor};
 use embedded_graphics::prelude::{DrawTarget, Drawable, Pixel};
 use embedded_graphics::primitives::Rectangle;
@@ -24,11 +24,11 @@ use std::marker::PhantomData;
 use std::ops::Range;
 /// Re-export the version of the [`embedded_graphics`] crate we're using.
 pub use embedded_graphics;
-use crate::block::{space_to_blocks, Block, BlockAttributes, Resolution};
+use crate::block::{Block, BlockAttributes, Resolution};
 use crate::math::{
-    Face7, FaceMap, GridAab, GridCoordinate, GridMatrix, GridPoint, GridVector, Rgb, Rgba,
+    GridAab, GridCoordinate, GridMatrix, GridPoint, GridVector, Rgb, Rgba,
 };
-use crate::space::{SetCubeError, Space, SpacePhysics, SpaceTransaction};
+use crate::space::{SetCubeError, Space, SpaceTransaction};
 use crate::universe::Universe;
 /// Convert a bounding-box rectangle, as from [`embedded_graphics::geometry::Dimensions`],
 /// to a [`GridAab`] which encloses the voxels that would be affected by drawing a

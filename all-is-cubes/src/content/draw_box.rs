@@ -1,5 +1,5 @@
-use crate::block::{self, Block};
-use crate::math::{FaceMap, GridAab, GridRotation};
+use crate::block::{Block};
+use crate::math::{GridAab};
 use crate::space;
 /// Set of blocks used to draw 3D boxes of any size, allowing corners and edges to have
 /// different blocks than faces and the interior.

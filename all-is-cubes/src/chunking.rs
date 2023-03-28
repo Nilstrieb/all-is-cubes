@@ -8,7 +8,7 @@ use std::ops::RangeTo;
 use std::sync::Arc;
 use cgmath::{EuclideanSpace as _, Point3, Vector3};
 use crate::math::{
-    int_magnitude_squared, point_to_enclosing_cube, FreeCoordinate, GridAab,
+    FreeCoordinate, GridAab,
     GridCoordinate, GridPoint, GridVector,
 };
 /// Type to distinguish chunk coordinates from cube coordinates.

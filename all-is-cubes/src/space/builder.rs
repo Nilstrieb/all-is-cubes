@@ -1,5 +1,5 @@
 use cgmath::{EuclideanSpace, InnerSpace, Point3};
-use crate::block::{Block, AIR};
+use crate::block::{Block};
 use crate::character::Spawn;
 use crate::math::{FreeCoordinate, Rgb};
 use crate::space::{GridAab, LightPhysics, Space, SpacePhysics};

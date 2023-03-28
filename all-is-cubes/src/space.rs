@@ -4,7 +4,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex, Weak};
 use cgmath::Vector3;
-use instant::{Duration, Instant};
+use instant::{Duration};
 use crate::behavior::{self, BehaviorSet};
 use crate::block::{
     Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR, AIR_EVALUATED,
@@ -17,20 +17,20 @@ use crate::drawing::DrawingPlane;
 use crate::inv::EphemeralOpaque;
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{
-    point_checked_add, Face6, FreeCoordinate, GridAab, GridArray, GridCoordinate,
+    FreeCoordinate, GridAab, GridArray, GridCoordinate,
     GridMatrix, GridPoint, GridRotation, NotNan, Rgb,
 };
 use crate::time::Tick;
 use crate::transaction::{Merge, Transaction as _};
 use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
-use crate::util::{ConciseDebug, TimeStats};
+use crate::util::{TimeStats};
 use crate::util::{CustomFormat, StatusText};
 mod builder;
 pub use builder::{SpaceBuilder, SpaceBuilderBounds};
 mod light;
 #[doc(hidden)]
 pub use light::LightUpdateCubeInfo;
-use light::{opaque_for_light_computation, LightUpdateQueue, PackedLightScalar};
+use light::{LightUpdateQueue, PackedLightScalar};
 pub use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;
 pub use space_txn::*;

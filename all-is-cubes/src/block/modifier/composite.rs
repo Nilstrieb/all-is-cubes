@@ -1,9 +1,9 @@
-use std::mem;
-use ordered_float::NotNan;
+
+
 use crate::block::{
-    self, Block, BlockCollision, Evoxel, Evoxels, MinEval, Modifier, Resolution::R1, AIR,
+    self, Block, Evoxel, MinEval, Modifier,
 };
-use crate::math::{GridAab, GridArray, GridCoordinate, GridRotation, Rgba};
+use crate::math::{Rgba};
 use crate::universe;
 /// Data for [`Modifier::Composite`], describing how to combine the voxels of another
 /// block with the original one.

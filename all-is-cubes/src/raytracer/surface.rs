@@ -1,7 +1,7 @@
-use cgmath::{EuclideanSpace as _, Point3, Vector3};
-use crate::block::{recursive_ray, Evoxel, Evoxels};
-use crate::camera::LightingOption;
-use crate::math::{Face7, FaceMap, FreeCoordinate, GridArray, GridPoint, Rgb, Rgba};
+use cgmath::{Point3};
+use crate::block::{Evoxel};
+
+use crate::math::{Face7, FreeCoordinate, GridArray, GridPoint, Rgb, Rgba};
 use crate::raycast::{Ray, Raycaster};
 use crate::raytracer::{RtBlockData, SpaceRaytracer, TracingBlock, TracingCubeData};
 /// Description of a surface the ray passes through (or from the volumetric perspective,

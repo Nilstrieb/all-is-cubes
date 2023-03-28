@@ -3,17 +3,17 @@
 //! TODO: stuff in this module is kind of duplicative of [`crate::drawing`]...
 use std::collections::HashMap;
 use std::hash::Hash;
-use std::io;
+
 use std::ops::Deref;
 use embedded_graphics::image::ImageDrawable;
-use embedded_graphics::prelude::{Dimensions as _, DrawTarget, Point, Size};
-use embedded_graphics::primitives::{PointsIter, Rectangle};
-use embedded_graphics::Drawable;
+use embedded_graphics::prelude::{DrawTarget, Size};
+use embedded_graphics::primitives::{Rectangle};
+
 use image::{DynamicImage, GenericImageView};
-use crate::block::{Block, AIR};
-use crate::drawing::{rectangle_to_aab, VoxelBrush};
-use crate::math::{GridAab, GridRotation, Rgba};
-use crate::space::{SetCubeError, Space, SpacePhysics};
+
+use crate::drawing::{VoxelBrush};
+use crate::math::{GridAab, GridRotation};
+use crate::space::{SetCubeError, Space};
 /// Adapter from [`image::GenericImageView`] to [`embedded_graphics::Drawable`].
 #[doc(hidden)]
 #[allow(missing_debug_implementations)]
