@@ -2,10 +2,10 @@
 
 cp premesh.rs all-is-cubes/src/mesh/chunked_mesh.rs
 cargo clean -p all-is-cubes
-cargo build -p all-is-cubes
+cargo check -p all-is-cubes
 git apply crash.patch
 
-OUT=$(cargo build -p all-is-cubes 2>&1)
+OUT=$(cargo check -p all-is-cubes 2>&1)
 
 if echo $OUT | grep "internal compiler error";
 then
