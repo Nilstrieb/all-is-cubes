@@ -7,7 +7,6 @@ use std::sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard, Weak};
 use ouroboros::self_referencing;
 use crate::transaction::{ExecuteError, PreconditionFailed, Transaction, Transactional};
 use crate::universe::InsertError;
-
 use crate::universe::Universe;
 use crate::universe::VisitRefs;
 use crate::universe::{Name, UniverseId};
@@ -79,7 +78,7 @@ impl<T: 'static> URef<T> {
     /// be inserted into another [`Universe`], even if the specified number is free.
     ///
     /// TODO: Actually inserting these into a [`Universe`] is not yet implemented.
-    pub fn new_pending(name: Name, initial_value: T) -> Self {
+    pub(crate) fn new_pending(name: Name, initial_value: T) -> Self {
         loop {}
     }
     /// Constructs a [`URef`] that does not refer to a value, as if it used to but
@@ -90,14 +89,14 @@ impl<T: 'static> URef<T> {
     ///
     /// This may be used in tests to exercise error handling.
     #[doc(hidden)]
-    pub fn new_gone(name: Name) -> URef<T> {
+    pub(crate) fn new_gone(name: Name) -> URef<T> {
         loop {}
     }
     /// Name by which the [`Universe`] knows this ref.
     ///
     /// This may change from [`Name::Pending`] to another name when the ref is inserted into
     /// a [`Universe`].
-    pub fn name(&self) -> Name {
+    pub(crate) fn name(&self) -> Name {
         loop {}
     }
     /// Returns the unique ID of the universe this reference belongs to.
@@ -106,13 +105,13 @@ impl<T: 'static> URef<T> {
     ///
     /// Returns [`None`] if this [`URef`] is not yet associated with a universe, or if
     ///  if it was created by [`Self::new_gone()`].
-    pub fn universe_id(&self) -> Option<UniverseId> {
+    pub(crate) fn universe_id(&self) -> Option<UniverseId> {
         loop {}
     }
     /// Acquire temporary read access the value, in the sense of [`RwLock::try_read()`].
     ///
     /// TODO: There is not currently any way to block on / wait for read access.
-    pub fn read(&self) -> Result<UBorrow<T>, RefError> {
+    pub(crate) fn read(&self) -> Result<UBorrow<T>, RefError> {
         loop {}
     }
     /// Apply the given function to the `&mut T` inside.
@@ -124,7 +123,7 @@ impl<T: 'static> URef<T> {
     /// only use the mutation operations provided by `T`.
     ///
     /// TODO: If possible, completely replace this operation with transactions.
-    pub fn try_modify<F, Out>(&self, function: F) -> Result<Out, RefError>
+    pub(crate) fn try_modify<F, Out>(&self, function: F) -> Result<Out, RefError>
     where
         F: FnOnce(&mut T) -> Out,
     {
@@ -143,7 +142,7 @@ impl<T: 'static> URef<T> {
     /// Returns an error if the transaction's preconditions were not met, if the
     /// referent was already borrowed (which is denoted as an [`ExecuteError::Check`]),
     /// or if the transaction encountered an unexpected error.
-    pub fn execute(
+    pub(crate) fn execute(
         &self,
         transaction: &<T as Transactional>::Transaction,
         outputs: &mut dyn FnMut(
@@ -227,7 +226,7 @@ pub enum RefError {
     InUse(Name),
 }
 /// A wrapper type for an immutably borrowed value from an [`URef`].
-pub struct UBorrow<T: 'static>(UBorrowImpl<T>);
+pub(crate) struct UBorrow<T: 'static>(UBorrowImpl<T>);
 impl<T: fmt::Debug> fmt::Debug for UBorrow<T> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}

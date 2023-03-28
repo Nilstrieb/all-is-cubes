@@ -231,7 +231,7 @@ impl UniverseTransaction {
     /// the reference's name.
     ///
     /// Note that this transaction can only ever succeed once.
-    pub fn insert<T: UniverseMember>(reference: URef<T>) -> Self {
+    pub(crate) fn insert<T: UniverseMember>(reference: URef<T>) -> Self {
         loop {}
     }
     /// Delete this member from the universe.
@@ -244,12 +244,12 @@ impl UniverseTransaction {
     /// In the future, there may be a policy such that in-use items cannot be deleted.
     ///
     /// [`RefError::Gone`]: crate::universe::RefError::Gone
-    pub fn delete<R: super::URefErased>(member_ref: R) -> Self {
+    pub(crate) fn delete<R: super::URefErased>(member_ref: R) -> Self {
         loop {}
     }
     /// If this transaction contains any operations that are on a specific member of a
     /// universe, then returns the ID of that universe.
-    pub fn universe_id(&self) -> Option<UniverseId> {
+    pub(crate) fn universe_id(&self) -> Option<UniverseId> {
         loop {}
     }
 }

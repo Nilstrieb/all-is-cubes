@@ -9,26 +9,26 @@ use std::fmt::Debug;
 /// While this is parameterized over all primitive integers, it will not
 /// allocate negative values.
 #[derive(Clone, Debug)]
-pub struct IntAllocator<T: PrimInt + Debug> {
+pub(crate) struct IntAllocator<T: PrimInt + Debug> {
     /// All larger integers are free. If `None`, then zero has not been allocated.
     last_allocated: Option<T>,
     /// List of integers ≤ than [`Self::last_allocated`] that are free.
     free_list: Vec<T>,
 }
 impl<T: PrimInt + Debug> IntAllocator<T> {
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         loop {}
     }
     /// Returns an integer not currently allocated, or `None` if all nonnegative
     /// integers of type `T` are already allocated.
-    pub fn allocate(&mut self) -> Option<T> {
+    pub(crate) fn allocate(&mut self) -> Option<T> {
         loop {}
     }
     /// Makes a previously allocated integer available for use.
     ///
     /// Caution: passing an integer not currently allocated will corrupt the state and
     /// lead to overlapping allocations.
-    pub fn free(&mut self, value: T) {
+    pub(crate) fn free(&mut self, value: T) {
         loop {}
     }
 }

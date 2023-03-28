@@ -23,11 +23,9 @@ use std::borrow::{Borrow, Cow};
 use std::marker::PhantomData;
 use std::ops::Range;
 /// Re-export the version of the [`embedded_graphics`] crate we're using.
-pub use embedded_graphics;
+pub(crate) use embedded_graphics;
 use crate::block::{Block, BlockAttributes, Resolution};
-use crate::math::{
-    GridAab, GridCoordinate, GridMatrix, GridPoint, GridVector, Rgb, Rgba,
-};
+use crate::math::{GridAab, GridCoordinate, GridMatrix, GridPoint, GridVector, Rgb, Rgba};
 use crate::space::{SetCubeError, Space, SpaceTransaction};
 use crate::universe::Universe;
 /// Convert a bounding-box rectangle, as from [`embedded_graphics::geometry::Dimensions`],
@@ -51,7 +49,7 @@ use crate::universe::Universe;
 /// TODO: This function needs a better name
 ///
 /// TODO: Handling zero-area rectangles is not implemented
-pub fn rectangle_to_aab(
+pub(crate) fn rectangle_to_aab(
     rectangle: Rectangle,
     transform: GridMatrix,
     max_brush: GridAab,
@@ -174,7 +172,7 @@ pub struct VoxelBrush<'a>(Vec<(GridPoint, Cow<'a, Block>)>);
 impl<'a> VoxelBrush<'a> {
     /// Makes a [`VoxelBrush`] which paints the specified blocks at the specified offsets
     /// from each pixel position.
-    pub fn new<V, B>(blocks: impl IntoIterator<Item = (V, B)>) -> Self
+    pub(crate) fn new<V, B>(blocks: impl IntoIterator<Item = (V, B)>) -> Self
     where
         V: Into<GridPoint>,
         B: Into<Cow<'a, Block>>,
@@ -182,14 +180,14 @@ impl<'a> VoxelBrush<'a> {
         loop {}
     }
     /// Makes a [`VoxelBrush`] which paints the specified block with no offset.
-    pub fn single<B>(block: B) -> Self
+    pub(crate) fn single<B>(block: B) -> Self
     where
         B: Into<Cow<'a, Block>>,
     {
         loop {}
     }
     /// Makes a [`VoxelBrush`] which paints the specified block within the specified Z-axis range.
-    pub fn with_thickness<B>(block: B, range: Range<GridCoordinate>) -> Self
+    pub(crate) fn with_thickness<B>(block: B, range: Range<GridCoordinate>) -> Self
     where
         B: Into<Cow<'a, Block>>,
     {
@@ -200,7 +198,7 @@ impl<'a> VoxelBrush<'a> {
     ///
     /// Unlike [`Space::set`], it is not considered an error if any of the affected cubes
     /// fall outside of the `Space`'s bounds.
-    pub fn paint(
+    pub(crate) fn paint(
         &self,
         space: &mut Space,
         origin: GridPoint,
@@ -211,7 +209,7 @@ impl<'a> VoxelBrush<'a> {
     ///
     /// Note that [`VoxelBrush::paint`] or using it in a [`DrawTarget`] ignores
     /// out-of-bounds drawing, but transactions do not support this and will fail instead.
-    pub fn paint_transaction(&self, origin: GridPoint) -> SpaceTransaction {
+    pub(crate) fn paint_transaction(&self, origin: GridPoint) -> SpaceTransaction {
         loop {}
     }
     /// Like [`Self::paint_transaction()`] but modifies an existing transaction (as per
@@ -219,7 +217,7 @@ impl<'a> VoxelBrush<'a> {
     ///
     /// Note that [`VoxelBrush::paint`] or using it in a [`DrawTarget`] ignores
     /// out-of-bounds drawing, but transactions do not support this and will fail instead.
-    pub fn paint_transaction_mut(
+    pub(crate) fn paint_transaction_mut(
         &self,
         transaction: &mut SpaceTransaction,
         origin: GridPoint,
@@ -227,27 +225,27 @@ impl<'a> VoxelBrush<'a> {
         loop {}
     }
     /// Converts a `&VoxelBrush` into a `VoxelBrush` that borrows it.
-    pub fn as_ref(&self) -> VoxelBrush<'_> {
+    pub(crate) fn as_ref(&self) -> VoxelBrush<'_> {
         loop {}
     }
     /// Converts a `VoxelBrush` with borrowed blocks to one with owned blocks.
-    pub fn into_owned(self) -> VoxelBrush<'static> {
+    pub(crate) fn into_owned(self) -> VoxelBrush<'static> {
         loop {}
     }
     /// Add the given offset to the offset of each block, offsetting everything drawn.
     #[must_use]
-    pub fn translate<V: Into<GridVector>>(mut self, offset: V) -> Self {
+    pub(crate) fn translate<V: Into<GridVector>>(mut self, offset: V) -> Self {
         loop {}
     }
     /// Apply the given transform to the position of each block.
     #[must_use]
-    pub fn transform(mut self, transform: GridMatrix) -> Self {
+    pub(crate) fn transform(mut self, transform: GridMatrix) -> Self {
         loop {}
     }
     /// Computes the region affected by this brush, as if it were painted at the origin.
     ///
     /// Returns [`None`] if the brush is empty.
-    pub fn bounds(&self) -> Option<GridAab> {
+    pub(crate) fn bounds(&self) -> Option<GridAab> {
         loop {}
     }
 }
@@ -287,7 +285,7 @@ fn ignore_out_of_bounds(result: Result<bool, SetCubeError>) -> Result<(), SetCub
 ///
 /// Returns a `Space` containing all the blocks properly arranged, or an error if reading
 /// the `Drawable`'s color-blocks fails.
-pub fn draw_to_blocks<'c, D, C>(
+pub(crate) fn draw_to_blocks<'c, D, C>(
     universe: &mut Universe,
     resolution: Resolution,
     z: GridCoordinate,

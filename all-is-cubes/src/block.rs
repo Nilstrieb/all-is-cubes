@@ -4,15 +4,11 @@
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
 use std::borrow::Cow;
-
 use std::fmt;
 use std::sync::Arc;
-use cgmath::{EuclideanSpace as _};
+use cgmath::EuclideanSpace as _;
 use crate::listen::{Listen, Listener};
-use crate::math::{
-    GridPoint, GridRotation, Rgb,
-    Rgba,
-};
+use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
 use crate::raycast::Ray;
 use crate::space::{SetCubeError, Space};
 use crate::universe::URef;
@@ -20,7 +16,7 @@ mod attributes;
 pub use attributes::*;
 mod block_def;
 pub use block_def::*;
-pub mod builder;
+pub(crate) mod builder;
 #[doc(inline)]
 pub use builder::BlockBuilder;
 mod evaluated;
@@ -108,11 +104,11 @@ impl fmt::Debug for Block {
 impl Block {
     /// Returns a new [`BlockBuilder`] which may be used to construct a [`Block`] value
     /// from various inputs with convenient syntax.
-    pub const fn builder() -> BlockBuilder<builder::NeedsPrimitive> {
+    pub(crate) const fn builder() -> BlockBuilder<builder::NeedsPrimitive> {
         loop {}
     }
     /// Construct a [`Block`] from a [`Primitive`] value.
-    pub fn from_primitive(p: Primitive) -> Self {
+    pub(crate) fn from_primitive(p: Primitive) -> Self {
         loop {}
     }
     /// Construct a [`Block`] from a [`Primitive`] constant.
@@ -122,7 +118,7 @@ impl Block {
     }
     /// Returns the [`Primitive`] which defines this block before any
     /// [`Modifier`]s are applied.
-    pub fn primitive(&self) -> &Primitive {
+    pub(crate) fn primitive(&self) -> &Primitive {
         loop {}
     }
     /// Returns a mutable reference to the [`Primitive`] which defines this block before
@@ -130,7 +126,7 @@ impl Block {
     ///
     /// This may cause part or all of the block's data to stop sharing storage with other
     /// blocks.
-    pub fn primitive_mut(&mut self) -> &mut Primitive {
+    pub(crate) fn primitive_mut(&mut self) -> &mut Primitive {
         loop {}
     }
     /// Returns all the modifiers of this block.
@@ -141,14 +137,14 @@ impl Block {
     /// Note that this does not necessarily return all modifiers involved in its
     /// definition; modifiers on the far end of a [`Primitive::Indirect`] are
     /// not reported here, even though they take effect when evaluated.
-    pub fn modifiers(&self) -> &[Modifier] {
+    pub(crate) fn modifiers(&self) -> &[Modifier] {
         loop {}
     }
     /// Returns a mutable reference to the vector of [`Modifier`]s on this block.
     ///
     /// This may cause part or all of the block's data to stop sharing storage with other
     /// blocks.
-    pub fn modifiers_mut(&mut self) -> &mut Vec<Modifier> {
+    pub(crate) fn modifiers_mut(&mut self) -> &mut Vec<Modifier> {
         loop {}
     }
     fn make_parts_mut(&mut self) -> &mut BlockParts {
@@ -160,7 +156,7 @@ impl Block {
     /// doing `block.modifiers_mut().push(modifier.into())`. It does not do any of the
     /// special case logic that, for example, [`Block::rotate()`] does.
     #[must_use]
-    pub fn with_modifier(mut self, modifier: impl Into<Modifier>) -> Self {
+    pub(crate) fn with_modifier(mut self, modifier: impl Into<Modifier>) -> Self {
         loop {}
     }
     /// Rotates this block by the specified rotation.
@@ -197,7 +193,7 @@ impl Block {
     /// assert_eq!(AIR.rotate(clockwise), AIR);
     /// ```
     #[must_use]
-    pub fn rotate(mut self, rotation: GridRotation) -> Self {
+    pub(crate) fn rotate(mut self, rotation: GridRotation) -> Self {
         loop {}
     }
     /// Standardizes any characteristics of this block which may be presumed to be
@@ -225,13 +221,13 @@ impl Block {
     /// assert_eq!(vec![block], rotated.clone().unspecialize());
     /// ```
     #[must_use]
-    pub fn unspecialize(&self) -> Vec<Block> {
+    pub(crate) fn unspecialize(&self) -> Vec<Block> {
         loop {}
     }
     /// Converts this `Block` into a “flattened” and snapshotted form which contains all
     /// information needed for rendering and physics, and does not require [`URef`] access
     /// to other objects.
-    pub fn evaluate(&self) -> Result<EvaluatedBlock, EvalBlockError> {
+    pub(crate) fn evaluate(&self) -> Result<EvaluatedBlock, EvalBlockError> {
         loop {}
     }
     #[inline]
@@ -252,7 +248,7 @@ impl Block {
     /// handle this separately.
     ///
     /// This is not an implementation of [`Listen`] because it can fail.
-    pub fn listen(
+    pub(crate) fn listen(
         &self,
         listener: impl Listener<BlockChange> + Clone + Send + Sync + 'static,
     ) -> Result<(), EvalBlockError> {
@@ -268,7 +264,7 @@ impl Block {
     /// Returns the single [`Rgba`] color of this block's [`Primitive::Atom`] or
     /// [`Primitive::Air`], or panics if it has a different kind of primitive.
     /// **Intended for use in tests only.**
-    pub fn color(&self) -> Rgba {
+    pub(crate) fn color(&self) -> Rgba {
         loop {}
     }
 }
@@ -377,7 +373,7 @@ pub struct BlockChange {
 impl BlockChange {
     #[allow(clippy::new_without_default)]
     #[allow(missing_docs)]
-    pub fn new() -> BlockChange {
+    pub(crate) fn new() -> BlockChange {
         loop {}
     }
 }
@@ -389,7 +385,7 @@ impl BlockChange {
 /// [`SetCubeError::TooManyBlocks`] if the dimensions would result in too many blocks.
 ///
 /// TODO: add doc test for this
-pub fn space_to_blocks(
+pub(crate) fn space_to_blocks(
     resolution: Resolution,
     attributes: BlockAttributes,
     space_ref: URef<Space>,

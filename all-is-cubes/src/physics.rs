@@ -1,9 +1,9 @@
 //! Continuously moving objects and collision.
 use crate::math::FreeCoordinate;
 mod body;
-pub use body::*;
+pub(crate) use body::*;
 mod collision;
-pub use collision::*;
+pub(crate) use collision::*;
 /// Close-but-not-intersecting objects are set to this separation.
 pub(crate) const POSITION_EPSILON: FreeCoordinate = 1e-6 * 1e-6;
 #[cfg(test)]

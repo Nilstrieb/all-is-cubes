@@ -8,30 +8,24 @@
 //! it is much simpler. It continues to serve as a “reference implementation” and is used
 //! by the terminal UI and in unit tests via [`print_space`].
 use std::fmt;
-use cgmath::{
-    EuclideanSpace as _, InnerSpace as _, VectorSpace as _,
-};
-use cgmath::{Point3};
-
+use cgmath::{EuclideanSpace as _, InnerSpace as _, VectorSpace as _};
+use cgmath::Point3;
 #[cfg(feature = "threads")]
 use rayon::iter::{IntoParallelIterator as _, ParallelIterator as _};
-use crate::block::{Evoxels};
+use crate::block::Evoxels;
 use crate::camera::{Camera, GraphicsOptions};
-use crate::math::{
-    Face7, FreeCoordinate, GridArray,
-    GridPoint, Rgb, Rgba,
-};
+use crate::math::{Face7, FreeCoordinate, GridArray, GridPoint, Rgb, Rgba};
 use crate::raycast::Ray;
 use crate::space::{BlockIndex, PackedLight, Space, SpaceBlockData};
 use crate::util::{CustomFormat, StatusText};
 mod pixel_buf;
-pub use pixel_buf::*;
+pub(crate) use pixel_buf::*;
 mod renderer;
-pub use renderer::*;
+pub(crate) use renderer::*;
 mod surface;
 use surface::{Span, Surface};
 mod text;
-pub use text::*;
+pub(crate) use text::*;
 /// Precomputed data for raytracing a single frame of a single [`Space`], and bearer of
 /// the methods for actually performing raytracing.
 pub struct SpaceRaytracer<D: RtBlockData> {
@@ -45,7 +39,7 @@ pub struct SpaceRaytracer<D: RtBlockData> {
 }
 impl<D: RtBlockData> SpaceRaytracer<D> {
     /// Snapshots the given [`Space`] to prepare for raytracing it.
-    pub fn new(
+    pub(crate) fn new(
         space: &Space,
         graphics_options: GraphicsOptions,
         custom_options: D::Options,
@@ -61,7 +55,7 @@ impl<D: RtBlockData> SpaceRaytracer<D> {
         loop {}
     }
     /// Computes a single image pixel from the given ray.
-    pub fn trace_ray<P: PixelBuf<BlockData = D>>(
+    pub(crate) fn trace_ray<P: PixelBuf<BlockData = D>>(
         &self,
         ray: Ray,
         include_sky: bool,
@@ -89,7 +83,7 @@ impl<D: RtBlockData> SpaceRaytracer<D> {
     /// inconvenient difference between [`std::io::Write`] and [`std::fmt::Write`].
     ///
     /// After each line (row) of the image, `write(line_ending)` will be called.
-    pub fn trace_scene_to_text<P, F, E>(
+    pub(crate) fn trace_scene_to_text<P, F, E>(
         &self,
         camera: &Camera,
         line_ending: &str,
@@ -128,7 +122,11 @@ impl<D: RtBlockData> SpaceRaytracer<D> {
         loop {}
     }
     /// As [`Self::trace_scene_to_text()`], but returning a string.
-    pub fn trace_scene_to_string<P>(&self, camera: &Camera, line_ending: &str) -> String
+    pub(crate) fn trace_scene_to_string<P>(
+        &self,
+        camera: &Camera,
+        line_ending: &str,
+    ) -> String
     where
         P: PixelBuf<BlockData = D> + Into<String>,
     {
@@ -246,7 +244,7 @@ impl<P: PixelBuf> TracingState<P> {
         loop {}
     }
 }
-pub use updating::*;
+pub(crate) use updating::*;
 mod updating;
 #[cfg(feature = "threads")]
 mod rayon_helper {
@@ -257,7 +255,7 @@ mod rayon_helper {
     #[derive(Clone, Copy, Debug, Default)]
     pub(crate) struct ParExtSum<T>(Option<T>);
     impl<T: Sum> ParExtSum<T> {
-        pub fn result(self) -> T {
+        pub(crate) fn result(self) -> T {
             loop {}
         }
     }

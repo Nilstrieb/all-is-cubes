@@ -1,5 +1,4 @@
 //! The [`Transaction`] trait, for modifying game objects.
-
 use std::error::Error;
 use std::fmt::Debug;
 use std::sync::Arc;
@@ -196,20 +195,20 @@ impl CommitError {
     /// Wrap an arbitrary unexpected error as a [`CommitError`].
     /// `T` should be the type of the transaction that caught it.
     #[must_use]
-    pub fn catch<T, E: Error + Send + Sync + 'static>(error: E) -> Self {
+    pub(crate) fn catch<T, E: Error + Send + Sync + 'static>(error: E) -> Self {
         loop {}
     }
     /// Construct a [`CommitError`] with a string description.
     /// `T` should be the type of the transaction that detected the problem.
     #[must_use]
-    pub fn message<T>(message: String) -> Self {
+    pub(crate) fn message<T>(message: String) -> Self {
         loop {}
     }
     /// Report an error propagating up from an inner transaction.
     /// `component` should describe which part of the current transaction
     /// returned the error from its `commit()`.
     #[must_use]
-    pub fn context(self, component: String) -> Self {
+    pub(crate) fn context(self, component: String) -> Self {
         loop {}
     }
 }
@@ -231,4 +230,4 @@ pub trait Transactional {
 pub type NoOutput = std::convert::Infallible;
 /// Output callback function for committing a [`Transaction`] whose `Output` type is
 /// [`NoOutput`] and therefore cannot produce any outputs.
-pub fn no_outputs(_: NoOutput) {}
+pub(crate) fn no_outputs(_: NoOutput) {}
