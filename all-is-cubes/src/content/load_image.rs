@@ -125,7 +125,7 @@ macro_rules! include_image {
         IMAGE }
     };
 }
-pub(crate) use include_image;
+
 #[cfg(test)]
 mod tests {
     use super::*;

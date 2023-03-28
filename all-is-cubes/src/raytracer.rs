@@ -21,11 +21,11 @@ use crate::util::{CustomFormat, StatusText};
 mod pixel_buf;
 pub(crate) use pixel_buf::*;
 mod renderer;
-pub(crate) use renderer::*;
+
 mod surface;
 use surface::{Span, Surface};
 mod text;
-pub(crate) use text::*;
+
 /// Precomputed data for raytracing a single frame of a single [`Space`], and bearer of
 /// the methods for actually performing raytracing.
 pub struct SpaceRaytracer<D: RtBlockData> {

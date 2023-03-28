@@ -15,7 +15,7 @@ mod space_mesh;
 use cgmath::Point3;
 pub use space_mesh::*;
 mod planar;
-use planar::*;
+
 mod texalloc;
 pub use texalloc::*;
 #[cfg(test)]

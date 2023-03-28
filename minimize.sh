@@ -7,6 +7,8 @@ git apply crash.patch
 
 OUT=$(cargo check -p all-is-cubes 2>&1)
 
+cp premesh.rs all-is-cubes/src/mesh/chunked_mesh.rs
+
 if echo $OUT | grep "internal compiler error";
 then
     echo "The ICE reproduces"
