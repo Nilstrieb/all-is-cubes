@@ -227,27 +227,6 @@ pub enum RefError {
 }
 /// A wrapper type for an immutably borrowed value from an [`URef`].
 pub(crate) struct UBorrow<T: 'static>(UBorrowImpl<T>);
-impl<T: fmt::Debug> fmt::Debug for UBorrow<T> {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl<T> Deref for UBorrow<T> {
-    type Target = T;
-    fn deref(&self) -> &T {
-        loop {}
-    }
-}
-impl<T> AsRef<T> for UBorrow<T> {
-    fn as_ref(&self) -> &T {
-        loop {}
-    }
-}
-impl<T> Borrow<T> for UBorrow<T> {
-    fn borrow(&self) -> &T {
-        loop {}
-    }
-}
 /// Implementation of [`UBorrow`], split out to hide all `self_referencing` details.
 #[self_referencing]
 struct UBorrowImpl<T: 'static> {
@@ -269,14 +248,6 @@ pub(crate) struct UBorrowMutImpl<T: 'static> {
     #[not_covariant]
     guard: RwLockWriteGuard<'this, UEntry<T>>,
 }
-impl<T> UBorrowMutImpl<T> {
-    pub(crate) fn with_data_mut<F, Out>(&mut self, function: F) -> Out
-    where
-        F: FnOnce(&mut T) -> Out,
-    {
-        loop {}
-    }
-}
 /// The data of an entry in a `Universe`.
 #[derive(Debug)]
 struct UEntry<T> {
@@ -291,23 +262,6 @@ pub(super) struct URootRef<T> {
     strong_ref: StrongEntryRef<T>,
     state: Arc<Mutex<State<T>>>,
 }
-impl<T> URootRef<T> {
-    pub(super) fn new(universe_id: UniverseId, name: Name, initial_value: T) -> Self {
-        loop {}
-    }
-    /// Convert to `URef`.
-    ///
-    /// TODO: As we add graph analysis features, this will need additional arguments
-    /// like where the ref is being held, and it will probably need to be renamed.
-    pub(crate) fn downgrade(&self) -> URef<T> {
-        loop {}
-    }
-    /// Returns the number of weak references to this entry, which is greater than
-    /// or equal to the number of [`URef`]s to it.
-    pub(crate) fn weak_ref_count(&self) -> usize {
-        loop {}
-    }
-}
 /// Object-safe trait implemented for [`URef`], to allow code to operate on `URef<T>`
 /// regardless of `T`.
 pub trait URefErased: core::any::Any {
@@ -321,59 +275,6 @@ impl<T: 'static> URefErased for URef<T> {
         loop {}
     }
     fn universe_id(&self) -> Option<UniverseId> {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::{Block, BlockDef};
-    use crate::math::Rgba;
-    use crate::space::Space;
-    use crate::universe::{Universe, UniverseIndex};
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn uref_debug_in_universe() {
-        loop {}
-    }
-    #[test]
-    fn uref_debug_pending() {
-        loop {}
-    }
-    #[test]
-    fn uref_try_borrow_in_use() {
-        loop {}
-    }
-    #[test]
-    fn uref_try_borrow_mut_in_use() {
-        loop {}
-    }
-    #[test]
-    fn uref_try_modify_in_use() {
-        loop {}
-    }
-    #[test]
-    fn new_gone_properties() {
-        loop {}
-    }
-    /// Note: It is unclear what the best behavior is. The current one is that every
-    /// `new_gone()` is unique.
-    #[test]
-    fn new_gone_equality() {
-        loop {}
-    }
-    #[test]
-    fn ref_error_format() {
-        loop {}
-    }
-    #[test]
-    #[allow(clippy::eq_op)]
-    fn uref_equality_is_pointer_equality() {
-        loop {}
-    }
-    #[test]
-    #[allow(clippy::eq_op)]
-    fn pending_uref_equality_is_pointer_equality() {
         loop {}
     }
 }

@@ -3,9 +3,6 @@ use std::error::Error;
 use std::fmt::Debug;
 use std::sync::Arc;
 use crate::universe::{URef, UTransactional, UniverseTransaction};
-mod generic;
-#[cfg(test)]
-mod tester;
 #[cfg(test)]
 pub use tester::*;
 /// A `Transaction` is a description of a mutation to an object or collection thereof that

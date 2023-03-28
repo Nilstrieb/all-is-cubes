@@ -19,24 +19,6 @@ pub trait RefVisitor {
     /// to report one of the refs it contains.
     fn visit(&mut self, r: &dyn URefErased);
 }
-impl<F> RefVisitor for F
-where
-    F: FnMut(&dyn URefErased),
-{
-    fn visit(&mut self, r: &dyn URefErased) {
-        loop {}
-    }
-}
-impl<T: VisitRefs> VisitRefs for Vec<T> {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
-}
-impl<T: VisitRefs, const N: usize> VisitRefs for [T; N] {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
-}
 #[cfg(test)]
 pub(crate) fn list_refs<T: VisitRefs + 'static>(target: &T) -> Vec<super::Name> {
     loop {}
