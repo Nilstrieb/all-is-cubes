@@ -1,15 +1,8 @@
 use std::fmt;
 use cgmath::{ElementWise, EuclideanSpace as _, InnerSpace};
-
 use embedded_graphics::prelude::{Drawable, Primitive};
-
 use exhaust::Exhaust;
-
-
-
 use crate::linking::{BlockModule, BlockProvider};
-
-
 use crate::universe::Universe;
 #[cfg(doc)]
 use crate::inv::Tool;
@@ -56,14 +49,6 @@ impl Icons {
     ///
     /// TODO: Replace `&mut Universe` parameter with a transaction return value.
     pub async fn new(universe: &mut Universe, p: YieldProgress) -> BlockProvider<Icons> {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[tokio::test]
-    async fn icons_smoke_test() {
         loop {}
     }
 }

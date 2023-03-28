@@ -1,6 +1,6 @@
 use crate::block::{Block, BlockChange, EvalBlockError, MinEval};
 use crate::listen::Listener;
-use crate::math::{GridRotation};
+use crate::math::GridRotation;
 use crate::universe::{RefVisitor, VisitRefs};
 mod composite;
 pub use composite::*;
@@ -116,25 +116,4 @@ pub(crate) enum ModifierUnspecialize {
     /// Replace with a different set of blocks.
     /// `unspecialize()` will be called on each of those automatically.
     Replace(Vec<Block>),
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::{
-        BlockCollision, EvaluatedBlock, Evoxel, Primitive, Resolution::R2,
-    };
-    use crate::content::make_some_voxel_blocks;
-    use crate::math::{Face6, FaceMap, GridAab, GridPoint, OpacityCategory, Rgba};
-    use crate::universe::Universe;
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn rotate_evaluation() {
-        loop {}
-    }
-    /// Check that [`Block::rotate`]'s pre-composition is consistent with the interpretation
-    /// used by evaluating [`Modifier::Rotate`].
-    #[test]
-    fn rotate_rotated_consistency() {
-        loop {}
-    }
 }

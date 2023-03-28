@@ -14,12 +14,8 @@ pub mod chunked_mesh;
 mod space_mesh;
 use cgmath::Point3;
 pub use space_mesh::*;
-mod planar;
-
 mod texalloc;
 pub use texalloc::*;
-#[cfg(test)]
-mod tests;
 /// Parameters for creating meshes that aren't the block/space data itself
 /// (or the texture allocator, since that may need to be mutable).
 ///

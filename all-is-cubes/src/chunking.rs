@@ -7,10 +7,7 @@ use std::iter::FusedIterator;
 use std::ops::RangeTo;
 use std::sync::Arc;
 use cgmath::{EuclideanSpace as _, Point3, Vector3};
-use crate::math::{
-    FreeCoordinate, GridAab,
-    GridCoordinate, GridPoint, GridVector,
-};
+use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint, GridVector};
 /// Type to distinguish chunk coordinates from cube coordinates.
 ///
 /// Parameter `CHUNK_SIZE` is the number of cubes along the edge of a chunk.
@@ -123,49 +120,6 @@ pub struct ChunkChart<const CHUNK_SIZE: GridCoordinate> {
     /// Range of elements of `octant_chunks` to actually use.
     octant_range: RangeTo<usize>,
 }
-impl<const CHUNK_SIZE: GridCoordinate> ChunkChart<CHUNK_SIZE> {
-    pub fn new(view_distance: FreeCoordinate) -> Self {
-        loop {}
-    }
-    fn sanitize_and_square_distance(view_distance: FreeCoordinate) -> GridCoordinate {
-        loop {}
-    }
-    /// Recalculate the chart if the provided distance is different.
-    pub fn resize_if_needed(&mut self, view_distance: FreeCoordinate) {
-        loop {}
-    }
-    /// Returns an iterator over the chunks in this chart — i.e. those intersecting a sphere
-    /// (or more precisely, the Minkowski sum of a sphere and the chunk) around the given
-    /// origin chunk.
-    ///
-    /// The chunks are ordered from nearest to farthest in Euclidean distance; the iterator is a
-    /// [`DoubleEndedIterator`] so that [`Iterator::rev`] may be used to iterate from
-    /// farthest to nearest.
-    pub fn chunks(
-        &self,
-        origin: ChunkPos<CHUNK_SIZE>,
-        mask: OctantMask,
-    ) -> impl Iterator<
-        Item = ChunkPos<CHUNK_SIZE>,
-    > + DoubleEndedIterator + FusedIterator + '_ {
-        self.octant_chunks[self.octant_range]
-            .iter()
-            .copied()
-            .flat_map(move |v| AxisMirrorIter::new(v, mask))
-            .map(move |v| ChunkPos(origin.0 + v))
-    }
-    /// Convert to a `Space` so it can be directly viewed; for tests.
-    #[doc(hidden)]
-    pub fn visualization(&self) -> crate::space::Space {
-        loop {}
-    }
-    /// Returns the total number of chunks in this chart.
-    /// Currently overestimates.
-    #[doc(hidden)]
-    pub fn count_all(&self) -> usize {
-        loop {}
-    }
-}
 fn compute_chart_octant(
     view_distance_in_squared_chunks: GridCoordinate,
 ) -> Arc<[GridVector]> {
@@ -216,95 +170,6 @@ impl OctantMask {
     /// As [`Self::first()`], but the opposite ordering.
     #[inline(always)]
     fn last(self) -> Option<u8> {
-        loop {}
-    }
-}
-/// An iterator that returns a vector and its opposite in the specified axis,
-///
-/// Part of the implementation of [`ChunkChart`].
-struct AxisMirrorIter {
-    v: GridVector,
-    /// Which copies are yet to be emitted.
-    todo: OctantMask,
-}
-impl AxisMirrorIter {
-    #[inline]
-    fn new(v: GridVector, mask: OctantMask) -> Self {
-        loop {}
-    }
-    fn generate_and_clear(&mut self, octant_index: u8) -> GridVector {
-        loop {}
-    }
-}
-impl Iterator for AxisMirrorIter {
-    type Item = GridVector;
-    #[inline]
-    fn next(&mut self) -> Option<GridVector> {
-        loop {}
-    }
-}
-impl DoubleEndedIterator for AxisMirrorIter {
-    #[inline]
-    fn next_back(&mut self) -> Option<Self::Item> {
-        loop {}
-    }
-}
-impl ExactSizeIterator for AxisMirrorIter {}
-impl FusedIterator for AxisMirrorIter {}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::raytracer::print_space;
-    use pretty_assertions::assert_eq;
-    use std::collections::HashSet;
-    #[test]
-    fn chunk_consistency() {
-        loop {}
-    }
-    #[test]
-    fn min_distance_squared_cases() {
-        loop {}
-    }
-    #[test]
-    #[ignore]
-    fn min_distance_squared_consistent_with_chart() {
-        loop {}
-    }
-    /// Zero distance means only the origin chunk.
-    /// This also tests that the origin position is added in.
-    #[test]
-    fn chunk_chart_zero_size() {
-        loop {}
-    }
-    /// If we look a tiny bit outside the origin chunk, there are 9³ - 1 neighbors.
-    #[test]
-    fn chunk_chart_epsilon_size() {
-        loop {}
-    }
-    /// As [`chunk_chart_epsilon_size()`], but exercise the octant mask.
-    #[test]
-    fn chunk_chart_masked() {
-        loop {}
-    }
-    #[test]
-    fn chunk_chart_radius_break_points() {
-        loop {}
-    }
-    /// [`ChunkChart`]'s iterator should be consistent when reversed.
-    #[test]
-    fn chunk_chart_reverse_iteration() {
-        loop {}
-    }
-    #[test]
-    fn chunk_chart_sorting() {
-        loop {}
-    }
-    #[test]
-    fn chunk_chart_resize() {
-        loop {}
-    }
-    #[test]
-    fn octant_mask_smoke_test() {
         loop {}
     }
 }

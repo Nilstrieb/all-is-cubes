@@ -2,7 +2,7 @@ use std::fmt;
 use std::panic::Location;
 use std::sync::{Arc, Mutex};
 use futures_core::future::{BoxFuture, Future};
-use instant::{Instant};
+use instant::Instant;
 /// Allows a long-running async task to report its progress, while also yielding to the
 /// scheduler (e.g. for single-threaded web environment) and introducing cancellation
 /// points.
@@ -141,15 +141,6 @@ impl<F: ?Sized + Fn() -> BoxFuture<'static, ()> + Send + Sync> Yielding<F> {
         location: &'static Location<'static>,
         label: Option<Arc<str>>,
     ) {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::util::assert_send_sync;
-    #[test]
-    fn yield_progress_is_sync() {
         loop {}
     }
 }

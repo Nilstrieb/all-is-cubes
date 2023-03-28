@@ -1,18 +1,16 @@
 //! TODO: Maybe this file is too small
-
 use std::collections::BTreeMap;
-
-use std::{fmt};
+use std::fmt;
 use crate::behavior::{self, BehaviorSet, BehaviorSetTransaction};
 use crate::block::Block;
 use crate::drawing::DrawingPlane;
 use crate::math::{GridCoordinate, GridMatrix, GridPoint};
 use crate::space::{GridAab, Space};
 use crate::transaction::{
-    CommitError, Merge, NoOutput, PreconditionFailed, Transaction,
-    TransactionConflict, Transactional,
+    CommitError, Merge, NoOutput, PreconditionFailed, Transaction, TransactionConflict,
+    Transactional,
 };
-use crate::util::{CustomFormat as _};
+use crate::util::CustomFormat as _;
 impl Transactional for Space {
     type Transaction = SpaceTransaction;
 }
@@ -190,84 +188,3 @@ impl Merge for CubeTransaction {
     }
 }
 struct CubeMergeCheck {}
-#[cfg(test)]
-mod tests {
-    use std::sync::atomic::{AtomicU32, Ordering};
-    use std::sync::Arc;
-    use pretty_assertions::assert_eq;
-    use crate::behavior::NoopBehavior;
-    use crate::block::AIR;
-    use crate::content::make_some_blocks;
-    use crate::inv::EphemeralOpaque;
-    use crate::math::GridAab;
-    use crate::transaction::{no_outputs, TransactionTester};
-    use super::*;
-    #[test]
-    fn set_out_of_bounds_conserved_fails() {
-        loop {}
-    }
-    #[test]
-    fn set_out_of_bounds_nonconserved_succeeds() {
-        loop {}
-    }
-    #[test]
-    fn compare_out_of_bounds_conserved_fails() {
-        loop {}
-    }
-    #[test]
-    fn compare_out_of_bounds_nonconserved_fails() {
-        loop {}
-    }
-    #[test]
-    fn set_cube_mutate_equivalent_to_merge() {
-        loop {}
-    }
-    #[test]
-    fn merge_allows_independent() {
-        loop {}
-    }
-    #[test]
-    fn merge_rejects_same_new_conserved() {
-        loop {}
-    }
-    #[test]
-    fn merge_allows_same_new_nonconserved() {
-        loop {}
-    }
-    #[test]
-    fn merge_rejects_different_new() {
-        loop {}
-    }
-    #[test]
-    fn merge_rejects_different_old() {
-        loop {}
-    }
-    #[test]
-    fn merge_allows_same_old() {
-        loop {}
-    }
-    #[test]
-    fn activate() {
-        loop {}
-    }
-    #[test]
-    fn systematic() {
-        loop {}
-    }
-    #[test]
-    fn bounds_empty() {
-        loop {}
-    }
-    #[test]
-    fn bounds_single_cube() {
-        loop {}
-    }
-    #[test]
-    fn bounds_multi_cube() {
-        loop {}
-    }
-    #[test]
-    fn bounds_behavior() {
-        loop {}
-    }
-}

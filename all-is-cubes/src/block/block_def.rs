@@ -49,16 +49,6 @@ impl VisitRefs for BlockDef {
         loop {}
     }
 }
-impl VisitRefs for Block {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
-}
-impl VisitRefs for Primitive {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
-}
 impl transaction::Transactional for BlockDef {
     type Transaction = BlockDefTransaction;
 }

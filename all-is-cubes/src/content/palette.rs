@@ -76,7 +76,6 @@ palette! {
     BUTTON_LABEL = srgb[0x3d 0x3d 0x3d 0xFF]; BUTTON_ACTIVATED_BACK = srgb[0xE1 0xE1 0xE1
     0xFF]; BUTTON_ACTIVATED_LABEL = srgb[0x63 0x63 0x63 0xFF];
 }
-pub const BUTTON_ACTIVATED_GLOW: Rgb = rgb_const!(2.0, 0.4, 0.4);
 palette! {
     DEBUG_BEHAVIOR_BOUNDS = srgb[0x00 0x70 0x00 0xFF]; DEBUG_COLLISION_BOX = srgb[0x00
     0x00 0xFF 0xFF]; DEBUG_COLLISION_CUBES = srgb[0xFF 0x00 0x00 0xFF]; DEBUG_CHUNK_MAJOR
@@ -85,14 +84,4 @@ palette! {
 palette! {
     UNIFORM_LUMINANCE_RED = srgb[0x9E 0x00 0x00]; UNIFORM_LUMINANCE_GREEN = srgb[0x00
     0x59 0x00]; UNIFORM_LUMINANCE_BLUE = srgb[0x00 0x00 0xFF];
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::math::Rgba;
-    use exhaust::Exhaust as _;
-    #[test]
-    fn uniform_luminance_check() {
-        loop {}
-    }
 }

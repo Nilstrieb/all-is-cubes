@@ -2,13 +2,12 @@
 use std::borrow::Cow;
 use std::sync::Arc;
 use std::{fmt, hash};
-use crate::block::{Block};
+use crate::block::Block;
 use crate::character::{Character, Cursor};
 use crate::fluff::Fluff;
 use crate::inv::{self, Icons, StackLimit};
 use crate::linking::BlockProvider;
-use crate::math::{GridPoint};
-
+use crate::math::GridPoint;
 use crate::transaction::{Merge, Transaction};
 use crate::universe::{RefError, RefVisitor, URef, UniverseTransaction, VisitRefs};
 /// A `Tool` is an object which a character can use to have some effect in the game,
@@ -246,120 +245,6 @@ impl<'a, T: arbitrary::Arbitrary<'a>> arbitrary::Arbitrary<'a> for EphemeralOpaq
         loop {}
     }
     fn size_hint(depth: usize) -> (usize, Option<usize>) {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::Primitive;
-    use crate::character::cursor_raycast;
-    use crate::content::{make_some_blocks, make_some_voxel_blocks};
-    use crate::inv::Slot;
-    use crate::math::{FreeCoordinate, GridRotation};
-    use crate::raycast::Ray;
-    use crate::raytracer::print_space;
-    use crate::space::Space;
-    use crate::transaction;
-    use crate::universe::{UBorrow, URef, Universe};
-    use crate::util::YieldProgress;
-    use pretty_assertions::assert_eq;
-    use std::error::Error;
-    #[derive(Debug)]
-    struct ToolTester {
-        universe: Universe,
-        character_ref: URef<Character>,
-        space_ref: URef<Space>,
-    }
-    impl ToolTester {
-        /// The provided function should modify the space to contain the blocks to operate on,
-        /// given a cursor ray along the line of cubes from the origin in the +X direction.
-        fn new<F: FnOnce(&mut Space)>(f: F) -> Self {
-            loop {}
-        }
-        fn input(&self) -> ToolInput {
-            loop {}
-        }
-        fn equip_and_use_tool(
-            &self,
-            stack: impl Into<Slot>,
-        ) -> Result<UniverseTransaction, ToolError> {
-            loop {}
-        }
-        /// As `equip_and_use_tool`, but also commit the transaction.
-        /// TODO: Needs a better error return type (requires Transaction to do so).
-        fn equip_use_commit(
-            &mut self,
-            stack: impl Into<Slot>,
-        ) -> Result<(), Box<dyn Error + Send + Sync>> {
-            loop {}
-        }
-        fn space(&self) -> UBorrow<Space> {
-            loop {}
-        }
-        fn space_ref(&self) -> &URef<Space> {
-            loop {}
-        }
-        fn character(&self) -> UBorrow<Character> {
-            loop {}
-        }
-    }
-    async fn dummy_icons() -> BlockProvider<Icons> {
-        loop {}
-    }
-    #[tokio::test]
-    async fn icon_activate() {
-        loop {}
-    }
-    #[test]
-    fn use_activate() {
-        loop {}
-    }
-    #[tokio::test]
-    async fn icon_remove_block() {
-        loop {}
-    }
-    #[test]
-    fn use_remove_block() {
-        loop {}
-    }
-    #[test]
-    fn use_remove_block_without_target() {
-        loop {}
-    }
-    #[tokio::test]
-    async fn icon_place_block() {
-        loop {}
-    }
-    #[test]
-    fn use_block() {
-        loop {}
-    }
-    /// TODO: Expand this test to exhaustively test all rotation placement rules?
-    #[test]
-    fn use_block_automatic_rotation() {
-        loop {}
-    }
-    /// Note: This is more of a test of [`Inventory`] and [`Slot`] stack management
-    /// than the tool.
-    #[test]
-    fn use_block_stack_decrements() {
-        loop {}
-    }
-    #[test]
-    fn use_block_with_obstacle() {
-        loop {}
-    }
-    #[test]
-    fn use_block_without_target() {
-        loop {}
-    }
-    #[test]
-    fn use_copy_from_space() {
-        loop {}
-    }
-    #[test]
-    fn use_external_action() {
         loop {}
     }
 }

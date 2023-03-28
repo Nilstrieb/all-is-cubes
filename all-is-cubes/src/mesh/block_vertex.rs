@@ -25,13 +25,6 @@ pub struct BlockVertex<T> {
     /// Surface color or texture coordinate.
     pub coloring: Coloring<T>,
 }
-impl<T: Clone> BlockVertex<T> {
-    /// Remove the clamp information for the sake of tidier tests of one thing at a time.
-    #[cfg(test)]
-    pub(crate) fn remove_clamps(mut self) -> Self {
-        loop {}
-    }
-}
 /// Describes the two ways a [`BlockVertex`] may be colored; by a solid color or by a texture.
 ///
 /// `T` is the type of texture-coordinate points being used. That is, one `T` value
@@ -53,22 +46,6 @@ pub enum Coloring<T> {
         /// Used to avoid texture bleed.
         clamp_max: T,
     },
-}
-impl<T> fmt::Debug for BlockVertex<T>
-where
-    Coloring<T>: fmt::Debug,
-{
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl<T> fmt::Debug for Coloring<T>
-where
-    T: CustomFormat<ConciseDebug>,
-{
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
 }
 /// A custom representation of [`BlockVertex`] suitable for a specific graphics system.
 ///
@@ -114,22 +91,4 @@ pub trait GfxVertex: From<BlockVertex<Self::TexPoint>> + Copy + Sized {
     ///
     /// Note: This is used to perform depth sorting for transparent vertices.
     fn position(&self) -> Point3<Self::Coordinate>;
-}
-/// Trivial implementation of [`GfxVertex`] for testing purposes. Discards lighting.
-impl<T: Copy> GfxVertex for BlockVertex<T> {
-    const WANTS_DEPTH_SORTING: bool = true;
-    type Coordinate = FreeCoordinate;
-    type TexPoint = T;
-    type BlockInst = Vector3<FreeCoordinate>;
-    fn position(&self) -> Point3<FreeCoordinate> {
-        loop {}
-    }
-    #[inline]
-    fn instantiate_block(cube: GridPoint) -> Self::BlockInst {
-        loop {}
-    }
-    #[inline]
-    fn instantiate_vertex(&mut self, offset: Self::BlockInst) {
-        loop {}
-    }
 }

@@ -1,6 +1,5 @@
 //! Integer-coordinate matrices.
 //! This module is private but reexported by its parent.
-
 use std::ops::Mul;
 use cgmath::{
     EuclideanSpace as _, InnerSpace, Matrix4, One, Transform, Vector3, Vector4, Zero as _,
@@ -214,35 +213,6 @@ impl Transform<GridPoint> for GridMatrix {
         loop {}
     }
     fn inverse_transform(&self) -> Option<Self> {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use rand::{Rng, SeedableRng as _};
-    use rand_xoshiro::Xoshiro256Plus;
-    fn random_grid_matrix(mut rng: impl Rng) -> GridMatrix {
-        loop {}
-    }
-    fn random_possibly_invertible_matrix(mut rng: impl Rng) -> GridMatrix {
-        loop {}
-    }
-    #[test]
-    #[rustfmt::skip]
-    fn equivalent_constructor() {
-        loop {}
-    }
-    #[test]
-    fn equivalent_transform() {
-        loop {}
-    }
-    #[test]
-    fn equivalent_concat() {
-        loop {}
-    }
-    #[test]
-    fn equivalent_inverse() {
         loop {}
     }
 }

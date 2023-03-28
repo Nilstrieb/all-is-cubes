@@ -579,25 +579,3 @@ impl Geometry for CubeFace {
         loop {}
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use cgmath::SquareMatrix as _;
-    #[test]
-    fn face_matrix_does_not_scale_or_reflect() {
-        loop {}
-    }
-    /// Test the ordering of all [`FaceMap`] methods that explicitly produce an ordered result.
-    #[test]
-    fn face_map_iter_in_enum_order() {
-        loop {}
-    }
-    #[test]
-    fn face_map_rotate() {
-        loop {}
-    }
-    #[test]
-    fn cubeface_format() {
-        loop {}
-    }
-}

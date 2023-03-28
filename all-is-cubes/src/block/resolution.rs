@@ -85,47 +85,6 @@ impl_try_from!(u32);
 impl_try_from!(u64);
 impl_try_from!(u128);
 impl_try_from!(usize);
-impl From<Resolution> for i32 {
-    /// ```
-    /// use all_is_cubes::block::Resolution;
-    ///
-    /// assert_eq!(64, i32::from(Resolution::R64));
-    /// ```
-    #[inline]
-    fn from(r: Resolution) -> i32 {
-        loop {}
-    }
-}
-impl From<Resolution> for u16 {
-    #[inline]
-    fn from(r: Resolution) -> u16 {
-        loop {}
-    }
-}
-impl From<Resolution> for u32 {
-    #[inline]
-    fn from(r: Resolution) -> u32 {
-        loop {}
-    }
-}
-impl From<Resolution> for usize {
-    #[inline]
-    fn from(r: Resolution) -> usize {
-        loop {}
-    }
-}
-impl From<Resolution> for f32 {
-    #[inline]
-    fn from(r: Resolution) -> f32 {
-        loop {}
-    }
-}
-impl From<Resolution> for f64 {
-    #[inline]
-    fn from(r: Resolution) -> f64 {
-        loop {}
-    }
-}
 impl ops::Mul<Resolution> for Resolution {
     type Output = Option<Resolution>;
     fn mul(self, rhs: Resolution) -> Self::Output {
@@ -154,42 +113,3 @@ impl<'de> serde::Deserialize<'de> for Resolution {
 /// when the number is not a permitted resolution value.
 #[derive(Debug, Clone, Copy, Eq, Hash, PartialEq, thiserror::Error)]
 pub struct IntoResolutionError<N>(N);
-impl<N: fmt::Display> fmt::Display for IntoResolutionError<N> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use Resolution::*;
-    const RS: [Resolution; 8] = [R1, R2, R4, R8, R16, R32, R64, R128];
-    #[test]
-    fn resolution_steps() {
-        loop {}
-    }
-    #[test]
-    fn resolution_values() {
-        loop {}
-    }
-    #[test]
-    fn mul() {
-        loop {}
-    }
-    #[test]
-    fn div() {
-        loop {}
-    }
-    #[test]
-    fn ser_ok() {
-        loop {}
-    }
-    #[test]
-    fn de_ok() {
-        loop {}
-    }
-    #[test]
-    fn de_err() {
-        loop {}
-    }
-}

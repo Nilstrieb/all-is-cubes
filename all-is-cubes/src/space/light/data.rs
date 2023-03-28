@@ -1,5 +1,4 @@
 //! Data structures for light storage and algorithms.
-
 use std::collections::BTreeSet;
 use std::fmt;
 use cgmath::{Vector3, Vector4};
@@ -171,48 +170,6 @@ impl LightUpdateQueue {
         loop {}
     }
     pub fn clear(&mut self) {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::iter::once;
-    fn packed_light_test_values() -> impl Iterator<Item = PackedLight> {
-        loop {}
-    }
-    /// Test that unpacking and packing doesn't shift the value, which could lead
-    /// to runaway light values.
-    #[test]
-    fn packed_light_roundtrip() {
-        loop {}
-    }
-    /// Safety test: we want to skip the NaN checks for constructing `Rgb`
-    /// from `PackedLight`, so it had better not be NaN for any possible input.
-    #[test]
-    fn packed_light_always_finite() {
-        loop {}
-    }
-    /// Test out-of-range floats.
-    #[test]
-    fn packed_light_clipping_in() {
-        loop {}
-    }
-    #[test]
-    fn packed_light_is_packed() {
-        loop {}
-    }
-    /// Demonstrate what range and step sizes we get out of the encoding.
-    #[test]
-    fn packed_light_extreme_values_out() {
-        loop {}
-    }
-    #[test]
-    fn packed_light_difference_vs_eq() {
-        loop {}
-    }
-    #[test]
-    fn queue_ordering() {
         loop {}
     }
 }

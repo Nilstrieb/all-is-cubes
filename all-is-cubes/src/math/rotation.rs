@@ -363,37 +363,3 @@ impl Mul<Self> for GridRotation {
         loop {}
     }
 }
-#[cfg(test)]
-mod tests {
-    use std::collections::HashSet;
-    use super::*;
-    use Face6::*;
-    #[test]
-    fn identity() {
-        loop {}
-    }
-    #[test]
-    fn ccw_cw() {
-        loop {}
-    }
-    #[test]
-    fn is_reflection_consistency() {
-        loop {}
-    }
-    /// Test that `GridRotation::ALL` is complete.
-    /// TODO: Also test numbering/ordering properties when that is stable.
-    #[test]
-    fn enumeration() {
-        loop {}
-    }
-    /// Test that `GridRotation::ALL_BUT_REFLECTIONS` is complete.
-    #[test]
-    fn all_but_reflections() {
-        loop {}
-    }
-    /// The set of possible inputs is small enough to test its properties exhaustively
-    #[test]
-    fn from_to_exhaustive() {
-        loop {}
-    }
-}

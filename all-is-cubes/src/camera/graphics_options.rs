@@ -241,20 +241,3 @@ impl AntialiasingOption {
         loop {}
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn default_is_clean() {
-        loop {}
-    }
-    #[test]
-    fn unaltered_colors_is_clean() {
-        loop {}
-    }
-    #[test]
-    fn unaltered_colors_differs_from_default_only_as_necessary() {
-        loop {}
-    }
-}

@@ -1,26 +1,12 @@
 use cgmath::{EuclideanSpace as _, InnerSpace as _, Point3, Vector3, Zero};
 use ordered_float::NotNan;
 use std::fmt;
-use super::collision::{
-    Contact,
-};
-
+use super::collision::Contact;
 use crate::math::{Aab, FreeCoordinate, Geometry as _};
-
-
 use crate::space::Space;
 use crate::time::Tick;
 use crate::transaction::{self, Transaction};
 use crate::util::{ConciseDebug, CustomFormat, StatusText};
-/// Velocities shorter than this are treated as zero, to allow things to come to unchanging rest sooner.
-const VELOCITY_EPSILON_SQUARED: FreeCoordinate = 1e-6 * 1e-6;
-/// Velocities larger than this (in cubes per second) are clamped.
-///
-/// This provides an upper limit on the collision detection computation,
-/// per body per frame.
-pub(crate) const VELOCITY_MAGNITUDE_LIMIT: FreeCoordinate = 1e4_f64;
-pub(crate) const VELOCITY_MAGNITUDE_LIMIT_SQUARED: FreeCoordinate = VELOCITY_MAGNITUDE_LIMIT
-    * VELOCITY_MAGNITUDE_LIMIT;
 /// An object with a position, velocity, and collision volume.
 /// What it collides with is determined externally.
 #[derive(Clone, PartialEq)]
@@ -222,23 +208,6 @@ impl transaction::Merge for BodyTransaction {
         loop {}
     }
     fn commit_merge(mut self, other: Self, (): Self::MergeCheck) -> Self {
-        loop {}
-    }
-}
-/// Note: Tests which involve both body and collision code are currently in the parent module.
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::transaction::TransactionTester;
-    fn test_body() -> Body {
-        loop {}
-    }
-    #[test]
-    fn look_at() {
-        loop {}
-    }
-    #[test]
-    fn body_transaction_systematic() {
         loop {}
     }
 }

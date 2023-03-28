@@ -1,9 +1,5 @@
-
-use crate::block::{
-    self, Block, MinEval, Modifier,
-};
-
-use crate::math::{Face6};
+use crate::block::{self, Block, MinEval, Modifier};
+use crate::math::Face6;
 use crate::universe;
 /// Data for [`Modifier::Move`]; displaces the block out of the grid, cropping it.
 /// A pair of `Move`s can depict a block moving between two cubes.
@@ -54,70 +50,8 @@ impl Move {
         loop {}
     }
 }
-impl From<Move> for block::Modifier {
-    fn from(value: Move) -> Self {
-        loop {}
-    }
-}
 impl universe::VisitRefs for Move {
     fn visit_refs(&self, _visitor: &mut dyn universe::RefVisitor) {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use cgmath::EuclideanSpace;
-    use crate::block::{Block, Composite, EvaluatedBlock, Evoxel, Resolution::*};
-    use crate::content::make_some_blocks;
-    use crate::math::{FaceMap, GridPoint, OpacityCategory, Rgba};
-    use crate::space::Space;
-    use crate::time::Tick;
-    use crate::universe::Universe;
-    use super::*;
-    #[test]
-    fn move_atom_block_evaluation() {
-        loop {}
-    }
-    #[test]
-    fn move_voxel_block_evaluation() {
-        loop {}
-    }
-    /// [`Modifier::Move`] incorporates [`Modifier::Quote`] to ensure that no conflicting
-    /// effects happen.
-    #[test]
-    fn move_also_quotes() {
-        loop {}
-    }
-    /// Set up a `Modifier::Move`, let it run, and then allow assertions to be made about the result.
-    fn move_block_test(
-        direction: Face6,
-        velocity: i16,
-        checker: impl FnOnce(&Space, &Block),
-    ) {
-        loop {}
-    }
-    #[test]
-    fn velocity_zero() {
-        loop {}
-    }
-    #[test]
-    fn velocity_slow() {
-        loop {}
-    }
-    #[test]
-    fn velocity_whole_cube_in_one_tick() {
-        loop {}
-    }
-    /// Test [`Move`] acting within another modifier ([`Composite`]).
-    #[test]
-    fn move_inside_composite_destination() {
-        loop {}
-    }
-    /// Test [`Move`] acting within the `source` position of a [`Modifier::Composite`].
-    ///
-    /// TODO: This is not yet implemented, but should be.
-    #[test]
-    fn move_inside_composite_source() {
         loop {}
     }
 }

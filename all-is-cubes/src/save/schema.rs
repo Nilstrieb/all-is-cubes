@@ -23,15 +23,6 @@ use crate::{block, space, universe};
 pub(crate) struct SerializeRef<T>(pub(crate) URef<T>);
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
-pub(crate) enum BlockSer {
-    BlockV1 {
-        primitive: PrimitiveSer,
-        #[serde(default, skip_serializing_if = "Vec::is_empty")]
-        modifiers: Vec<ModifierSer>,
-    },
-}
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(tag = "type")]
 pub(crate) enum PrimitiveSer {
     AirV1,
     AtomV1 { color: RgbaSer, #[serde(flatten)] attributes: BlockAttributesV1Ser },
@@ -77,41 +68,8 @@ pub(crate) enum ModifierSer {
     ZoomV1 { scale: block::Resolution, offset: [u8; 3] },
     MoveV1 { direction: Face6, distance: u16, velocity: i16 },
 }
-#[derive(Debug, Deserialize, Serialize)]
-pub(crate) struct GridAabSer {
-    pub(crate) lower: [GridCoordinate; 3],
-    pub(crate) upper: [GridCoordinate; 3],
-}
 type RgbSer = [ordered_float::NotNan<f32>; 3];
 type RgbaSer = [ordered_float::NotNan<f32>; 4];
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(tag = "type")]
-pub(crate) enum SpaceSer {
-    SpaceV1 {
-        bounds: GridAab,
-        blocks: Vec<block::Block>,
-        contents: Box<[space::BlockIndex]>,
-    },
-}
-/// Schema for `Universe` serialization and deserialization.
-/// The type parameters allow for the different data types wanted in the serialization
-/// case vs. the deserialization case.
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(tag = "type")]
-pub(crate) enum UniverseSchema<S> {
-    UniverseV1 {
-        /// Note: We are currently targeting JSON output, which cannot use non-string keys.
-        /// Therefore, this is not expressed as a map.
-        members: Vec<MemberEntrySer<MemberSchema<S>>>,
-    },
-}
-pub(crate) type UniverseSer = UniverseSchema<SerializeRef<space::Space>>;
-pub(crate) type UniverseDe = UniverseSchema<space::Space>;
-#[derive(Debug, Deserialize, Serialize)]
-pub(crate) struct MemberEntrySer<T> {
-    pub name: universe::Name,
-    pub value: T,
-}
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub(crate) enum MemberSchema<S> {
@@ -119,14 +77,3 @@ pub(crate) enum MemberSchema<S> {
     Space(S),
 }
 pub(crate) type MemberSer = MemberSchema<SerializeRef<space::Space>>;
-pub(crate) type MemberDe = MemberSchema<space::Space>;
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(tag = "type")]
-pub(crate) enum URefSer {
-    URefV1 { #[serde(flatten)] name: universe::Name },
-}
-#[derive(Debug, Eq, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
-pub(crate) enum NameSer {
-    Specific(Arc<str>),
-    Anonym(usize),
-}

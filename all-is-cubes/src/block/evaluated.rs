@@ -1,8 +1,7 @@
 //! [`EvaluatedBlock`] and [`Evoxel`].
 use std::fmt;
-use cgmath::{Zero as _};
+use cgmath::Zero as _;
 use crate::block::{self, BlockAttributes, Resolution};
-
 use crate::math::{FaceMap, GridAab, GridArray, GridPoint, OpacityCategory, Rgb, Rgba};
 use crate::universe::RefError;
 #[cfg(doc)]
@@ -237,10 +236,6 @@ pub const AIR_EVALUATED: EvaluatedBlock = EvaluatedBlock {
     visible: false,
     voxel_opacity_mask: None,
 };
-pub(super) const AIR_EVALUATED_MIN: MinEval = MinEval {
-    attributes: AIR_ATTRIBUTES,
-    voxels: Evoxels::One(AIR_INNER_EVOXEL),
-};
 /// Note that this voxel is *not* no-collision and unselectable; the block attributes
 /// override it. For now, all atom blocks work this way. TODO: Perhaps we should change that.
 const AIR_INNER_EVOXEL: Evoxel = Evoxel::from_color(Rgba::TRANSPARENT);
@@ -273,24 +268,6 @@ impl From<MinEval> for EvaluatedBlock {
 }
 impl MinEval {
     pub fn resolution(&self) -> Resolution {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::{AnimationHint, Block, Resolution, Resolution::R2, AIR};
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn visible_or_animated() {
-        loop {}
-    }
-    #[test]
-    fn from_voxels_zero_bounds() {
-        loop {}
-    }
-    #[test]
-    fn solid_block_equivalent_at_any_resolution() {
         loop {}
     }
 }

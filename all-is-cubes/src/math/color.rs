@@ -16,15 +16,6 @@ macro_rules! rgb_const {
         ::notnan!($b),)
     };
 }
-/// Allows writing a constant [`Rgba`] color value, provided that its components are float
-/// literals.
-#[macro_export]
-macro_rules! rgba_const {
-    ($r:literal, $g:literal, $b:literal, $a:literal) => {
-        $crate ::math::Rgba::new_nn($crate ::notnan!($r), $crate ::notnan!($g), $crate
-        ::notnan!($b), $crate ::notnan!($a),)
-    };
-}
 /// A floating-point RGB color value.
 ///
 /// * Each component may be considered to have a nominal range of 0 to 1, but larger
@@ -292,42 +283,6 @@ impl From<[NotNan<f32>; 3]> for Rgb {
 impl From<[NotNan<f32>; 4]> for Rgba {
     #[inline]
     fn from(value: [NotNan<f32>; 4]) -> Self {
-        loop {}
-    }
-}
-impl From<Rgb> for Vector3<f32> {
-    #[inline]
-    fn from(value: Rgb) -> Self {
-        loop {}
-    }
-}
-impl From<Rgba> for Vector4<f32> {
-    #[inline]
-    fn from(value: Rgba) -> Self {
-        loop {}
-    }
-}
-impl From<Rgb> for [NotNan<f32>; 3] {
-    #[inline]
-    fn from(value: Rgb) -> Self {
-        loop {}
-    }
-}
-impl From<Rgba> for [NotNan<f32>; 4] {
-    #[inline]
-    fn from(value: Rgba) -> Self {
-        loop {}
-    }
-}
-impl From<Rgb> for [f32; 3] {
-    #[inline]
-    fn from(value: Rgb) -> Self {
-        loop {}
-    }
-}
-impl From<Rgba> for [f32; 4] {
-    #[inline]
-    fn from(value: Rgba) -> Self {
         loop {}
     }
 }
@@ -1021,33 +976,3 @@ const CONST_LINEAR_LOOKUP_TABLE: [f32; 256] = [
     0.99607843,
     1.0,
 ];
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use itertools::Itertools;
-    #[test]
-    fn rgba_to_srgb8() {
-        loop {}
-    }
-    #[test]
-    fn rgb_rgba_debug() {
-        loop {}
-    }
-    /// Test that [`Rgba::from_srgb8`] agrees with [`Rgba::to_srgb8`].
-    #[test]
-    fn srgb_round_trip() {
-        loop {}
-    }
-    #[test]
-    fn srgb_float() {
-        loop {}
-    }
-    #[test]
-    fn check_const_srgb_table() {
-        loop {}
-    }
-    #[test]
-    fn check_const_linear_table() {
-        loop {}
-    }
-}

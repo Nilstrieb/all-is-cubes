@@ -4,7 +4,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex, Weak};
 use cgmath::Vector3;
-use instant::{Duration};
+use instant::Duration;
 use crate::behavior::{self, BehaviorSet};
 use crate::block::{
     Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR, AIR_EVALUATED,
@@ -17,13 +17,13 @@ use crate::drawing::DrawingPlane;
 use crate::inv::EphemeralOpaque;
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{
-    FreeCoordinate, GridAab, GridArray, GridCoordinate,
-    GridMatrix, GridPoint, GridRotation, NotNan, Rgb,
+    FreeCoordinate, GridAab, GridArray, GridCoordinate, GridMatrix, GridPoint,
+    GridRotation, NotNan, Rgb,
 };
 use crate::time::Tick;
 use crate::transaction::{Merge, Transaction as _};
 use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
-use crate::util::{TimeStats};
+use crate::util::TimeStats;
 use crate::util::{CustomFormat, StatusText};
 mod builder;
 pub use builder::{SpaceBuilder, SpaceBuilderBounds};
@@ -34,8 +34,6 @@ use light::{LightUpdateQueue, PackedLightScalar};
 pub use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;
 pub use space_txn::*;
-#[cfg(test)]
-mod tests;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
 pub struct Space {
@@ -636,34 +634,4 @@ impl Listener<BlockChange> for SpaceBlockChangeListener {
     fn alive(&self) -> bool {
         loop {}
     }
-}
-/// A region of a [`Space`] that does something if [`Tool::Activate`] is used on it.
-///
-/// TODO: This is a placeholder for a better design; it's too specific (external side
-/// effect) and yet also not general enough (we would like buttons to have detailed
-/// reactions to clicking) considering that it's hardcoded in Space.
-///
-/// [`Tool::Activate`]: crate::inv::Tool::Activate
-#[derive(Clone, Debug, Eq, PartialEq)]
-#[allow(clippy::exhaustive_structs)]
-pub struct ActivatableRegion {
-    /// The function to call when this region is activated.
-    pub effect: EphemeralOpaque<dyn Fn() + Send + Sync>,
-}
-impl ActivatableRegion {
-    /// Activate this region, calling the embedded function.
-    pub fn activate(&self) {
-        loop {}
-    }
-}
-impl behavior::Behavior<Space> for ActivatableRegion {
-    fn alive(&self, _: &behavior::BehaviorContext<'_, Space>) -> bool {
-        loop {}
-    }
-    fn ephemeral(&self) -> bool {
-        loop {}
-    }
-}
-impl VisitRefs for ActivatableRegion {
-    fn visit_refs(&self, _: &mut dyn RefVisitor) {}
 }

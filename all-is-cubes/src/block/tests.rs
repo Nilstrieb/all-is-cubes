@@ -132,33 +132,3 @@ fn overflow_listen() {
 fn self_referential_block(universe: &mut Universe) -> Block {
     loop {}
 }
-mod txn {
-    use super::*;
-    use crate::block::BlockDefTransaction;
-    use crate::transaction::{Merge, TransactionTester};
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn causes_notification() {
-        loop {}
-    }
-    #[test]
-    fn merge_allows_same_new() {
-        loop {}
-    }
-    #[test]
-    fn merge_rejects_different_new() {
-        loop {}
-    }
-    #[test]
-    fn merge_rejects_different_old() {
-        loop {}
-    }
-    #[test]
-    fn merge_allows_same_old() {
-        loop {}
-    }
-    #[test]
-    fn systematic() {
-        loop {}
-    }
-}

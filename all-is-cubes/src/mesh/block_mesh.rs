@@ -1,17 +1,12 @@
 //! Algorithm for converting individual blocks to triangle meshes.
 //!
 //! This module is internal and reexported by its parent.
-use cgmath::{Transform as _};
+use cgmath::Transform as _;
 use std::fmt::Debug;
-use crate::block::{EvaluatedBlock};
+use crate::block::EvaluatedBlock;
 use crate::camera::Flaws;
-use crate::math::{
-    Face7, FaceMap, GridArray,
-    OpacityCategory,
-};
-use crate::mesh::{
-    BlockVertex, MeshOptions, TextureAllocator, TextureTile,
-};
+use crate::math::{Face7, FaceMap, GridArray, OpacityCategory};
+use crate::mesh::{BlockVertex, MeshOptions, TextureAllocator, TextureTile};
 use crate::space::Space;
 /// Part of the triangle mesh calculated for a [`Block`], stored in a [`BlockMesh`] keyed
 /// by [`Face7`].
@@ -38,19 +33,6 @@ pub(super) struct BlockFaceMesh<V> {
     /// Whether the graphic entirely fills its cube face, such that nothing can be seen
     /// through it and faces of adjacent blocks may be removed.
     pub(super) fully_opaque: bool,
-}
-impl<V> BlockFaceMesh<V> {
-    fn clear(&mut self) {
-        loop {}
-    }
-    pub fn is_empty(&self) -> bool {
-        loop {}
-    }
-}
-impl<V> Default for BlockFaceMesh<V> {
-    fn default() -> Self {
-        loop {}
-    }
 }
 /// A triangle mesh for a single [`Block`].
 ///

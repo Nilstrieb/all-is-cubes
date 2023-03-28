@@ -1,9 +1,5 @@
-
-
-use crate::block::{
-    self, Block, Evoxel, MinEval, Modifier,
-};
-use crate::math::{Rgba};
+use crate::block::{self, Block, Evoxel, MinEval, Modifier};
+use crate::math::Rgba;
 use crate::universe;
 /// Data for [`Modifier::Composite`], describing how to combine the voxels of another
 /// block with the original one.
@@ -83,11 +79,6 @@ impl Composite {
         loop {}
     }
 }
-impl From<Composite> for Modifier {
-    fn from(value: Composite) -> Self {
-        loop {}
-    }
-}
 impl universe::VisitRefs for Composite {
     fn visit_refs(&self, visitor: &mut dyn universe::RefVisitor) {
         loop {}
@@ -110,32 +101,6 @@ impl CompositeOperator {
         loop {}
     }
     fn blend_evoxel(&self, src_ev: Evoxel, dst_ev: Evoxel) -> Evoxel {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::content::make_some_blocks;
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn composite_silly_floats() {
-        loop {}
-    }
-    #[test]
-    fn compose_or_replace_source_is_air() {
-        loop {}
-    }
-    #[test]
-    fn compose_or_replace_destination_is_air() {
-        loop {}
-    }
-    #[test]
-    fn unspecialize_no() {
-        loop {}
-    }
-    #[test]
-    fn unspecialize_yes() {
         loop {}
     }
 }

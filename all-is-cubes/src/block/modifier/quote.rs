@@ -16,24 +16,8 @@ impl Quote {
         loop {}
     }
 }
-impl From<Quote> for block::Modifier {
-    fn from(value: Quote) -> Self {
-        loop {}
-    }
-}
 impl universe::VisitRefs for Quote {
     fn visit_refs(&self, _visitor: &mut dyn universe::RefVisitor) {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::{Block, Modifier};
-    use crate::math::{Rgb, Rgba};
-    use pretty_assertions::assert_eq;
-    #[test]
-    fn quote_evaluation() {
         loop {}
     }
 }

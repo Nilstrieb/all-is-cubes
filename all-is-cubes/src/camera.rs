@@ -17,8 +17,6 @@ mod renderer;
 pub use renderer::*;
 mod stdcam;
 pub use stdcam::*;
-#[cfg(test)]
-mod tests;
 type M = Matrix4<FreeCoordinate>;
 /// Representation of a camera viewpoint and orientation, using [`cgmath`] types.
 ///

@@ -29,18 +29,6 @@ pub trait Listen {
     /// are not deduplicated.
     fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L);
 }
-impl<T: Listen> Listen for &T {
-    type Msg = T::Msg;
-    fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L) {
-        loop {}
-    }
-}
-impl<T: Listen> Listen for Arc<T> {
-    type Msg = T::Msg;
-    fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L) {
-        loop {}
-    }
-}
 /// Mechanism for observing changes to objects. A [`Notifier`] delivers messages
 /// of type `M` to a set of listeners, each of which usually holds a weak reference
 /// to allow it to be removed when the actual recipient is gone or uninterested.
@@ -208,27 +196,3 @@ pub trait Listener<M> {
 }
 /// Type-erased form of a [`Listener`] which accepts messages of type `M`.
 pub type DynListener<M> = Arc<dyn Listener<M> + Send + Sync>;
-impl<M> Listener<M> for DynListener<M> {
-    fn receive(&self, message: M) {
-        loop {}
-    }
-    fn alive(&self) -> bool {
-        loop {}
-    }
-    fn erased(self) -> DynListener<M> {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn notifier_basics_and_debug() {
-        loop {}
-    }
-    #[test]
-    #[allow(clippy::vtable_address_comparisons)]
-    fn erased_listener() {
-        loop {}
-    }
-}

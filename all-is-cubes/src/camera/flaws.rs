@@ -41,11 +41,3 @@ impl fmt::Display for Flaws {
         loop {}
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn display() {
-        loop {}
-    }
-}

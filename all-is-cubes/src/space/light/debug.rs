@@ -8,20 +8,12 @@ use crate::math::{FreeCoordinate, Geometry, GridPoint};
 use crate::mesh::LineVertex;
 use crate::raycast::Ray;
 use crate::space::PackedLight;
-
 /// Trait used to encourage the generation of with-debug-info and without-info versions
 /// of the lighting algorithm.
 pub trait LightComputeOutput {
     type RayInfoBuffer: Default;
     fn new(cube: GridPoint, result: PackedLight, rays: Self::RayInfoBuffer) -> Self;
     fn push_ray(buffer: &mut Self::RayInfoBuffer, ray_info: LightUpdateRayInfo);
-}
-impl LightComputeOutput for () {
-    type RayInfoBuffer = ();
-    #[inline(always)]
-    fn new(_: GridPoint, _: PackedLight, _: Self::RayInfoBuffer) {}
-    #[inline(always)]
-    fn push_ray(_: &mut Self::RayInfoBuffer, _: LightUpdateRayInfo) {}
 }
 impl LightComputeOutput for LightUpdateCubeInfo {
     type RayInfoBuffer = Vec<LightUpdateRayInfo>;

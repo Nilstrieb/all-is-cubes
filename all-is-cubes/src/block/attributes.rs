@@ -211,17 +211,3 @@ impl AnimationChange {
         loop {}
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    /// [`BlockAttributes`] has an inherent `default()` function, which should be
-    /// equivalent to the [`Default`] trait function.
-    #[test]
-    fn default_equivalent() {
-        loop {}
-    }
-    #[test]
-    fn debug() {
-        loop {}
-    }
-}

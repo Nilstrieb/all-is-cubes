@@ -44,19 +44,3 @@ pub fn point_to_enclosing_cube(point: Point3<FreeCoordinate>) -> Option<GridPoin
 pub(crate) fn int_magnitude_squared(v: GridVector) -> GridCoordinate {
     loop {}
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn point_to_enclosing_cube_inf() {
-        loop {}
-    }
-    #[test]
-    fn point_to_enclosing_cube_nan() {
-        loop {}
-    }
-    #[test]
-    fn point_to_enclosing_cube_in_and_out_of_range() {
-        loop {}
-    }
-}

@@ -3,79 +3,14 @@
 //! TODO: stuff in this module is kind of duplicative of [`crate::drawing`]...
 use std::collections::HashMap;
 use std::hash::Hash;
-
 use std::ops::Deref;
 use embedded_graphics::image::ImageDrawable;
 use embedded_graphics::prelude::{DrawTarget, Size};
-use embedded_graphics::primitives::{Rectangle};
-
+use embedded_graphics::primitives::Rectangle;
 use image::{DynamicImage, GenericImageView};
-
-use crate::drawing::{VoxelBrush};
+use crate::drawing::VoxelBrush;
 use crate::math::{GridAab, GridRotation};
 use crate::space::{SetCubeError, Space};
-/// Adapter from [`image::GenericImageView`] to [`embedded_graphics::Drawable`].
-#[doc(hidden)]
-#[allow(missing_debug_implementations)]
-pub struct ImageAdapter<'b, I>
-where
-    I: Deref,
-    I::Target: GenericImageView,
-{
-    image_ref: I,
-    color_map: HashMap<<I::Target as GenericImageView>::Pixel, VoxelBrush<'b>>,
-    max_brush: GridAab,
-}
-impl<'b, I> ImageAdapter<'b, I>
-where
-    I: Deref,
-    I::Target: GenericImageView + Sized,
-    <I::Target as GenericImageView>::Pixel: Eq + Hash,
-{
-    pub fn adapt(
-        image_ref: I,
-        mut pixel_function: impl FnMut(
-            <I::Target as GenericImageView>::Pixel,
-        ) -> VoxelBrush<'b>,
-    ) -> Self {
-        loop {}
-    }
-}
-/// Note: This implementation is on references so it can return [`VoxelBrush`]es
-/// borrowing from itself.
-impl<'b, I> ImageDrawable for &'b ImageAdapter<'b, I>
-where
-    I: Deref,
-    I::Target: GenericImageView,
-    <I::Target as GenericImageView>::Pixel: Eq + Hash,
-{
-    type Color = &'b VoxelBrush<'b>;
-    fn draw<D>(&self, target: &mut D) -> Result<(), <D as DrawTarget>::Error>
-    where
-        D: DrawTarget<Color = Self::Color>,
-    {
-        loop {}
-    }
-    fn draw_sub_image<D>(
-        &self,
-        target: &mut D,
-        area: &Rectangle,
-    ) -> Result<(), <D as DrawTarget>::Error>
-    where
-        D: DrawTarget<Color = Self::Color>,
-    {
-        loop {}
-    }
-}
-impl<I> embedded_graphics::geometry::OriginDimensions for &'_ ImageAdapter<'_, I>
-where
-    I: Deref,
-    I::Target: GenericImageView,
-{
-    fn size(&self) -> Size {
-        loop {}
-    }
-}
 /// Take the pixels of the image and construct a [`Space`] from it.
 ///
 /// The `block_function` will be memoized.
@@ -113,40 +48,3 @@ pub fn load_png_from_bytes(name: &str, bytes: &'static [u8]) -> DynamicImage {
 pub use ::image::DynamicImage as DynamicImageForIncludeImage;
 #[doc(hidden)]
 pub use ::once_cell::sync::Lazy as LazyForIncludeImage;
-/// Load an image from a relative path, memoized.
-#[doc(hidden)]
-#[macro_export]
-macro_rules! include_image {
-    ($path:literal) => {
-        { static IMAGE : $crate ::content::load_image::LazyForIncludeImage < $crate
-        ::content::load_image::DynamicImageForIncludeImage, > = $crate
-        ::content::load_image::LazyForIncludeImage::new(|| { $crate
-        ::content::load_image::load_png_from_bytes($path, include_bytes!($path)) }); &*
-        IMAGE }
-    };
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::math::Rgb;
-    fn test_image() -> image::RgbaImage {
-        loop {}
-    }
-    #[test]
-    fn basic_image() {
-        loop {}
-    }
-    #[test]
-    fn basic_image_transformed() {
-        loop {}
-    }
-    #[test]
-    fn transparent_pixels_are_air() {
-        loop {}
-    }
-    #[test]
-    fn bounds_are_affected_by_brush() {
-        loop {}
-    }
-}

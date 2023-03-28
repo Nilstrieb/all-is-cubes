@@ -13,11 +13,9 @@
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
 use std::fmt;
-
-use std::sync::atomic::{AtomicU64};
+use std::sync::atomic::AtomicU64;
 use std::sync::Arc;
 use std::time::Duration;
-
 use crate::block::BlockDef;
 use crate::character::Character;
 use crate::space::{Space, SpaceStepInfo};
@@ -32,8 +30,6 @@ mod uref;
 pub use uref::*;
 mod visit;
 pub use visit::*;
-#[cfg(test)]
-mod tests;
 /// Name/key of an object in a [`Universe`].
 ///
 /// Internally uses [`Arc`] to be cheap to clone. Might be interned in future versions.
@@ -63,7 +59,6 @@ impl fmt::Display for Name {
 /// Used to check whether [`URef`]s belong to particular [`Universe`]s.
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 pub struct UniverseId(u64);
-static UNIVERSE_ID_COUNTER: AtomicU64 = AtomicU64::new(0);
 impl UniverseId {
     fn new() -> Self {
         loop {}
@@ -212,12 +207,6 @@ where
 /// Iterator type for [`UniverseIndex::iter_by_type`].
 #[derive(Clone, Debug)]
 pub struct UniverseIter<'u, T>(std::collections::btree_map::Iter<'u, Name, URootRef<T>>);
-impl<'u, T> Iterator for UniverseIter<'u, T> {
-    type Item = (Name, URef<T>);
-    fn next(&mut self) -> Option<Self::Item> {
-        loop {}
-    }
-}
 impl Default for Universe {
     fn default() -> Self {
         loop {}

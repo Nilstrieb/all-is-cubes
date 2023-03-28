@@ -1,4 +1,3 @@
-
 use std::fmt;
 use std::iter::FusedIterator;
 use cgmath::{EuclideanSpace as _, Point3, Vector3, Zero as _};
@@ -232,60 +231,6 @@ impl Geometry for Aab {
     where
         E: Extend<LineVertex>,
     {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn new_wrong_order() {
-        loop {}
-    }
-    #[test]
-    fn new_nan() {
-        loop {}
-    }
-    #[test]
-    #[should_panic = "invalid AAB points that are misordered or NaN: lower Point3 [0.0, 0.0, 0.0] upper Point3 [1.0, 1.0, NaN]"]
-    fn new_panic_message() {
-        loop {}
-    }
-    #[test]
-    /// Test `Debug` formatting. Note this should be similar to the [`GridAab`]
-    /// formatting.
-    fn debug() {
-        loop {}
-    }
-    #[test]
-    fn expand_nan() {
-        loop {}
-    }
-    #[test]
-    fn expand_negative_failure() {
-        loop {}
-    }
-    #[test]
-    #[should_panic]
-    fn expand_negative_success() {
-        loop {}
-    }
-    #[test]
-    fn expand_inf() {
-        loop {}
-    }
-    #[test]
-    fn wireframe_smoke_test() {
-        loop {}
-    }
-    #[test]
-    fn leading_corner_consistency() {
-        loop {}
-    }
-    /// This would be a doc test except `corner_points` is not public for now
-    /// (since it's oddball and not fully nailed down).
-    #[test]
-    fn corner_points() {
         loop {}
     }
 }

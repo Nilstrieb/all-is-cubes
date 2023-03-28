@@ -129,8 +129,6 @@
     doc = "[`arbitrary::Arbitrary`]: https://docs.rs/arbitrary/1.0.2/arbitrary/trait.Arbitrary.html"
 )]
 #![cfg_attr(not(feature = "threads"), doc = "[`rayon`]: https://docs.rs/rayon/")]
-// Basic lint settings, which should be identical across all all-is-cubes project crates.
-// This list is sorted.
 #![allow(clippy::collapsible_else_if)]
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::needless_update)]
@@ -153,46 +151,31 @@
 #![warn(trivial_numeric_casts)]
 #![warn(unused_extern_crates)]
 #![warn(unused_lifetimes)]
-// Lenience for tests.
-#![cfg_attr(test,
-    allow(clippy::float_cmp), // deterministic tests
-    allow(clippy::redundant_clone), // prefer regularity over efficiency
-)]
-// #![warn(unused_crate_dependencies)]  // noisy for dev-dependencies; enable sometimes for review
-
-// Crate-specific lint settings.
-// * This crate does not forbid(unsafe_code) for some compile-time unchecked constructors.
-//   No run-time unsafe is used.
+#![cfg_attr(test, allow(clippy::float_cmp), allow(clippy::redundant_clone))]
 #![warn(missing_docs)]
-
 #[macro_use]
 pub mod math;
-
 pub mod behavior;
 pub mod block;
 pub mod camera;
 pub mod character;
-#[doc(hidden)] // Exported only for test visualization by all_is_cubes_content
+#[doc(hidden)]
 pub mod chunking;
-#[doc(hidden)] // Exported only for use by all_is_cubes_content
+#[doc(hidden)]
 pub mod content;
 pub mod drawing;
 pub mod fluff;
-#[doc(hidden)] // Exported only for use by all_is_cubes_gpu
-pub mod intalloc;
 pub mod inv;
 pub mod linking;
 pub mod listen;
 pub mod mesh;
 pub mod physics;
 pub mod raycast;
-pub mod raytracer;
-mod save; // nothing exported; all impls and tests
+mod save;
 pub mod space;
 pub mod time;
 pub mod transaction;
 pub mod universe;
 pub mod util;
-
 /// Re-export the version of the `cgmath` crate we're using.
 pub use cgmath;

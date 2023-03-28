@@ -1,12 +1,10 @@
 //! Player-character stuff.
 use std::collections::HashSet;
 use std::fmt;
-
 use cgmath::{
     Angle as _, ElementWise as _, EuclideanSpace as _, Rotation3, Transform, Vector3,
 };
 use num_traits::identities::Zero;
-
 use crate::behavior::{Behavior, BehaviorSet, BehaviorSetTransaction};
 use crate::camera::ViewTransform;
 use crate::inv::{
@@ -16,7 +14,6 @@ use crate::inv::{
 use crate::listen::{Listen, Listener, Notifier};
 use crate::math::{FreeCoordinate, Rgb};
 use crate::physics::{Body, BodyStepInfo, BodyTransaction, Contact};
-
 use crate::space::Space;
 use crate::time::Tick;
 use crate::transaction::{
@@ -29,11 +26,6 @@ mod cursor;
 pub use cursor::*;
 mod spawn;
 pub use spawn::*;
-#[cfg(test)]
-mod tests;
-const WALKING_SPEED: FreeCoordinate = 4.0;
-const FLYING_SPEED: FreeCoordinate = 10.0;
-const JUMP_SPEED: FreeCoordinate = 8.0;
 /// A `Character`:
 ///
 /// * knows what [`Space`] it is looking at, by reference,

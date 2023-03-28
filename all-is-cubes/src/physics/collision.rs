@@ -1,18 +1,15 @@
 //! Algorithms for collision detection with [`Space`](crate::space::Space)s.
-
 use std::fmt;
-use cgmath::{Vector3};
-
+use cgmath::Vector3;
 use crate::block::Evoxels;
 use crate::block::{BlockCollision, EvaluatedBlock, Evoxel, Resolution};
 use crate::math::{
-    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridArray,
-    GridCoordinate, GridPoint,
+    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridArray, GridCoordinate,
+    GridPoint,
 };
 use crate::mesh::LineVertex;
 use crate::raycast::{Ray, Raycaster};
 use crate::space::Space;
-
 /// An individual collision contact; something in a [`Space`] that a moving [`Aab`]
 /// collided with.
 ///
@@ -166,62 +163,6 @@ pub(crate) trait CollisionSpace {
         stop_at: StopAt,
     ) -> Option<CollisionRayEnd>;
 }
-impl CollisionSpace for Space {
-    type Cell = EvaluatedBlock;
-    fn bounds(&self) -> GridAab {
-        loop {}
-    }
-    #[inline]
-    fn get_cell(&self, cube: GridPoint) -> &Self::Cell {
-        loop {}
-    }
-    #[inline]
-    fn collision(cell: &Self::Cell) -> BlockCollision {
-        loop {}
-    }
-    #[inline]
-    fn get_voxels(evaluated: &EvaluatedBlock) -> Option<&Evoxels> {
-        loop {}
-    }
-    #[inline]
-    fn recurse(
-        entry_end: CollisionRayEnd,
-        space_aab: Aab,
-        space_ray: Ray,
-        evaluated: &EvaluatedBlock,
-        stop_at: StopAt,
-    ) -> Option<CollisionRayEnd> {
-        loop {}
-    }
-}
-impl CollisionSpace for GridArray<Evoxel> {
-    type Cell = Evoxel;
-    fn bounds(&self) -> GridAab {
-        loop {}
-    }
-    #[inline]
-    fn get_cell(&self, cube: GridPoint) -> &Self::Cell {
-        loop {}
-    }
-    #[inline]
-    fn collision(cell: &Self::Cell) -> BlockCollision {
-        loop {}
-    }
-    #[inline]
-    fn get_voxels(_cell: &Self::Cell) -> Option<&Evoxels> {
-        loop {}
-    }
-    #[inline(always)]
-    fn recurse(
-        entry_end: CollisionRayEnd,
-        _aab: Aab,
-        _local_ray: Ray,
-        _cell: &Self::Cell,
-        _stop_at: StopAt,
-    ) -> Option<CollisionRayEnd> {
-        loop {}
-    }
-}
 /// Given a ray describing movement of the origin of an AAB, perform a raycast to find
 /// the positions where the AAB moves into new cubes. The returned ray steps' `t_distance`
 /// values report how far to move the AAB to meet the edge.
@@ -253,50 +194,4 @@ pub(crate) fn nudge_on_ray(
     backward: bool,
 ) -> Ray {
     loop {}
-}
-#[cfg(test)]
-mod tests {
-    use crate::block::Resolution::*;
-    use crate::block::{Block, AIR};
-    use crate::content::{make_slab, make_some_blocks};
-    use crate::math::{point_to_enclosing_cube, GridAab};
-    use crate::raytracer::print_space;
-    use crate::universe::Universe;
-    use super::*;
-    use rand::{Rng, SeedableRng as _};
-    #[test]
-    fn collide_along_ray_with_opaque_block() {
-        loop {}
-    }
-    #[test]
-    fn collide_along_ray_recursive_from_outside() {
-        loop {}
-    }
-    #[test]
-    fn collide_along_ray_recursive_from_inside() {
-        loop {}
-    }
-    /// Check that colliding against two recursive blocks correctly picks the taller one,
-    /// in either ordering.
-    #[test]
-    fn collide_along_ray_two_recursive() {
-        loop {}
-    }
-    fn collide_along_ray_tester(
-        initial_y: FreeCoordinate,
-        block_gen: fn(&mut Universe) -> [Block; 2],
-        expected_end: Option<CollisionRayEnd>,
-    ) {
-        loop {}
-    }
-    /// Test reporting of being already inside a block at the start of the ray,
-    /// particularly with a trailing AAB bigger than a block.
-    #[test]
-    fn already_colliding() {
-        loop {}
-    }
-    #[test]
-    fn nudge_random_test() {
-        loop {}
-    }
 }
