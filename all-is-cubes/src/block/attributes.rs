@@ -1,103 +1,58 @@
 //! [`BlockAttributes`] and closely related types.
-
 use std::borrow::Cow;
 use std::fmt;
-
 use crate::drawing::VoxelBrush;
 use crate::math::{Face6, Rgb};
-
 #[cfg(doc)]
 use crate::{
     block::{Block, BlockDef},
     space::Space,
 };
-
 /// Collection of miscellaneous attribute data for blocks that doesn't come in variants.
 ///
 /// `BlockAttributes::default()` will produce a reasonable set of defaults for “ordinary”
 /// blocks.
 #[derive(Clone, Eq, Hash, PartialEq)]
-#[allow(clippy::exhaustive_structs)] // TODO: Make this non_exhaustive but give users a way to construct it easily, possibly via BlockBuilder.
+#[allow(clippy::exhaustive_structs)]
 pub struct BlockAttributes {
     /// The name that should be displayed to players.
     ///
     /// The default value is the empty string. The empty string should be considered a
     /// reasonable choice for solid-color blocks with no special features.
     pub display_name: Cow<'static, str>,
-
     /// Whether players' [cursors](crate::character::Cursor) target it or pass through it.
     ///
     /// The default value is `true`.
     pub selectable: bool,
-
     /// The effect on a [`Body`](crate::physics::Body) of colliding with this block.
     ///
     /// The default value is [`BlockCollision::Hard`].
     pub collision: BlockCollision,
-
     /// Rule about how this block should be rotated, or not, when placed in a [`Space`] by
     /// some agent not otherwise specifying rotation.
     ///
     /// The default value is [`RotationPlacementRule::Never`].
     pub rotation_rule: RotationPlacementRule,
-
     /// Light emitted by the block.
     ///
     /// The default value is [`Rgb::ZERO`].
     pub light_emission: Rgb,
-
     /// Something this block does when time passes.
     ///
     /// Currently the only possibility is “turn into another block”.
     ///
     /// TODO: Very placeholder. This needs more possible effects and also time/probability options.
     pub tick_action: Option<VoxelBrush<'static>>,
-
     /// Advice to the renderer about how to expect this block to change, and hence
     /// what rendering strategy to use.
     pub animation_hint: AnimationHint,
-    //
-    // Reminder: When adding new fields, add them to the Debug implementation
-    // and BlockBuilder.
-    //
-    // TODO: add 'behavior' functionality, if we don't come up with something else
 }
-
 impl fmt::Debug for BlockAttributes {
     /// Only attributes which differ from the default are shown.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        if self == &Self::default() {
-            // Avoid the braceless formatting used for structs with literally no fields.
-            write!(f, "BlockAttributes {{}}")
-        } else {
-            let mut s = f.debug_struct("BlockAttributes");
-            if self.display_name != Self::default().display_name {
-                // Unwrap the `Cow` for tidier formatting.
-                s.field("display_name", &&*self.display_name);
-            }
-            if self.selectable != Self::default().selectable {
-                s.field("selectable", &self.selectable);
-            }
-            if self.collision != Self::default().collision {
-                s.field("collision", &self.collision);
-            }
-            if self.rotation_rule != Self::default().rotation_rule {
-                s.field("rotation_rule", &self.rotation_rule);
-            }
-            if self.light_emission != Self::default().light_emission {
-                s.field("light_emission", &self.light_emission);
-            }
-            if self.tick_action != Self::default().tick_action {
-                s.field("tick_action", &self.tick_action);
-            }
-            if self.animation_hint != Self::default().animation_hint {
-                s.field("animation_hint", &self.animation_hint);
-            }
-            s.finish()
-        }
+        loop {}
     }
 }
-
 impl BlockAttributes {
     /// Block attributes suitable as default values for in-game use.
     ///
@@ -115,42 +70,22 @@ impl BlockAttributes {
         }
     }
 }
-
 impl Default for BlockAttributes {
     /// Block attributes suitable as default values for in-game use.
     fn default() -> BlockAttributes {
-        // Delegate to the inherent impl `const fn`.
         BlockAttributes::default()
     }
 }
-
 #[cfg(feature = "arbitrary")]
 #[mutants::skip]
 impl<'a> arbitrary::Arbitrary<'a> for BlockAttributes {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
-        Ok(BlockAttributes {
-            display_name: Cow::Owned(u.arbitrary()?),
-            selectable: u.arbitrary()?,
-            collision: u.arbitrary()?,
-            rotation_rule: u.arbitrary()?,
-            light_emission: u.arbitrary()?,
-            tick_action: None, // TODO: need Arbitrary for Block
-            animation_hint: u.arbitrary()?,
-        })
+        loop {}
     }
-
     fn size_hint(depth: usize) -> (usize, Option<usize>) {
-        arbitrary::size_hint::and_all(&[
-            String::size_hint(depth),
-            bool::size_hint(depth),
-            BlockCollision::size_hint(depth),
-            RotationPlacementRule::size_hint(depth),
-            Rgb::size_hint(depth),
-            AnimationHint::size_hint(depth),
-        ])
+        loop {}
     }
 }
-
 /// Specifies the effect on a [`Body`](crate::physics::Body) of colliding with the
 /// [`Block`] this applies to.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -169,9 +104,7 @@ pub enum BlockCollision {
     ///
     /// If the block does not have voxels then this is equivalent to [`Hard`](Self::Hard).
     Recur,
-    // Future values might include bouncy solid, water-like resistance, force fields, etc.
 }
-
 /// Rule about how this block should be rotated, or not, when placed in a [`Space`] by
 /// some agent not otherwise specifying rotation.
 ///
@@ -191,10 +124,8 @@ pub enum RotationPlacementRule {
         /// If the block was somehow placed without such an adjacent block, it will not be
         /// rotated.
         by: Face6,
-        // TODO: control rotation about additional axis
     },
 }
-
 /// Specifies how a [`Block`] might change in the very near future, for the benefit
 /// of rendering algorithms. Does not currently describe non-visual aspects of a block.
 ///
@@ -210,15 +141,11 @@ pub struct AnimationHint {
     /// [`BlockDef`] or recursive [`Space`]) such that many instances of this block
     /// will become another simultaneously.
     pub redefinition: AnimationChange,
-
     /// If this block is likely to be replaced in a [`Space`] by another, this field
     /// specifies the replacement's relation to this.
     pub replacement: AnimationChange,
 }
-
 impl AnimationHint {
-    // TODO: get rid of these constants or replace them with a clearer new system
-
     /// There are no expectations that the block is soon going to change.
     ///
     /// This is the default value of this type and within [`BlockAttributes`].
@@ -226,7 +153,6 @@ impl AnimationHint {
         redefinition: AnimationChange::None,
         replacement: AnimationChange::None,
     };
-
     /// The block is not going to exist in its current form for long.
     ///
     /// This suggests using a rendering technique which is comparatively expensive
@@ -236,7 +162,6 @@ impl AnimationHint {
         redefinition: AnimationChange::None,
         replacement: AnimationChange::Shape,
     };
-
     /// The block's appearance is expected to change very frequently, but not by replacing
     /// the block in its [`Space`].
     ///
@@ -247,20 +172,17 @@ impl AnimationHint {
         replacement: AnimationChange::None,
         ..Self::UNCHANGING
     };
-
     /// Returns whether this block's value for [`EvaluatedBlock::visible`] is likely to
     /// change from `false` to `true` for animation reasons.
     pub(crate) fn might_become_visible(&self) -> bool {
-        self.redefinition.might_become_visible() || self.replacement.might_become_visible()
+        loop {}
     }
 }
-
 impl Default for AnimationHint {
     fn default() -> Self {
-        Self::UNCHANGING
+        loop {}
     }
 }
-
 /// Component of [`AnimationHint`], describing the type of change predicted.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
@@ -283,85 +205,23 @@ pub enum AnimationChange {
     /// prepare to efficiently recompute the mesh (don't merge with neighbors).
     Shape,
 }
-
 impl AnimationChange {
     /// Helper for [`AnimationHint::might_become_visible`].
     fn might_become_visible(&self) -> bool {
-        match self {
-            AnimationChange::None => false,
-            // same category implies not becoming visible if invisible
-            AnimationChange::ColorSameCategory => false,
-            AnimationChange::Shape => true,
-        }
+        loop {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
-
     /// [`BlockAttributes`] has an inherent `default()` function, which should be
     /// equivalent to the [`Default`] trait function.
     #[test]
     fn default_equivalent() {
-        assert_eq!(
-            BlockAttributes::default(),
-            <BlockAttributes as Default>::default()
-        );
+        loop {}
     }
-
     #[test]
     fn debug() {
-        let default = BlockAttributes::default;
-        fn debug(a: BlockAttributes) -> String {
-            format!("{a:?}")
-        }
-        assert_eq!(&*debug(BlockAttributes::default()), "BlockAttributes {}",);
-        assert_eq!(
-            &*debug(BlockAttributes {
-                display_name: "x".into(),
-                ..default()
-            }),
-            "BlockAttributes { display_name: \"x\" }",
-        );
-        assert_eq!(
-            &*debug(BlockAttributes {
-                selectable: false,
-                ..default()
-            }),
-            "BlockAttributes { selectable: false }",
-        );
-        assert_eq!(
-            &*debug(BlockAttributes {
-                collision: BlockCollision::None,
-                ..default()
-            }),
-            "BlockAttributes { collision: None }",
-        );
-        assert_eq!(
-            &*debug(BlockAttributes {
-                light_emission: Rgb::new(1.0, 2.0, 3.0),
-                ..default()
-            }),
-            "BlockAttributes { light_emission: Rgb(1.0, 2.0, 3.0) }",
-        );
-        assert_eq!(
-            &*debug(BlockAttributes {
-                animation_hint: AnimationHint::TEMPORARY,
-                ..default()
-            }),
-            "BlockAttributes { animation_hint: \
-            AnimationHint { redefinition: None, replacement: Shape } }",
-        );
-
-        // Test a case of multiple attributes
-        assert_eq!(
-            &*debug(BlockAttributes {
-                display_name: "y".into(),
-                selectable: false,
-                ..default()
-            }),
-            "BlockAttributes { display_name: \"y\", selectable: false }",
-        );
+        loop {}
     }
 }

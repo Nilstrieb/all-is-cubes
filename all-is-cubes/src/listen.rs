@@ -9,25 +9,19 @@
 //! significant state changes. The typical pattern is for a listener to contain a
 //! `Weak<Mutex<...>>` or similar multiply-owned mutable structure to aggregate incoming
 //! messages, which will then be read and cleared by a later task.
-
 use std::fmt;
 use std::sync::{Arc, RwLock, Weak};
-
 mod cell;
 pub use cell::*;
-
 mod listeners;
 pub use listeners::*;
-
 mod util;
 pub use util::*;
-
 /// Ability to subscribe to a source of messages, causing a [`Listener`] to receive them
 /// as long as it wishes to.
 pub trait Listen {
     /// The type of message which may be obtained from this source.
     type Msg: Clone + Send;
-
     /// Subscribe the given [`Listener`] to this source of messages.
     ///
     /// Note that listeners are removed only via their returning false from
@@ -35,22 +29,18 @@ pub trait Listen {
     /// are not deduplicated.
     fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L);
 }
-
 impl<T: Listen> Listen for &T {
     type Msg = T::Msg;
-
     fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L) {
-        (**self).listen(listener)
+        loop {}
     }
 }
 impl<T: Listen> Listen for Arc<T> {
     type Msg = T::Msg;
-
     fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L) {
-        (**self).listen(listener)
+        loop {}
     }
 }
-
 /// Mechanism for observing changes to objects. A [`Notifier`] delivers messages
 /// of type `M` to a set of listeners, each of which usually holds a weak reference
 /// to allow it to be removed when the actual recipient is gone or uninterested.
@@ -63,15 +53,11 @@ impl<T: Listen> Listen for Arc<T> {
 pub struct Notifier<M> {
     listeners: RwLock<Vec<DynListener<M>>>,
 }
-
 impl<M: Clone + Send> Notifier<M> {
     /// Constructs a new empty [`Notifier`].
     pub fn new() -> Self {
-        Self {
-            listeners: Default::default(),
-        }
+        loop {}
     }
-
     /// Returns a [`Listener`] which forwards messages to the listeners registered with
     /// this `Notifier`, provided that it is owned by an [`Arc`].
     ///
@@ -100,69 +86,40 @@ impl<M: Clone + Send> Notifier<M> {
     /// # assert_eq!(notifier_1.count(), 0);
     /// ```
     pub fn forwarder(this: Weak<Self>) -> NotifierForwarder<M> {
-        NotifierForwarder(this)
+        loop {}
     }
-
     /// Deliver a message to all [`Listener`]s.
     pub fn notify(&self, message: M) {
-        for listener in self.listeners.read().unwrap().iter() {
-            listener.receive(message.clone());
-        }
+        loop {}
     }
-
     /// Computes the exact count of listeners, including asking all current listeners
     /// if they are [`alive()`](Listener::alive).
     ///
     /// This operation is intended for testing and diagnostic purposes.
     pub fn count(&self) -> usize {
-        let mut listeners = self.listeners.write().unwrap();
-        Self::cleanup(&mut listeners);
-        listeners.len()
+        loop {}
     }
-
     /// Discard all dead weak pointers in `listeners`.
     fn cleanup(listeners: &mut Vec<DynListener<M>>) {
-        let mut i = 0;
-        while i < listeners.len() {
-            if listeners[i].alive() {
-                i += 1;
-            } else {
-                listeners.swap_remove(i);
-            }
-        }
+        loop {}
     }
 }
-
 impl<M: Clone + Send> Listen for Notifier<M> {
     type Msg = M;
-
     fn listen<L: Listener<M> + Send + Sync + 'static>(&self, listener: L) {
-        if !listener.alive() {
-            return;
-        }
-        let mut listeners = self.listeners.write().unwrap();
-        Self::cleanup(&mut listeners);
-        listeners.push(listener.erased());
+        loop {}
     }
 }
-
 impl<M: Clone + Send> Default for Notifier<M> {
     fn default() -> Self {
-        Self::new()
+        loop {}
     }
 }
-
 impl<M> fmt::Debug for Notifier<M> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // not using fmt.debug_tuple() so this is never printed on multiple lines
-        if let Ok(listeners) = self.listeners.try_read() {
-            write!(fmt, "Notifier({})", listeners.len())
-        } else {
-            write!(fmt, "Notifier(?)")
-        }
+        loop {}
     }
 }
-
 /// A receiver of messages (typically from something implementing [`Listen`]) which can
 /// indicate when it is no longer interested in them (typically because the associated
 /// recipient has been dropped).
@@ -194,7 +151,6 @@ pub trait Listener<M> {
     /// This method should not panic under any circumstances, or inconsistencies may
     /// result due to further work not being done and messages not being sent.
     fn receive(&self, message: M);
-
     /// Whether the [`Listener`]'s destination is still interested in receiving messages.
     ///
     /// This method should start returning [`false`] as soon as its destination is no
@@ -205,7 +161,6 @@ pub trait Listener<M> {
     /// This method should not panic under any circumstances, or inconsistencies may
     /// result due to further work not being done and messages not being sent.
     fn alive(&self) -> bool;
-
     /// Convert this listener into trait object form, allowing it to be stored in
     /// collections or passed non-generically.
     ///
@@ -216,9 +171,8 @@ pub trait Listener<M> {
     where
         Self: Sized + Send + Sync + 'static,
     {
-        Arc::new(self)
+        loop {}
     }
-
     /// Apply a map/filter function to incoming messages.
     ///
     /// TODO: Doc test
@@ -227,15 +181,11 @@ pub trait Listener<M> {
         Self: Sized,
         F: Fn(MI) -> Option<M> + Sync,
     {
-        Filter {
-            function,
-            target: self,
-        }
+        loop {}
     }
-
     /// Wraps `self` to pass messages only until the returned [`Gate`], and any clones
     /// of it, are dropped.
-    ///    
+    ///
     /// This may be used to stop forwarding messages when a dependency no longer exists.
     ///
     /// ```
@@ -253,70 +203,32 @@ pub trait Listener<M> {
     where
         Self: Sized,
     {
-        Gate::new(self)
+        loop {}
     }
 }
-
 /// Type-erased form of a [`Listener`] which accepts messages of type `M`.
 pub type DynListener<M> = Arc<dyn Listener<M> + Send + Sync>;
-
 impl<M> Listener<M> for DynListener<M> {
     fn receive(&self, message: M) {
-        (**self).receive(message)
+        loop {}
     }
-
     fn alive(&self) -> bool {
-        (**self).alive()
+        loop {}
     }
-
     fn erased(self) -> DynListener<M> {
-        self
+        loop {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn notifier_basics_and_debug() {
-        let cn: Notifier<u8> = Notifier::new();
-        assert_eq!(format!("{cn:?}"), "Notifier(0)");
-        cn.notify(0);
-        assert_eq!(format!("{cn:?}"), "Notifier(0)");
-        let sink = Sink::new();
-        cn.listen(sink.listener());
-        assert_eq!(format!("{cn:?}"), "Notifier(1)");
-        // type annotation to prevent spurious inference failures in the presence
-        // of other compiler errors
-        assert_eq!(sink.drain(), Vec::<u8>::new());
-        cn.notify(1);
-        cn.notify(2);
-        assert_eq!(sink.drain(), vec![1, 2]);
-        assert_eq!(format!("{cn:?}"), "Notifier(1)");
+        loop {}
     }
-
     #[test]
     #[allow(clippy::vtable_address_comparisons)]
     fn erased_listener() {
-        let sink = Sink::new();
-        let listener: DynListener<&str> = sink.listener().erased();
-
-        // Should not gain a new wrapper when erased() again.
-        assert_eq!(
-            Arc::as_ptr(&listener),
-            Arc::as_ptr(&listener.clone().erased())
-        );
-
-        // Should report alive (and not infinitely recurse).
-        assert!(listener.alive());
-
-        // Should deliver messages.
-        listener.receive("a");
-        assert_eq!(sink.drain(), vec!["a"]);
-
-        // Should report dead
-        drop(sink);
-        assert!(!listener.alive());
+        loop {}
     }
 }

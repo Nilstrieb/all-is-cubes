@@ -1,8 +1,6 @@
 use std::fmt;
 use std::sync::{Arc, Weak};
-
 use crate::listen::{Listener, Notifier};
-
 /// A [`Listener`] which transforms or discards messages before passing them on.
 /// Construct this using [`Listener::filter`].
 ///
@@ -22,42 +20,28 @@ where
     T: Listener<MO>,
 {
     fn receive(&self, message: MI) {
-        if let Some(filtered_message) = (self.function)(message) {
-            self.target.receive(filtered_message);
-        }
+        loop {}
     }
     fn alive(&self) -> bool {
-        self.target.alive()
+        loop {}
     }
 }
-
 /// Controls a [`Listener`] chain by discarding messages when this gate is dropped.
 ///
 /// Construct this using [`Listener::gate`], or if a placeholder instance with no
 /// effect is required, [`Gate::default`].
 #[derive(Clone, Default)]
 pub struct Gate(Arc<()>);
-
 impl fmt::Debug for Gate {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Gate")
+        loop {}
     }
 }
-
 impl Gate {
     pub(super) fn new<L>(listener: L) -> (Gate, GateListener<L>) {
-        let signaller = Arc::new(());
-        let weak = Arc::downgrade(&signaller);
-        (
-            Gate(signaller),
-            GateListener {
-                weak,
-                target: listener,
-            },
-        )
+        loop {}
     }
 }
-
 /// [`Listener`] implementation which discards messages when the corresponding [`Gate`]
 /// is dropped. Construct this using [`Listener::gate()`].
 #[derive(Clone, Debug)]
@@ -70,79 +54,39 @@ where
     T: Listener<M>,
 {
     fn receive(&self, message: M) {
-        if self.alive() {
-            self.target.receive(message);
-        }
+        loop {}
     }
     fn alive(&self) -> bool {
-        self.weak.strong_count() > 0 && self.target.alive()
+        loop {}
     }
 }
-
 /// A [`Listener`] which forwards messages through a [`Notifier`] to its listeners.
 /// Constructed by [`Notifier::forwarder()`].
 #[derive(Debug)]
 pub struct NotifierForwarder<M>(pub(super) Weak<Notifier<M>>);
-
 impl<M: Clone + Send> Listener<M> for NotifierForwarder<M> {
     fn receive(&self, message: M) {
-        if let Some(notifier) = self.0.upgrade() {
-            notifier.notify(message);
-        }
+        loop {}
     }
     fn alive(&self) -> bool {
-        self.0.strong_count() > 0
+        loop {}
     }
 }
-
 impl<M> Clone for NotifierForwarder<M> {
     fn clone(&self) -> Self {
-        Self(self.0.clone())
+        loop {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::listen::{Listen as _, Sink};
-
     #[test]
     fn filter() {
-        let notifier: Notifier<Option<i32>> = Notifier::new();
-        let sink = Sink::new();
-        notifier.listen(sink.listener().filter(|x| x));
-        assert_eq!(notifier.count(), 1);
-
-        // Try delivering messages
-        notifier.notify(Some(1));
-        notifier.notify(None);
-        assert_eq!(sink.drain(), vec![1]);
-
-        // Drop the sink and the notifier should observe it gone
-        drop(sink);
-        assert_eq!(notifier.count(), 0);
+        loop {}
     }
-
     #[test]
     fn gate() {
-        let notifier: Notifier<i32> = Notifier::new();
-        let sink = Sink::new();
-        let (gate, listener) = Gate::new(sink.listener());
-        notifier.listen(listener);
-        assert_eq!(notifier.count(), 1);
-
-        // Try delivering messages
-        notifier.notify(1);
-        assert_eq!(sink.drain(), vec![1]);
-
-        // Drop the gate and messages should stop passing immediately
-        // (even though we didn't even trigger notifier cleanup by calling count())
-        drop(gate);
-        notifier.notify(2);
-        assert_eq!(sink.drain(), Vec::<i32>::new());
-
-        assert_eq!(notifier.count(), 0);
+        loop {}
     }
-
-    // Test for NotifierForwarder exists as a doc-test.
 }

@@ -1,18 +1,15 @@
 //! Lesser-used helpers for [`BlockBuilder`].
-
 use cgmath::EuclideanSpace as _;
 use std::borrow::Cow;
 use std::sync::Arc;
-
 use crate::block::{
-    AnimationHint, Block, BlockAttributes, BlockCollision, BlockDef, BlockParts, BlockPtr,
-    Modifier, Primitive, Resolution, RotationPlacementRule, AIR,
+    AnimationHint, Block, BlockAttributes, BlockCollision, BlockDef, BlockParts,
+    BlockPtr, Modifier, Primitive, Resolution, RotationPlacementRule, AIR,
 };
 use crate::drawing::VoxelBrush;
 use crate::math::{GridPoint, Rgb, Rgba};
 use crate::space::{SetCubeError, Space};
 use crate::universe::{Name, URef, Universe, UniverseIndex};
-
 /// Tool for constructing [`Block`] values conveniently.
 ///
 /// To create one, call [`Block::builder()`].
@@ -40,99 +37,62 @@ pub struct BlockBuilder<P> {
     primitive_builder: P,
     modifiers: Vec<Modifier>,
 }
-
 impl Default for BlockBuilder<NeedsPrimitive> {
     fn default() -> Self {
-        Self::new()
+        loop {}
     }
 }
-
 impl BlockBuilder<NeedsPrimitive> {
     /// Common implementation of [`Block::builder`] and [`Default::default`]; use one of those to call this.
     pub(super) const fn new() -> BlockBuilder<NeedsPrimitive> {
-        BlockBuilder {
-            attributes: BlockAttributes::default(),
-            primitive_builder: NeedsPrimitive,
-            modifiers: Vec::new(),
-        }
+        loop {}
     }
 }
-
 impl<C> BlockBuilder<C> {
-    // TODO: When #![feature(const_precise_live_drops)] becomes stable, we can make
-    // this builder mostly usable in const contexts.
-    // https://github.com/rust-lang/rust/issues/73255
-    // Doing that will also require creating non-trait-using alternate methods,
-    // until const traits https://github.com/rust-lang/rust/issues/67792 is also available.
-
     /// Sets the [`BlockAttributes`] the block will have.
     /// This replaces individual attribute values set using other builder methods.
     pub fn attributes(mut self, value: BlockAttributes) -> Self {
-        self.attributes = value;
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::display_name`].
     pub fn display_name(mut self, value: impl Into<Cow<'static, str>>) -> Self {
-        self.attributes.display_name = value.into();
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::selectable`].
     pub const fn selectable(mut self, value: bool) -> Self {
-        self.attributes.selectable = value;
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::collision`].
     pub const fn collision(mut self, value: BlockCollision) -> Self {
-        self.attributes.collision = value;
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::rotation_rule`].
     pub const fn rotation_rule(mut self, value: RotationPlacementRule) -> Self {
-        self.attributes.rotation_rule = value;
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::light_emission`].
     pub fn light_emission(mut self, value: impl Into<Rgb>) -> Self {
-        self.attributes.light_emission = value.into();
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::tick_action`].
     pub fn tick_action(mut self, value: Option<VoxelBrush<'static>>) -> Self {
-        self.attributes.tick_action = value;
-        self
+        loop {}
     }
-
     /// Sets the value for [`BlockAttributes::animation_hint`].
     pub fn animation_hint(mut self, value: AnimationHint) -> Self {
-        self.attributes.animation_hint = value;
-        self
+        loop {}
     }
-
     /// Adds a modifier to the end of the list of modifiers for the block.
     /// It will be applied after all previously specified modifiers.
     pub fn modifier(mut self, modifier: Modifier) -> Self {
-        // TODO: implement a modifier canonicalization procedure here
-        self.modifiers.push(modifier);
-        self
+        loop {}
     }
-
     /// Sets the color value for building a [`Primitive::Atom`].
     ///
     /// This will replace any previous color **or voxels.**
     pub fn color(self, color: impl Into<Rgba>) -> BlockBuilder<Rgba> {
-        BlockBuilder {
-            attributes: self.attributes,
-            primitive_builder: color.into(),
-            modifiers: Vec::new(),
-        }
+        loop {}
     }
-
     /// Sets the space for building a [`Primitive::Recur`].
     ///
     /// This will replace any previous voxels **or color.**
@@ -141,29 +101,16 @@ impl<C> BlockBuilder<C> {
         resolution: Resolution,
         space: URef<Space>,
     ) -> BlockBuilder<BlockBuilderVoxels> {
-        BlockBuilder {
-            attributes: self.attributes,
-            primitive_builder: BlockBuilderVoxels {
-                space,
-                resolution,
-                offset: GridPoint::origin(),
-            },
-            modifiers: Vec::new(),
-        }
+        loop {}
     }
-
     /// Constructs a `Space` for building a [`Primitive::Recur`], and calls
     /// the given function to fill it with blocks, in the manner of [`Space::fill`].
     ///
     /// Note that the resulting builder is cloned, all clones will share the same
     /// space.
-    // TODO: (doc) test for this
     pub fn voxels_fn<F, B>(
         self,
-        // TODO: awkward requirement for universe; defer computation instead, or
-        // add a `.universe()` method to provide it once.
         universe: &mut Universe,
-        // TODO: Maybe resolution should be a separate method? Check usage patterns later.
         resolution: Resolution,
         mut function: F,
     ) -> Result<BlockBuilder<BlockBuilderVoxels>, SetCubeError>
@@ -171,35 +118,18 @@ impl<C> BlockBuilder<C> {
         F: FnMut(GridPoint) -> B,
         B: std::borrow::Borrow<Block>,
     {
-        let mut space = Space::for_block(resolution).build();
-        // TODO: Teach the SpaceBuilder to accept a function in the same way?
-        space.fill(space.bounds(), |point| Some(function(point)))?;
-        Ok(self.voxels_ref(resolution, universe.insert_anonymous(space)))
+        loop {}
     }
-
     /// Converts this builder into a block value.
     pub fn build(self) -> Block
     where
         C: BuildPrimitiveIndependent,
     {
-        let primitive = self.primitive_builder.build_i(self.attributes);
-        if matches!(primitive, Primitive::Air) && self.modifiers.is_empty() {
-            // Avoid allocating an Arc.
-            AIR
-        } else {
-            Block(BlockPtr::Owned(Arc::new(BlockParts {
-                primitive,
-                modifiers: self.modifiers,
-            })))
-        }
+        loop {}
     }
-
     /// Converts this builder into a block value and stores it as a [`BlockDef`] in
     /// the given [`Universe`] with the given name, then returns a [`Primitive::Indirect`]
     /// block referring to it.
-    // TODO: This is not being used, because most named block definitions use BlockProvider,
-    // and complicates the builder unnecessarily. Remove it or figure out how it aligns with
-    // BlockProvider.
     pub fn into_named_definition(
         self,
         universe: &mut Universe,
@@ -208,54 +138,41 @@ impl<C> BlockBuilder<C> {
     where
         C: BuildPrimitiveInUniverse,
     {
-        let block = Block(BlockPtr::Owned(Arc::new(BlockParts {
-            primitive: self.primitive_builder.build_u(self.attributes, universe),
-            modifiers: self.modifiers,
-        })));
-        let def_ref = universe.insert(name.into(), BlockDef::new(block))?;
-        Ok(Block::from_primitive(Primitive::Indirect(def_ref)))
+        loop {}
     }
 }
-
 /// Voxel-specific builder methods.
 impl BlockBuilder<BlockBuilderVoxels> {
     /// Sets the coordinate offset for building a [`Primitive::Recur`]:
     /// the lower-bound corner of the region of the [`Space`]
     /// which will be used for block voxels. The default is zero.
     pub fn offset(mut self, offset: GridPoint) -> Self {
-        self.primitive_builder.offset = offset;
-        self
+        loop {}
     }
-
-    // TODO: It might be useful to have "offset equal to resolution"
-    // and "add offset", but don't add those until use cases are seen.
 }
-
 /// Allows implicitly converting `BlockBuilder` to the block it would build.
 impl<C: BuildPrimitiveIndependent> From<BlockBuilder<C>> for Block {
     fn from(builder: BlockBuilder<C>) -> Self {
-        builder.build()
+        loop {}
     }
 }
 /// Equivalent to `Block::builder().color(color)`.
 impl From<Rgba> for BlockBuilder<Rgba> {
     fn from(color: Rgba) -> Self {
-        Block::builder().color(color)
+        loop {}
     }
 }
 /// Equivalent to `Block::builder().color(color.with_alpha_one())`.
 impl From<Rgb> for BlockBuilder<Rgba> {
     fn from(color: Rgb) -> Self {
-        Block::builder().color(color.with_alpha_one())
+        loop {}
     }
 }
-
 /// Placeholder type for an incomplete [`BlockBuilder`]'s content. The builder
 /// cannot create an actual block until this is replaced.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, PartialEq)]
 pub struct NeedsPrimitive;
-
 /// Primitive-builder of a [`BlockBuilder`] that can build a block without a [`Universe`].
 #[doc(hidden)]
 pub trait BuildPrimitiveIndependent {
@@ -269,17 +186,15 @@ pub trait BuildPrimitiveInUniverse {
 /// Every [`BuildPrimitiveIndependent`] can act as [`BuildPrimitiveInUniverse`].
 impl<T: BuildPrimitiveIndependent> BuildPrimitiveInUniverse for T {
     fn build_u(self, attributes: BlockAttributes, _: &mut Universe) -> Primitive {
-        self.build_i(attributes)
+        loop {}
     }
 }
-
 /// Used by [`BlockBuilder::color`].
 impl BuildPrimitiveIndependent for Rgba {
     fn build_i(self, attributes: BlockAttributes) -> Primitive {
-        Primitive::Atom(attributes, self)
+        loop {}
     }
 }
-
 /// Concrete type for a [`BlockBuilder`] that is building a voxel block.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct BlockBuilderVoxels {
@@ -289,135 +204,33 @@ pub struct BlockBuilderVoxels {
 }
 impl BuildPrimitiveIndependent for BlockBuilderVoxels {
     fn build_i(self, attributes: BlockAttributes) -> Primitive {
-        Primitive::Recur {
-            attributes,
-            offset: self.offset,
-            resolution: self.resolution,
-            space: self.space,
-        }
+        loop {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use crate::block::{Resolution::*, AIR};
     use crate::math::{Face6, GridAab};
     use crate::space::SpacePhysics;
-
     use super::*;
-
     #[test]
     fn defaults() {
-        let color = Rgba::new(0.1, 0.2, 0.3, 0.4);
-        assert_eq!(
-            Block::builder().color(color).build(),
-            Block::from_primitive(Primitive::Atom(BlockAttributes::default(), color)),
-        );
+        loop {}
     }
-
     #[test]
     fn default_equivalent() {
-        assert_eq!(
-            BlockBuilder::<NeedsPrimitive>::new(),
-            <BlockBuilder<NeedsPrimitive> as Default>::default()
-        );
+        loop {}
     }
-
     #[test]
     fn every_field_nondefault() {
-        let color = Rgba::new(0.1, 0.2, 0.3, 0.4);
-        let light_emission = Rgb::new(0.1, 3.0, 0.1);
-        let rotation_rule = RotationPlacementRule::Attach { by: Face6::NZ };
-        let tick_action = Some(VoxelBrush::single(AIR));
-        assert_eq!(
-            Block::builder()
-                .color(color)
-                .display_name("hello world")
-                .collision(BlockCollision::Recur)
-                .rotation_rule(rotation_rule)
-                .selectable(false)
-                .light_emission(light_emission)
-                .tick_action(tick_action.clone())
-                .animation_hint(AnimationHint::TEMPORARY)
-                .build(),
-            Block::from_primitive(Primitive::Atom(
-                BlockAttributes {
-                    display_name: "hello world".into(),
-                    collision: BlockCollision::Recur,
-                    rotation_rule,
-                    selectable: false,
-                    light_emission,
-                    tick_action,
-                    animation_hint: AnimationHint::TEMPORARY,
-                },
-                color
-            )),
-        );
+        loop {}
     }
-
     #[test]
     fn voxels_from_space() {
-        let mut universe = Universe::new();
-        let space_ref = universe.insert_anonymous(Space::empty_positive(1, 1, 1));
-
-        assert_eq!(
-            Block::builder()
-                .display_name("hello world")
-                .voxels_ref(R2, space_ref.clone())
-                .build(),
-            Block::from_primitive(Primitive::Recur {
-                attributes: BlockAttributes {
-                    display_name: "hello world".into(),
-                    ..BlockAttributes::default()
-                },
-                offset: GridPoint::origin(),
-                resolution: R2, // not same as space size
-                space: space_ref
-            }),
-        );
+        loop {}
     }
-
     #[test]
     fn voxels_from_fn() {
-        let mut universe = Universe::new();
-
-        let resolution = R8;
-        let block = Block::builder()
-            .display_name("hello world")
-            .voxels_fn(&mut universe, resolution, |_cube| &AIR)
-            .unwrap()
-            .build();
-
-        // Extract the implicitly constructed space reference
-        let space_ref = if let Primitive::Recur { space, .. } = block.primitive() {
-            space.clone()
-        } else {
-            panic!("expected Recur, found {block:?}");
-        };
-
-        assert_eq!(
-            block,
-            Block::from_primitive(Primitive::Recur {
-                attributes: BlockAttributes {
-                    display_name: "hello world".into(),
-                    ..BlockAttributes::default()
-                },
-                offset: GridPoint::origin(),
-                resolution,
-                space: space_ref.clone()
-            }),
-        );
-
-        // Check the space's characteristics
-        assert_eq!(
-            space_ref.read().unwrap().bounds(),
-            GridAab::for_block(resolution)
-        );
-        assert_eq!(
-            space_ref.read().unwrap().physics(),
-            &SpacePhysics::DEFAULT_FOR_BLOCK
-        );
-
-        // TODO: assert the voxels are correct
+        loop {}
     }
 }

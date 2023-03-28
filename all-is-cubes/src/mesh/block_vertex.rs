@@ -1,17 +1,12 @@
 //! Mesh vertices.
-
 use std::fmt;
-
 use cgmath::{EuclideanSpace as _, Point3, Vector3};
-
 use crate::math::{Face6, FreeCoordinate, GridPoint, Rgba};
 use crate::util::{ConciseDebug, CustomFormat};
-
 /// Numeric type used to store texture coordinates in vertices.
 ///
 /// TODO: Delete this type alias now that we're generic over texture coordinates.
 pub type TextureCoordinate = f32;
-
 /// Basic vertex data type for a [`BlockMesh`].
 /// Implement <code>[`From`]&lt;[`BlockVertex`]&gt;</code> (and usually [`GfxVertex`])
 /// to provide a specialized version fit for the target graphics API.
@@ -30,27 +25,13 @@ pub struct BlockVertex<T> {
     /// Surface color or texture coordinate.
     pub coloring: Coloring<T>,
 }
-
 impl<T: Clone> BlockVertex<T> {
     /// Remove the clamp information for the sake of tidier tests of one thing at a time.
     #[cfg(test)]
     pub(crate) fn remove_clamps(mut self) -> Self {
-        self.coloring = match self.coloring {
-            Coloring::Texture {
-                pos,
-                clamp_min: _,
-                clamp_max: _,
-            } => Coloring::Texture {
-                clamp_min: pos.clone(),
-                clamp_max: pos.clone(),
-                pos,
-            },
-            other => other,
-        };
-        self
+        loop {}
     }
 }
-
 /// Describes the two ways a [`BlockVertex`] may be colored; by a solid color or by a texture.
 ///
 /// `T` is the type of texture-coordinate points being used. That is, one `T` value
@@ -73,37 +54,22 @@ pub enum Coloring<T> {
         clamp_max: T,
     },
 }
-
 impl<T> fmt::Debug for BlockVertex<T>
 where
     Coloring<T>: fmt::Debug,
 {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // Print compactly on single line even if the formatter is in prettyprint mode.
-        write!(
-            fmt,
-            "{{ p: {:?} n: {:?} c: {:?} }}",
-            self.position.custom_format(ConciseDebug),
-            self.face,
-            self.coloring
-        )
+        loop {}
     }
 }
 impl<T> fmt::Debug for Coloring<T>
 where
-    T: CustomFormat<ConciseDebug>, // TODO: inelegant
+    T: CustomFormat<ConciseDebug>,
 {
-    // TODO: test formatting of this
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Coloring::Solid(color) => write!(fmt, "Solid({color:?})"),
-            Coloring::Texture { pos, .. } => {
-                write!(fmt, "Texture({:?})", pos.custom_format(ConciseDebug))
-            }
-        }
+        loop {}
     }
 }
-
 /// A custom representation of [`BlockVertex`] suitable for a specific graphics system.
 ///
 /// The life cycle of a [`GfxVertex`]:
@@ -130,50 +96,40 @@ pub trait GfxVertex: From<BlockVertex<Self::TexPoint>> + Copy + Sized {
     /// [`SpaceMesh`]: crate::mesh::SpaceMesh
     /// [`MeshOptions`]: crate::mesh::MeshOptions
     const WANTS_DEPTH_SORTING: bool;
-
     /// Number type for the vertex position coordinates.
     type Coordinate: cgmath::BaseFloat;
-
     /// Point type identifying a point in the block's texture.
     type TexPoint: Copy;
-
     /// Type of the data carried from [`Self::instantiate_block`] to
     /// [`Self::instantiate_vertex`].
     type BlockInst: Copy;
-
     /// Prepare the information needed to instantiate vertices of one block.
     /// Currently, this constitutes the location of that block, and hence this function
     /// is responsible for any necessary numeric conversion.
     fn instantiate_block(cube: GridPoint) -> Self::BlockInst;
-
     /// Transforms a vertex belonging to a general model of a block to its instantiation
     /// in a specific location in space.
     fn instantiate_vertex(&mut self, block: Self::BlockInst);
-
     /// Returns the position of this vertex.
     ///
     /// Note: This is used to perform depth sorting for transparent vertices.
     fn position(&self) -> Point3<Self::Coordinate>;
 }
-
 /// Trivial implementation of [`GfxVertex`] for testing purposes. Discards lighting.
 impl<T: Copy> GfxVertex for BlockVertex<T> {
     const WANTS_DEPTH_SORTING: bool = true;
     type Coordinate = FreeCoordinate;
     type TexPoint = T;
     type BlockInst = Vector3<FreeCoordinate>;
-
     fn position(&self) -> Point3<FreeCoordinate> {
-        self.position
+        loop {}
     }
-
     #[inline]
     fn instantiate_block(cube: GridPoint) -> Self::BlockInst {
-        cube.to_vec().map(FreeCoordinate::from)
+        loop {}
     }
-
     #[inline]
     fn instantiate_vertex(&mut self, offset: Self::BlockInst) {
-        self.position += offset;
+        loop {}
     }
 }

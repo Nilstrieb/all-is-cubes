@@ -7,25 +7,20 @@
 //! In the future this mechanism may grow to become a dynamic linker/dependency injector
 //! by becoming aware of dependencies between “modules”. For now, it's just enough to
 //! solve bootstrapping needs.
-
 use std::collections::HashMap;
 use std::error::Error;
 use std::fmt;
 use std::hash::Hash;
 use std::ops::Index;
-
 use exhaust::Exhaust;
-
 use crate::block::{Block, BlockDef, Primitive};
 use crate::space::SetCubeError;
 use crate::transaction::ExecuteError;
 use crate::universe::{InsertError, Name, URef, Universe, UniverseIndex};
 use crate::util::YieldProgress;
-
 fn name_in_module<E: BlockModule>(key: &E) -> Name {
-    Name::from(format!("{ns}/{key}", ns = E::namespace()).as_str())
+    loop {}
 }
-
 /// Allows the use of [`BlockProvider::default`] to construct a [`BlockProvider`]
 /// using this type as its set of keys. [`Self::default`] will be called once for
 /// each value of [`Self`].
@@ -36,7 +31,6 @@ pub trait DefaultProvision {
     /// have to be a [`Primitive::Atom`] block.
     fn default(self) -> Block;
 }
-
 /// Types whose values identify blocks in a set of related blocks, which may be
 /// stored in a [`BlockProvider`] or under specific names in a [`Universe`].
 ///
@@ -54,7 +48,6 @@ pub trait BlockModule: Exhaust + fmt::Debug + fmt::Display + Eq + Hash + Clone {
     /// more rigorous namespace scheme for [`Name`]s in future versions.
     fn namespace() -> &'static str;
 }
-
 /// TODO: document
 #[derive(Clone, Debug)]
 pub struct BlockProvider<E> {
@@ -62,23 +55,14 @@ pub struct BlockProvider<E> {
     /// [`Exhaust`] implementation is accurate.
     map: HashMap<E, Block>,
 }
-
 impl<E> Default for BlockProvider<E>
 where
     E: DefaultProvision + Exhaust + Eq + Hash + Clone,
 {
     fn default() -> Self {
-        Self {
-            map: E::exhaust()
-                .map(|key| {
-                    let block = DefaultProvision::default(key.clone());
-                    (key, block)
-                })
-                .collect(),
-        }
+        loop {}
     }
 }
-
 impl<E> BlockProvider<E>
 where
     E: BlockModule,
@@ -87,36 +71,27 @@ where
     ///
     /// This is an async function for the sake of cancellation and optional cooperative
     /// multitasking. It may be blocked on from a synchronous context.
-    pub async fn new<F, B>(progress: YieldProgress, mut definer: F) -> Result<Self, GenError>
+    pub async fn new<F, B>(
+        progress: YieldProgress,
+        mut definer: F,
+    ) -> Result<Self, GenError>
     where
         F: FnMut(E) -> Result<B, InGenError>,
         B: Into<Block>,
     {
-        let count = E::exhaust().count();
-        let mut map = HashMap::with_capacity(count);
-        for (key, progress) in E::exhaust().zip(progress.split_evenly(count)) {
-            let block: Block = definer(key.clone())
-                .map_err(|e| GenError::failure(e, name_in_module(&key)))?
-                .into();
-            map.insert(key, block);
-            progress.finish().await;
-        }
-        Ok(Self { map })
+        loop {}
     }
-
     /// Add the block definitions stored in this [`BlockProvider`] into `universe` as
     /// [`BlockDef`]s, returning a new [`BlockProvider`] whose blocks refer to those
     /// definitions (via [`Primitive::Indirect`]).
     ///
     /// TODO: Migrate this to operate via `UniverseTransaction` instead.
-    pub fn install(&self, universe: &mut Universe) -> Result<BlockProvider<E>, InsertError> {
-        for key in E::exhaust() {
-            // TODO: the &* mess should not be required
-            universe.insert(name_in_module(&key), BlockDef::new(self[key].clone()))?;
-        }
-        Ok(Self::using(universe).expect("failed to retrieve names we just inserted??"))
+    pub fn install(
+        &self,
+        universe: &mut Universe,
+    ) -> Result<BlockProvider<E>, InsertError> {
+        loop {}
     }
-
     /// Obtain the definitions of `E`'s blocks from `universe`, returning a new
     /// [`BlockProvider`] whose blocks refer to those definitions (via
     /// [`Primitive::Indirect`]).
@@ -126,45 +101,21 @@ where
     where
         E: Eq + Hash + fmt::Display,
     {
-        let mut found: HashMap<E, URef<BlockDef>> = HashMap::new();
-        let mut missing = Vec::new();
-        for key in E::exhaust() {
-            let name = name_in_module(&key);
-            if let Some(uref) = universe.get(&name) {
-                found.insert(key, uref);
-            } else {
-                missing.push(name);
-            }
-        }
-        if !missing.is_empty() {
-            return Err(ProviderError {
-                missing: missing.into(),
-            });
-        }
-        Ok(BlockProvider {
-            map: E::exhaust()
-                .map(|key| {
-                    let block =
-                        Block::from_primitive(Primitive::Indirect(found.remove(&key).unwrap()));
-                    (key, block)
-                })
-                .collect(),
-        })
+        loop {}
     }
-
     /// Iterate over the entire contents of this.
     pub fn iter(&self) -> impl Iterator<Item = (E, &Block)> + Send
     where
         E: Sync,
         <E as Exhaust>::Iter: Send,
     {
-        E::exhaust().map(|key| {
-            let block: &Block = &self.map[&key];
-            (key, block)
-        })
+        E::exhaust()
+            .map(|key| {
+                let block: &Block = &self.map[&key];
+                (key, block)
+            })
     }
 }
-
 /// These methods do not require `E` to be a [`BlockModule`].
 impl<E: Exhaust + fmt::Debug + Clone + Eq + Hash> BlockProvider<E> {
     /// Alternative to [`Self::new()`] which is neither async nor fallible.
@@ -172,13 +123,8 @@ impl<E: Exhaust + fmt::Debug + Clone + Eq + Hash> BlockProvider<E> {
     where
         F: FnMut(E) -> Block,
     {
-        BlockProvider {
-            map: E::exhaust()
-                .map(|key| (key.clone(), definer(key)))
-                .collect(),
-        }
+        loop {}
     }
-
     /// Create another [`BlockProvider`] with different keys that map into a subset of
     /// this provider's keys.
     ///
@@ -188,97 +134,57 @@ impl<E: Exhaust + fmt::Debug + Clone + Eq + Hash> BlockProvider<E> {
         &self,
         function: impl Fn(K) -> E,
     ) -> BlockProvider<K> {
-        BlockProvider::new_sync(|key: K| self[function(key)].clone())
+        loop {}
     }
-
     /// Create another [`BlockProvider`] with a modification to each block.
     #[must_use]
     pub fn map(&self, mut function: impl FnMut(&E, &Block) -> Block) -> Self {
-        BlockProvider {
-            map: self
-                .map
-                .iter()
-                .map(|(key, block)| {
-                    let block = function(key, block);
-                    (key.clone(), block)
-                })
-                .collect(),
-        }
+        loop {}
     }
-
     #[cfg(test)]
     fn consistency_check(&self) {
-        use std::collections::HashSet;
-        let expected_keys: HashSet<E> = E::exhaust().collect();
-        let actual_keys: HashSet<E> = self.map.keys().cloned().collect();
-        assert_eq!(
-            expected_keys, actual_keys,
-            "BlockProvider keys are not as expected"
-        );
+        loop {}
     }
 }
-
 impl<E: Eq + Hash> Index<E> for BlockProvider<E> {
     type Output = Block;
-
     fn index(&self, index: E) -> &Self::Output {
-        &self.map[&index]
+        loop {}
     }
 }
-
 /// Error when a [`BlockProvider`] could not be created because the definitions of some
 /// of its blocks are missing.
 #[derive(Clone, Debug, Eq, thiserror::Error, PartialEq)]
-#[error("missing block definitions: {missing:?}")] // TODO: use Name's Display within the list
+#[error("missing block definitions: {missing:?}")]
 pub struct ProviderError {
     missing: Box<[Name]>,
 }
-
 /// An error resulting from “world generation”: failure to calculate/create/place objects
 /// (due to bad parameters or unforeseen edge cases), failure to successfully store them
 /// in or retrieve them from a [`Universe`], et cetera.
 #[derive(Debug, thiserror::Error)]
 pub struct GenError {
-    // TODO: Replace box with enum for common cases
     #[source]
     detail: InGenError,
     for_object: Option<Name>,
 }
-
 impl GenError {
     /// Wrap an error, that occurred while creating an object, as a [`GenError`] which also
     /// names the object.
     pub fn failure(error: impl Into<InGenError>, object: Name) -> Self {
-        Self {
-            detail: error.into(),
-            for_object: Some(object),
-        }
+        loop {}
     }
 }
-
 impl fmt::Display for GenError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // Don't include `detail` because that's our `Error::source()`.
-        // The assumption is that the cause chain will be walked when printing an error.
-        if let Some(name) = &self.for_object {
-            write!(f, "An error occurred while generating object {name}")?;
-        } else {
-            write!(f, "An error occurred while generating an object")?;
-        }
-        Ok(())
+        loop {}
     }
 }
-
 impl From<InsertError> for GenError {
-    // TODO: Maybe InsertError should just be a variant of GenError?
     fn from(error: InsertError) -> Self {
-        GenError {
-            for_object: Some(error.name.clone()),
-            detail: error.into(),
-        }
+        loop {}
     }
 }
-
 /// Aggregation of types of errors that might occur in “world generation”.
 ///
 /// This is distinct from [`GenError`] in that this type is returned from functions
@@ -297,45 +203,33 @@ pub enum InGenError {
     /// Generic error container for unusual situations.
     #[error(transparent)]
     Other(Box<dyn Error + Send + Sync>),
-
     /// Something else needed to be generated and that failed.
     #[error(transparent)]
     Gen(Box<GenError>),
-
     /// Failed to insert the generated items in the [`Universe`].
     #[error(transparent)]
     Insert(#[from] InsertError),
-
     /// Failed to find a needed dependency.
-    // TODO: Any special handling? Phrase this as "missing dependency"?
     #[error(transparent)]
     Provider(#[from] ProviderError),
-
     /// Failed during [`Space`](crate::space::Space) manipulation.
-    // TODO: Break apart `SetCubeError::EvalBlock` to its contents?
     #[error(transparent)]
     SetCube(#[from] SetCubeError),
-
     /// Failed during a transaction.
-    // TODO: This isn't very coherent; we're just aggregating various errors
     #[error(transparent)]
     Transaction(#[from] ExecuteError),
 }
-
 impl InGenError {
     /// Convert an arbitrary error to `InGenError`.
     pub fn other<E: Error + Send + Sync + 'static>(error: E) -> Self {
-        Self::Other(Box::new(error))
+        loop {}
     }
 }
-
 impl From<GenError> for InGenError {
     fn from(error: GenError) -> Self {
-        // We need to box this to avoid an unboxed recursive type.
-        InGenError::Gen(Box::new(error))
+        loop {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -343,95 +237,34 @@ mod tests {
     use crate::content::make_some_blocks;
     use crate::math::GridAab;
     use crate::util::assert_send_sync;
-
     #[derive(Exhaust, Clone, Debug, Eq, Hash, PartialEq)]
     enum Key {
         A,
         B,
         C,
     }
-
     fn test_provider() -> ([Block; 3], BlockProvider<Key>) {
-        let blocks = make_some_blocks();
-        let provider = BlockProvider::new_sync(|k: Key| match k {
-            Key::A => blocks[0].clone(),
-            Key::B => blocks[1].clone(),
-            Key::C => blocks[2].clone(),
-        });
-        provider.consistency_check();
-
-        (blocks, provider)
+        loop {}
     }
-
     #[test]
     fn provider_subset() {
-        let (_, p1) = test_provider();
-        let p2 = p1.subset(|x: bool| if x { Key::A } else { Key::B });
-        p2.consistency_check();
-        assert_eq!(p1[Key::A], p2[true]);
-        assert_eq!(p1[Key::B], p2[false]);
+        loop {}
     }
-
     #[test]
     fn provider_map() {
-        let (_, p1) = test_provider();
-        let p2 = p1.map(|_, block| block.clone().with_modifier(Quote::default()));
-        p2.consistency_check();
-        assert_eq!(
-            p1[Key::A].clone().with_modifier(Quote::default()),
-            p2[Key::A],
-        );
+        loop {}
     }
-
     #[test]
     fn errors_are_send_sync() {
-        assert_send_sync::<GenError>();
-        assert_send_sync::<InGenError>();
+        loop {}
     }
-
     #[test]
     fn gen_error_message() {
-        let set_cube_error = SetCubeError::OutOfBounds {
-            modification: GridAab::for_block(R1),
-            space_bounds: GridAab::for_block(R4),
-        };
-        let e = GenError::failure(set_cube_error.clone(), "x".into());
-        assert_eq!(
-            e.to_string(),
-            "An error occurred while generating object 'x'",
-        );
-        let source = Error::source(&e)
-            .expect("has source")
-            .downcast_ref::<InGenError>()
-            .expect("is InGenError");
-        assert_eq!(source.to_string(), set_cube_error.to_string());
+        loop {}
     }
-
     #[test]
     #[allow(clippy::try_err)]
     fn gen_error_composition() {
-        // TODO: this isn't the greatest example situation
-        fn a() -> Result<(), GenError> {
-            b().map_err(|e| GenError::failure(e, "x".into()))?;
-            Ok(())
-        }
-        fn b() -> Result<(), InGenError> {
-            Err(SetCubeError::OutOfBounds {
-                modification: GridAab::for_block(R1),
-                space_bounds: GridAab::for_block(R1),
-            })?;
-            Ok(())
-        }
-        let r = a();
-        assert!(
-            matches!(
-                r,
-                Err(GenError {
-                    detail: InGenError::SetCube(_),
-                    for_object: Some(Name::Specific(_)),
-                })
-            ),
-            "got error: {r:?}"
-        );
+        loop {}
     }
 }

@@ -1,17 +1,13 @@
 //! Tools that we could imagine being in the Rust standard library, but aren't.
-
 use std::error::Error;
 use std::fmt::{self, Debug, Display};
 use std::marker::PhantomData;
 use std::ops::AddAssign;
 use std::time::Duration;
-
 use cgmath::{Matrix4, Point3, Vector2, Vector3, Vector4};
 use instant::Instant;
-
 mod yield_progress;
 pub use yield_progress::*;
-
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).
 ///
 /// This can be thought of as a mechanism to easily create a new special-purpose
@@ -25,13 +21,11 @@ pub trait CustomFormat<F: Copy> {
     /// Wrap this value so that when formatted with [`Debug`] or [`Display`] it uses
     /// the given custom format instead.
     fn custom_format(&self, format_type: F) -> CustomFormatWrapper<'_, F, Self> {
-        CustomFormatWrapper(format_type, self)
+        loop {}
     }
-
     /// Implement this to provide custom formatting for this type.
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, format_type: F) -> fmt::Result;
 }
-
 /// You can use [`CustomFormat::custom_format`] to construct this.
 /// See its documentation.
 ///
@@ -41,45 +35,41 @@ pub trait CustomFormat<F: Copy> {
 pub struct CustomFormatWrapper<'a, F: Copy, T: CustomFormat<F> + ?Sized>(F, &'a T);
 impl<'a, F: Copy, T: CustomFormat<F>> Debug for CustomFormatWrapper<'a, F, T> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        <T as CustomFormat<F>>::fmt(self.1, fmt, self.0)
+        loop {}
     }
 }
 impl<'a, F: Copy, T: CustomFormat<F>> Display for CustomFormatWrapper<'a, F, T> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        <T as CustomFormat<F>>::fmt(self.1, fmt, self.0)
+        loop {}
     }
 }
-
 impl<F: Copy, T: CustomFormat<F>> CustomFormat<F> for &'_ T {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, format_type: F) -> fmt::Result {
-        <T as CustomFormat<F>>::fmt(&**self, fmt, format_type)
+        loop {}
     }
 }
-
 /// Format type for [`CustomFormat`] which forces a string to be unquoted when [`Debug`]ged.
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub(crate) struct Unquote;
 impl CustomFormat<Unquote> for String {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: Unquote) -> fmt::Result {
-        write!(fmt, "{self}")
+        loop {}
     }
 }
 impl CustomFormat<Unquote> for &'_ str {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: Unquote) -> fmt::Result {
-        write!(fmt, "{self}")
+        loop {}
     }
 }
-
 /// Format type for [`CustomFormat`] which prints the name of a type.
 /// The value is a `PhantomData` to avoid requiring an actual instance of the type.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct TypeName;
 impl<T> CustomFormat<TypeName> for PhantomData<T> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: TypeName) -> fmt::Result {
-        write!(fmt, "{}", std::any::type_name::<T>())
+        loop {}
     }
 }
-
 /// Format type for [`CustomFormat`] which is similar to [`Debug`], but uses an
 /// alternate concise format.
 ///
@@ -88,55 +78,41 @@ impl<T> CustomFormat<TypeName> for PhantomData<T> {
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct ConciseDebug;
-
-impl<T: CustomFormat<ConciseDebug>, const N: usize> CustomFormat<ConciseDebug> for [T; N] {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, format_type: ConciseDebug) -> fmt::Result {
-        fmt.debug_list()
-            .entries(self.iter().map(|item| item.custom_format(format_type)))
-            .finish()
+impl<T: CustomFormat<ConciseDebug>, const N: usize> CustomFormat<ConciseDebug>
+for [T; N] {
+    fn fmt(
+        &self,
+        fmt: &mut fmt::Formatter<'_>,
+        format_type: ConciseDebug,
+    ) -> fmt::Result {
+        loop {}
     }
 }
-
-// TODO: Macro time?
 impl<S: Debug> CustomFormat<ConciseDebug> for Point3<S> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
-        write!(fmt, "({:+.3?}, {:+.3?}, {:+.3?})", self.x, self.y, self.z)
+        loop {}
     }
 }
-
 impl<S: Debug> CustomFormat<ConciseDebug> for Matrix4<S> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
-        write!(
-            fmt,
-            "\n[{:?},\n {:?},\n {:?},\n {:?}]",
-            self.x.custom_format(ConciseDebug),
-            self.y.custom_format(ConciseDebug),
-            self.z.custom_format(ConciseDebug),
-            self.w.custom_format(ConciseDebug)
-        )
+        loop {}
     }
 }
-
 impl<S: Debug> CustomFormat<ConciseDebug> for Vector2<S> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
-        write!(fmt, "({:+.3?}, {:+.3?})", self.x, self.y)
+        loop {}
     }
 }
 impl<S: Debug> CustomFormat<ConciseDebug> for Vector3<S> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
-        write!(fmt, "({:+.3?}, {:+.3?}, {:+.3?})", self.x, self.y, self.z)
+        loop {}
     }
 }
 impl<S: Debug> CustomFormat<ConciseDebug> for Vector4<S> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
-        write!(
-            fmt,
-            "({:+.3?}, {:+.3?}, {:+.3?}, {:+.3?})",
-            self.x, self.y, self.z, self.w
-        )
+        loop {}
     }
 }
-
 /// Format type for [`CustomFormat`] which provides an highly condensed, ideally
 /// constant-size, user-facing format for live-updating textual status messages.
 /// This format does not follow Rust [`Debug`](fmt::Debug) syntax, and when implemented
@@ -144,15 +120,13 @@ impl<S: Debug> CustomFormat<ConciseDebug> for Vector4<S> {
 #[allow(clippy::exhaustive_structs)]
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
 pub struct StatusText;
-
 /// Makes the assumption that [`Duration`]s are per-frame timings and hence the
 /// interesting precision is in the millisecond-to-microsecond range.
 impl CustomFormat<StatusText> for Duration {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        write!(fmt, "{:5.2?} ms", (self.as_micros() as f32) / 1000.0)
+        loop {}
     }
 }
-
 /// Formatting wrapper which prints an [`Error`] together with its
 /// `source()` chain, with at least one newline between each.
 ///
@@ -160,33 +134,26 @@ impl CustomFormat<StatusText> for Duration {
 ///
 /// Design note: This is not a [`CustomFormat`] because that has a blanket implementation
 /// which interferes with this one for [`Error`].
-#[doc(hidden)] // not something we wish to be stable public API
+#[doc(hidden)]
 #[derive(Clone, Copy, Debug)]
 #[allow(clippy::exhaustive_structs)]
 pub struct ErrorChain<'a>(pub &'a (dyn Error + 'a));
-
 impl Display for ErrorChain<'_> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        format_error_chain(fmt, self.0)
+        loop {}
     }
 }
-fn format_error_chain(fmt: &mut fmt::Formatter<'_>, mut error: &(dyn Error + '_)) -> fmt::Result {
-    // Write the error's own message. This is expected NOT to contain the sources itself.
-    write!(fmt, "{error}")?;
-
-    while let Some(source) = error.source() {
-        error = source;
-        write!(fmt, "\n\nCaused by:\n    {error}")?;
-    }
-
-    Ok(())
+fn format_error_chain(
+    fmt: &mut fmt::Formatter<'_>,
+    mut error: &(dyn Error + '_),
+) -> fmt::Result {
+    loop {}
 }
-
 /// Equivalent of [`Iterator::map`] but applied to an [`Extend`] instead, transforming
 /// the incoming elements.
 ///
 /// TODO: this is only used by the wireframe debug mesh mechanism and should be reconsidered
-#[doc(hidden)] // pub to be used by all-is-cubes-gpu
+#[doc(hidden)]
 #[derive(Debug)]
 pub struct MapExtend<'a, A, B, T, F>
 where
@@ -197,21 +164,15 @@ where
     function: F,
     _input: PhantomData<fn(A)>,
 }
-
 impl<'a, A, B, T, F> MapExtend<'a, A, B, T, F>
 where
     T: Extend<B>,
     F: Fn(A) -> B,
 {
     pub fn new(target: &'a mut T, function: F) -> Self {
-        Self {
-            target,
-            function,
-            _input: PhantomData,
-        }
+        loop {}
     }
 }
-
 impl<'a, A, B, T, F> Extend<A> for MapExtend<'a, A, B, T, F>
 where
     T: Extend<B>,
@@ -221,10 +182,9 @@ where
     where
         I: IntoIterator<Item = A>,
     {
-        self.target.extend(iter.into_iter().map(&self.function));
+        loop {}
     }
 }
-
 /// Aggregation of the time taken by a set of events.
 ///
 /// TODO: Consider including an identifier for the longest.
@@ -241,20 +201,13 @@ pub struct TimeStats {
     /// The maximum duration of all events, or [`Duration::ZERO`] if there were no events.
     pub max: Duration,
 }
-
 impl TimeStats {
     /// Constructs a [`TimeStats`] for a single event.
     ///
     /// Multiple of these may then be aggregated using the `+=` operator.
     pub const fn one(duration: Duration) -> Self {
-        Self {
-            count: 1,
-            sum: duration,
-            min: Some(duration),
-            max: duration,
-        }
+        loop {}
     }
-
     /// Record an event based on the given previous time and current time, then update
     /// the previous time value.
     ///
@@ -264,83 +217,30 @@ impl TimeStats {
         last_marked_instant: &mut Instant,
         now: Instant,
     ) -> Duration {
-        let previous = *last_marked_instant;
-        *last_marked_instant = now;
-
-        let duration = now.duration_since(previous);
-        *self += Self::one(duration);
-        duration
+        loop {}
     }
 }
-
 impl AddAssign for TimeStats {
     fn add_assign(&mut self, rhs: Self) {
-        *self = TimeStats {
-            count: self.count + rhs.count,
-            sum: self.sum + rhs.sum,
-            min: self.min.map_or(rhs.min, |value| Some(value.min(rhs.min?))),
-            max: self.max.max(rhs.max),
-        };
+        loop {}
     }
 }
-
 impl Display for TimeStats {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.min {
-            None => write!(
-                f,
-                "(-------- .. {}) for {:3}, total {}",
-                self.max.custom_format(StatusText),
-                self.count,
-                self.sum.custom_format(StatusText),
-            ),
-            Some(min) => write!(
-                f,
-                "({} .. {}) for {:3}, total {}",
-                min.custom_format(StatusText),
-                self.max.custom_format(StatusText),
-                self.count,
-                self.sum.custom_format(StatusText),
-            ),
-        }
+        loop {}
     }
 }
-
 #[doc(hidden)]
-pub fn assert_send_sync<T: Send + Sync>() {
-    // We don't need to do anything in this function; the call to it having been successfully
-    // compiled is the assertion.
-}
-
+pub fn assert_send_sync<T: Send + Sync>() {}
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn basic_concise_debug() {
-        #[derive(Debug)]
-        struct Foo;
-        impl CustomFormat<ConciseDebug> for Foo {
-            fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
-                write!(fmt, "<Foo>")
-            }
-        }
-        assert_eq!("Foo", format!("{Foo:?}"));
-        assert_eq!("<Foo>", format!("{:?}", Foo.custom_format(ConciseDebug)));
+        loop {}
     }
-
     #[test]
     fn error_chain() {
-        #[derive(Debug, thiserror::Error)]
-        #[error("TestError1")]
-        struct TestError1;
-        #[derive(Debug, thiserror::Error)]
-        #[error("TestError2")]
-        struct TestError2(#[source] TestError1);
-
-        assert_eq!(
-            format!("{}", ErrorChain(&TestError2(TestError1))),
-            "TestError2\n\nCaused by:\n    TestError1"
-        );
+        loop {}
     }
 }

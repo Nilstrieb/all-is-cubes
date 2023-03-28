@@ -13,22 +13,14 @@
 //!
 //! * 3D vectors/points are represented as 3-element arrays
 //!   (and not, say, as structures with named fields).
-
 use std::sync::Arc;
-
 use serde::{Deserialize, Serialize};
-
 use crate::math::{Face6, GridAab, GridCoordinate, GridRotation};
 use crate::universe::URef;
 use crate::{block, space, universe};
-
 /// Placeholder type for when we want to serialize the *contents* of a `URef`,
 /// without cloning or referencing those contents immediately.
 pub(crate) struct SerializeRef<T>(pub(crate) URef<T>);
-
-//------------------------------------------------------------------------------------------------//
-// Schema corresponding to the `block` module
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub(crate) enum BlockSer {
@@ -38,16 +30,11 @@ pub(crate) enum BlockSer {
         modifiers: Vec<ModifierSer>,
     },
 }
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub(crate) enum PrimitiveSer {
     AirV1,
-    AtomV1 {
-        color: RgbaSer,
-        #[serde(flatten)]
-        attributes: BlockAttributesV1Ser,
-    },
+    AtomV1 { color: RgbaSer, #[serde(flatten)] attributes: BlockAttributesV1Ser },
     RecurV1 {
         #[serde(flatten)]
         attributes: BlockAttributesV1Ser,
@@ -56,78 +43,47 @@ pub(crate) enum PrimitiveSer {
         offset: [i32; 3],
         resolution: block::Resolution,
     },
-    IndirectV1 {
-        definition: universe::URef<block::BlockDef>,
-    },
+    IndirectV1 { definition: universe::URef<block::BlockDef> },
 }
-
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct BlockAttributesV1Ser {
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub(crate) display_name: String,
     #[serde(default = "return_true", skip_serializing_if = "is_true")]
     pub(crate) selectable: bool,
-    // TODO: implement all attributes
-    //collision: BlockCollision,
-    //rotation_rule: RotationPlacementRule,
     #[serde(default, skip_serializing_if = "is_default")]
     pub(crate) light_emission: RgbSer,
-    //tick_action: Option<VoxelBrush<'static>>,
-    //animation_hint: AnimationHint,
 }
 fn return_true() -> bool {
-    true
+    loop {}
 }
 fn is_true(value: &bool) -> bool {
-    *value
+    loop {}
 }
 fn is_default<T: Default + PartialEq + Copy>(value: &T) -> bool {
-    *value == T::default()
+    loop {}
 }
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub(crate) enum ModifierSer {
-    QuoteV1 {
-        suppress_ambient: bool,
-    },
-    RotateV1 {
-        rotation: GridRotation,
-    },
+    QuoteV1 { suppress_ambient: bool },
+    RotateV1 { rotation: GridRotation },
     CompositeV1 {
         source: block::Block,
         operator: block::CompositeOperator,
         reverse: bool,
         disassemblable: bool,
     },
-    ZoomV1 {
-        scale: block::Resolution,
-        offset: [u8; 3],
-    },
-    MoveV1 {
-        direction: Face6,
-        distance: u16,
-        velocity: i16,
-    },
+    ZoomV1 { scale: block::Resolution, offset: [u8; 3] },
+    MoveV1 { direction: Face6, distance: u16, velocity: i16 },
 }
-
-//------------------------------------------------------------------------------------------------//
-// Schema corresponding to the `math` module
-
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct GridAabSer {
-    // This one isn't an enum because I expect we'll not need to change it
     pub(crate) lower: [GridCoordinate; 3],
     pub(crate) upper: [GridCoordinate; 3],
 }
-
 type RgbSer = [ordered_float::NotNan<f32>; 3];
-
 type RgbaSer = [ordered_float::NotNan<f32>; 4];
-
-//------------------------------------------------------------------------------------------------//
-// Schema corresponding to the `space` module
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub(crate) enum SpaceSer {
@@ -135,13 +91,8 @@ pub(crate) enum SpaceSer {
         bounds: GridAab,
         blocks: Vec<block::Block>,
         contents: Box<[space::BlockIndex]>,
-        // TODO: bounds, behaviors, lighting, spawn, physics
     },
 }
-
-//------------------------------------------------------------------------------------------------//
-// Schema corresponding to the `universe` module
-
 /// Schema for `Universe` serialization and deserialization.
 /// The type parameters allow for the different data types wanted in the serialization
 /// case vs. the deserialization case.
@@ -156,32 +107,24 @@ pub(crate) enum UniverseSchema<S> {
 }
 pub(crate) type UniverseSer = UniverseSchema<SerializeRef<space::Space>>;
 pub(crate) type UniverseDe = UniverseSchema<space::Space>;
-
 #[derive(Debug, Deserialize, Serialize)]
 pub(crate) struct MemberEntrySer<T> {
     pub name: universe::Name,
     pub value: T,
 }
-
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(untagged)] // The type-and-version tags of each member suffice
+#[serde(untagged)]
 pub(crate) enum MemberSchema<S> {
     BlockDef(block::Block),
-    // TODO: Character(C)
     Space(S),
 }
 pub(crate) type MemberSer = MemberSchema<SerializeRef<space::Space>>;
 pub(crate) type MemberDe = MemberSchema<space::Space>;
-
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
 pub(crate) enum URefSer {
-    URefV1 {
-        #[serde(flatten)]
-        name: universe::Name,
-    },
+    URefV1 { #[serde(flatten)] name: universe::Name },
 }
-
 #[derive(Debug, Eq, Ord, PartialEq, PartialOrd, Deserialize, Serialize)]
 pub(crate) enum NameSer {
     Specific(Arc<str>),

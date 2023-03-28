@@ -1,18 +1,15 @@
 //! Integer-coordinate matrices.
 //! This module is private but reexported by its parent.
-
 use std::cmp::Ordering;
 use std::ops::Mul;
-
 use cgmath::{
     EuclideanSpace as _, InnerSpace, Matrix4, One, Transform, Vector3, Vector4, Zero as _,
 };
 pub use ordered_float::{FloatIsNan, NotNan};
-
 use crate::math::{
-    Face6, Face7, FreeCoordinate, GridCoordinate, GridPoint, GridRotation, GridVector, Point3,
+    Face6, Face7, FreeCoordinate, GridCoordinate, GridPoint, GridRotation, GridVector,
+    Point3,
 };
-
 /// A 4×3 affine transformation matrix in [`GridCoordinate`]s, rather than floats as
 /// [`cgmath::Matrix4`] requires.
 ///
@@ -29,7 +26,6 @@ pub struct GridMatrix {
     /// Fourth column (translation)
     pub w: Vector3<GridCoordinate>,
 }
-
 impl GridMatrix {
     pub(crate) const ZERO: Self = Self {
         x: Vector3::new(0, 0, 0),
@@ -37,16 +33,14 @@ impl GridMatrix {
         z: Vector3::new(0, 0, 0),
         w: Vector3::new(0, 0, 0),
     };
-
     /// For Y-down drawing
-    #[doc(hidden)] // used by all-is-cubes-content - TODO: public?
+    #[doc(hidden)]
     pub const FLIP_Y: Self = Self {
         x: Vector3::new(1, 0, 0),
         y: Vector3::new(0, -1, 0),
         z: Vector3::new(0, 0, 1),
         w: Vector3::new(0, 0, 0),
     };
-
     /// Note: This takes the same column-major ordering as [`cgmath`], so the argument order
     /// is transposed relative to a conventional textual display of a matrix.
     #[allow(clippy::too_many_arguments)]
@@ -65,37 +59,21 @@ impl GridMatrix {
         w1: GridCoordinate,
         w2: GridCoordinate,
     ) -> Self {
-        Self {
-            x: Vector3::new(x0, x1, x2),
-            y: Vector3::new(y0, y1, y2),
-            z: Vector3::new(z0, z1, z2),
-            w: Vector3::new(w0, w1, w2),
-        }
+        loop {}
     }
-
     /// Construct a translation matrix.
     #[inline]
     pub fn from_translation(offset: impl Into<GridVector>) -> Self {
-        Self {
-            w: offset.into(),
-            ..Self::one()
-        }
+        loop {}
     }
-
     /// Construct a uniform scaling matrix.
     ///
     /// Note that since this is an integer matrix, there is no possibility  of scaling less
     /// than 1 other than 0!
     #[inline]
     pub fn from_scale(scale: GridCoordinate) -> Self {
-        Self {
-            x: Vector3::new(scale, 0, 0),
-            y: Vector3::new(0, scale, 0),
-            z: Vector3::new(0, 0, scale),
-            w: Vector3::new(0, 0, 0),
-        }
+        loop {}
     }
-
     /// Construct a transformation to a translated and rotated coordinate system from
     /// an origin in the target coordinate system and basis vectors expressed as [`Face7`]s.
     ///
@@ -112,34 +90,26 @@ impl GridMatrix {
     /// );
     /// ```
     #[inline]
-    pub fn from_origin(origin: impl Into<GridPoint>, x: Face7, y: Face7, z: Face7) -> Self {
-        Self {
-            x: x.normal_vector(),
-            y: y.normal_vector(),
-            z: z.normal_vector(),
-            w: origin.into().to_vec(),
-        }
+    pub fn from_origin(
+        origin: impl Into<GridPoint>,
+        x: Face7,
+        y: Face7,
+        z: Face7,
+    ) -> Self {
+        loop {}
     }
-
     /// Convert this integer-valued matrix to an equivalent float-valued matrix.
     #[inline]
     pub fn to_free(self) -> Matrix4<FreeCoordinate> {
-        Matrix4 {
-            x: self.x.map(FreeCoordinate::from).extend(0.),
-            y: self.y.map(FreeCoordinate::from).extend(0.),
-            z: self.z.map(FreeCoordinate::from).extend(0.),
-            w: self.w.map(FreeCoordinate::from).extend(1.),
-        }
+        loop {}
     }
-
     /// Returns row `r` of the matrix.
     ///
     /// Panics if `r >= 3`.
     #[inline(always)]
     pub fn row(&self, r: usize) -> Vector4<GridCoordinate> {
-        Vector4::new(self.x[r], self.y[r], self.z[r], self.w[r])
+        loop {}
     }
-
     /// Equivalent to temporarily applying an offset of `[0.5, 0.5, 0.5]` while
     /// transforming `cube` as per [`GridMatrix::transform_point`], despite the fact that
     /// integer arithmetic is being used.
@@ -166,10 +136,8 @@ impl GridMatrix {
     /// [`GridAab::single_cube`]: crate::math::GridAab::single_cube
     #[inline]
     pub fn transform_cube(&self, cube: GridPoint) -> GridPoint {
-        self.transform_point(cube + Vector3::new(1, 1, 1))
-            .zip(self.transform_point(cube), |a, b| a.min(b))
+        loop {}
     }
-
     /// Decomposes a matrix into its rotation and translation components.
     /// Returns `None` if the matrix has any scaling or skew.
     ///
@@ -190,72 +158,41 @@ impl GridMatrix {
     /// );
     /// ```
     pub fn decompose(self) -> Option<(GridRotation, GridVector)> {
-        Some((
-            GridRotation::from_basis([
-                Face6::try_from(self.x).ok()?,
-                Face6::try_from(self.y).ok()?,
-                Face6::try_from(self.z).ok()?,
-            ]),
-            self.w,
-        ))
+        loop {}
     }
 }
-
 impl Mul<Self> for GridMatrix {
     type Output = Self;
     #[inline]
     fn mul(self, rhs: Self) -> Self::Output {
-        // Delegate to Transform implementation
-        self.concat(&rhs)
+        loop {}
     }
 }
-
 impl One for GridMatrix {
     #[inline]
     #[rustfmt::skip]
     fn one() -> Self {
-        Self::new(
-            1, 0, 0,
-            0, 1, 0,
-            0, 0, 1,
-            0, 0, 0,
-        )
+        loop {}
     }
 }
-
 impl Transform<GridPoint> for GridMatrix {
     fn look_at(eye: GridPoint, center: GridPoint, up: GridVector) -> Self {
-        Self::look_at_rh(eye, center, up)
+        loop {}
     }
-
     fn look_at_rh(_eye: GridPoint, _center: GridPoint, _up: GridVector) -> Self {
-        todo!("look_at_rh is not yet implemented");
-        // We may in the future find use for this for choosing block rotations.
+        loop {}
     }
-
     fn look_at_lh(_eye: GridPoint, _center: GridPoint, _up: GridVector) -> Self {
-        unimplemented!("left-handed coordinates are not currently used, so look_at_lh has not been not implemented");
+        loop {}
     }
-
     #[inline]
     fn transform_vector(&self, vec: GridVector) -> GridVector {
-        GridVector {
-            x: self.row(0).truncate().dot(vec),
-            y: self.row(1).truncate().dot(vec),
-            z: self.row(2).truncate().dot(vec),
-        }
+        loop {}
     }
-
     #[inline]
     fn transform_point(&self, point: GridPoint) -> GridPoint {
-        let homogeneous = point.to_vec().extend(1);
-        GridPoint {
-            x: self.row(0).dot(homogeneous),
-            y: self.row(1).dot(homogeneous),
-            z: self.row(2).dot(homogeneous),
-        }
+        loop {}
     }
-
     /// ```
     /// use all_is_cubes::math::{GridMatrix, GridPoint};
     /// use cgmath::Transform as _;
@@ -275,143 +212,38 @@ impl Transform<GridPoint> for GridMatrix {
     /// );
     /// ```
     fn concat(&self, other: &Self) -> Self {
-        GridMatrix {
-            x: self.transform_vector(other.x),
-            y: self.transform_vector(other.y),
-            z: self.transform_vector(other.z),
-            // Shenanigan because we're working in 4x3 rather than 4x4
-            // with homogeneous coordinate vectors.
-            w: self.transform_point(Point3::from_vec(other.w)).to_vec(),
-        }
+        loop {}
     }
-
     fn inverse_transform(&self) -> Option<Self> {
-        // For now, implement this the expensive but simple way of borrowing float matrix ops.
-
-        const INVERSE_EPSILON: FreeCoordinate = 0.25 / (GridCoordinate::MAX as FreeCoordinate);
-        fn try_round(v: Vector4<FreeCoordinate>, expected_w: FreeCoordinate) -> Option<GridVector> {
-            let mut result = GridVector::zero();
-            for axis in 0..4 {
-                let rounded = v[axis].round();
-                let remainder = v[axis] - rounded;
-                if remainder.abs().partial_cmp(&INVERSE_EPSILON) != Some(Ordering::Less) {
-                    // The inverse matrix has a non-integer element.
-                    return None;
-                }
-                if axis == 3 {
-                    #[allow(clippy::float_cmp)]
-                    if rounded != expected_w {
-                        return None;
-                    }
-                } else {
-                    // TODO: check for overflow
-                    result[axis] = rounded as GridCoordinate;
-                }
-            }
-            Some(result)
-        }
-
-        let fi = self.to_free().inverse_transform()?;
-        Some(GridMatrix {
-            x: try_round(fi.x, 0.0)?,
-            y: try_round(fi.y, 0.0)?,
-            z: try_round(fi.z, 0.0)?,
-            w: try_round(fi.w, 1.0)?,
-        })
+        loop {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use rand::{Rng, SeedableRng as _};
     use rand_xoshiro::Xoshiro256Plus;
-
     fn random_grid_matrix(mut rng: impl Rng) -> GridMatrix {
-        let mut r = || rng.gen_range(-100..=100);
-        GridMatrix::new(r(), r(), r(), r(), r(), r(), r(), r(), r(), r(), r(), r())
+        loop {}
     }
-
     fn random_possibly_invertible_matrix(mut rng: impl Rng) -> GridMatrix {
-        let mut r = |n: GridCoordinate| rng.gen_range(-n..=n);
-        GridMatrix::new(
-            r(1),
-            r(1),
-            r(1),
-            r(1),
-            r(1),
-            r(1),
-            r(1),
-            r(1),
-            r(1),
-            r(GridCoordinate::MAX / 10),
-            r(GridCoordinate::MAX / 10),
-            r(GridCoordinate::MAX / 10),
-        )
+        loop {}
     }
-
     #[test]
     #[rustfmt::skip]
     fn equivalent_constructor() {
-        let m = GridMatrix::new(
-            1, 2, 3,
-            5, 6, 7,
-            9, 10, 11,
-            13, 14, 15,
-        );
-        assert_eq!(m.to_free(), Matrix4::new(
-            1., 2., 3., 0.,
-            5., 6., 7., 0.,
-            9., 10., 11., 0.,
-            13., 14., 15., 1.,
-        ));
+        loop {}
     }
-
     #[test]
     fn equivalent_transform() {
-        let mut rng = Xoshiro256Plus::seed_from_u64(2897358920346590823);
-        for _ in 1..100 {
-            let m = random_grid_matrix(&mut rng);
-            dbg!(m, m.to_free());
-            assert_eq!(
-                m.transform_point(GridPoint::new(2, 300, 40000))
-                    .map(FreeCoordinate::from),
-                m.to_free().transform_point(Point3::new(2., 300., 40000.)),
-            );
-            assert_eq!(
-                m.transform_vector(GridVector::new(10, 20, 30))
-                    .map(FreeCoordinate::from),
-                m.to_free().transform_vector(Vector3::new(10., 20., 30.)),
-            );
-        }
+        loop {}
     }
-
     #[test]
     fn equivalent_concat() {
-        let mut rng = Xoshiro256Plus::seed_from_u64(5933089223468901296);
-        for _ in 1..100 {
-            let m1 = random_grid_matrix(&mut rng);
-            let m2 = random_grid_matrix(&mut rng);
-            assert_eq!(m1.concat(&m2).to_free(), m1.to_free().concat(&m2.to_free()),);
-        }
+        loop {}
     }
-
     #[test]
     fn equivalent_inverse() {
-        let mut rng = Xoshiro256Plus::seed_from_u64(0xca9bd0d289b4700e);
-        let mut nontrivial = 0;
-        for _ in 1..500 {
-            let m = random_possibly_invertible_matrix(&mut rng);
-            let inv = m.inverse_transform();
-            if let Some(inv) = inv {
-                assert_eq!(
-                    Some(inv.to_free()),
-                    m.to_free().inverse_transform(),
-                    "inverse of {m:?}",
-                );
-                nontrivial += 1;
-            }
-        }
-        assert!(nontrivial > 100, "got {nontrivial} inverses");
+        loop {}
     }
 }
