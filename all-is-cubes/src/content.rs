@@ -43,13 +43,7 @@ pub(crate) mod testing;
 ///
 /// [`Primitive::Atom`]: crate::block::Primitive::Atom
 pub(crate) fn make_some_blocks<const COUNT: usize>() -> [Block; COUNT] {
-    color_sequence_for_make_blocks(COUNT)
-        .map(|(i, color)| {
-            Block::builder().display_name(i.to_string()).color(color).build()
-        })
-        .collect::<Vec<_>>()
-        .try_into()
-        .unwrap()
+    loop {}
 }
 /// Generate a set of distinct [`Primitive::Recur`] blocks for use in tests.
 /// They will have distinct appearances and names, and all other attributes default.
@@ -72,39 +66,7 @@ pub(crate) fn make_some_blocks<const COUNT: usize>() -> [Block; COUNT] {
 pub(crate) fn make_some_voxel_blocks<const COUNT: usize>(
     universe: &mut Universe,
 ) -> [Block; COUNT] {
-    let resolution = R16;
-    color_sequence_for_make_blocks(COUNT)
-        .map(|(i, color)| {
-            let mut block_space = Space::for_block(resolution)
-                .filled_with(Block::from(color))
-                .build();
-            axes(&mut block_space).unwrap();
-            for face in Face6::ALL {
-                Text::with_text_style(
-                        &i.to_string(),
-                        Point::new(i32::from(resolution) / 2, i32::from(resolution) / 2),
-                        MonoTextStyle::new(&FONT_9X15_BOLD, palette::ALMOST_BLACK),
-                        TextStyleBuilder::new()
-                            .baseline(Baseline::Middle)
-                            .alignment(Alignment::Center)
-                            .build(),
-                    )
-                    .draw(
-                        &mut block_space
-                            .draw_target(
-                                face.matrix(GridCoordinate::from(resolution) - 1),
-                            ),
-                    )
-                    .unwrap();
-            }
-            Block::builder()
-                .display_name(i.to_string())
-                .voxels_ref(resolution, universe.insert_anonymous(block_space))
-                .build()
-        })
-        .collect::<Vec<_>>()
-        .try_into()
-        .unwrap()
+    loop {}
 }
 fn color_sequence_for_make_blocks(n: usize) -> impl Iterator<Item = (usize, Rgba)> {
     (0..n)
@@ -126,31 +88,7 @@ pub(crate) fn make_slab(
     numerator: GridCoordinate,
     denominator: Resolution,
 ) -> Block {
-    let voxel_palette = [
-        Block::from(palette::PLANK),
-        Block::from(palette::PLANK * 1.06),
-    ];
-    let bounds = GridAab::from_lower_size(
-        [0, 0, 0],
-        [denominator.to_grid(), numerator, denominator.to_grid()],
-    );
-    let mut space = Space::builder(bounds).build();
-    space
-        .fill(
-            space.bounds(),
-            |cube| {
-                Some(&voxel_palette[(cube.x + cube.y + cube.z).rem_euclid(2) as usize])
-            },
-        )
-        .unwrap();
-    Block::builder()
-        .display_name(format!("Slab {numerator}/{denominator}"))
-        .collision(BlockCollision::Recur)
-        .rotation_rule(RotationPlacementRule::Attach {
-            by: Face6::NY,
-        })
-        .voxels_ref(denominator, universe.insert_anonymous(space))
-        .build()
+    loop {}
 }
 /// Draw the Space's axes as lines of blocks centered on (0, 0, 0).
 ///
@@ -171,43 +109,7 @@ pub(crate) fn make_slab(
 /// assert_ne!(space[[0, 0, -10]], AIR);
 /// ```
 pub(crate) fn axes(space: &mut Space) -> Result<(), SetCubeError> {
-    for face in Face6::ALL {
-        let axis = face.axis_number();
-        let axis_color = [
-            palette::UNIFORM_LUMINANCE_RED,
-            palette::UNIFORM_LUMINANCE_GREEN,
-            palette::UNIFORM_LUMINANCE_BLUE,
-        ][axis];
-        let direction = face.normal_vector::<GridCoordinate>()[axis];
-        let raycaster = Raycaster::new(
-                (0.5, 0.5, 0.5),
-                face.normal_vector::<FreeCoordinate>(),
-            )
-            .within(space.bounds());
-        for step in raycaster {
-            let i = step.cube_ahead()[axis] * direction;
-            let (color, display_name): (Rgb, Cow<'static, str>) = if i.rem_euclid(2) == 0
-            {
-                (axis_color, i.rem_euclid(10).to_string().into())
-            } else {
-                if direction > 0 {
-                    (rgb_const!(1.0, 1.0, 1.0), ["X", "Y", "Z"][axis].into())
-                } else {
-                    (rgb_const!(0.0, 0.0, 0.0), ["x", "y", "z"][axis].into())
-                }
-            };
-            space
-                .set(
-                    step.cube_ahead(),
-                    Block::builder()
-                        .display_name(display_name)
-                        .light_emission(axis_color * 3.0)
-                        .color(color.with_alpha_one())
-                        .build(),
-                )?;
-        }
-    }
-    Ok(())
+    loop {}
 }
 /// A set of inventory items to give character free movement and modification of
 /// everything in the universe. (For the moment, actually just the current space.)
@@ -215,10 +117,7 @@ pub(crate) fn axes(space: &mut Space) -> Result<(), SetCubeError> {
 /// TODO: ideally `flying` wouldn't be an explicit parameter but determined based on
 /// the same inputs as choose the spawn position.
 pub(crate) fn free_editing_starter_inventory(flying: bool) -> Vec<Slot> {
-    vec![
-        Slot::one(Tool::RemoveBlock { keep : true }), Slot::one(Tool::Jetpack { active :
-        flying }),
-    ]
+    loop {}
 }
 #[cfg(test)]
 mod tests {
@@ -226,33 +125,18 @@ mod tests {
     use crate::block::{BlockAttributes, Primitive};
     #[test]
     fn make_some_blocks_0() {
-        assert_eq!(make_some_blocks::< 0 > (), []);
+        loop {}
     }
     #[test]
     fn make_some_blocks_1() {
-        assert_eq!(
-            make_some_blocks::< 1 > (),
-            [Block::from_primitive(Primitive::Atom(BlockAttributes { display_name : "0"
-            .into(), ..BlockAttributes::default() }, Rgba::new(0.5, 0.5, 0.5, 1.0)))]
-        );
+        loop {}
     }
     #[test]
     fn make_some_blocks_2() {
-        assert_eq!(
-            make_some_blocks::< 2 > (),
-            [Block::from_primitive(Primitive::Atom(BlockAttributes { display_name : "0"
-            .into(), ..BlockAttributes::default() }, Rgba::new(0.0, 0.0, 0.0, 1.0))),
-            Block::from_primitive(Primitive::Atom(BlockAttributes { display_name : "1"
-            .into(), ..BlockAttributes::default() }, Rgba::new(1.0, 1.0, 1.0, 1.0)))]
-        );
+        loop {}
     }
     #[test]
     fn make_some_blocks_multiple_call_equality() {
-        assert_eq!(make_some_blocks::< 3 > (), make_some_blocks::< 3 > ());
-        let universe = &mut Universe::new();
-        assert_ne!(
-            make_some_voxel_blocks::< 3 > (universe), make_some_voxel_blocks::< 3 >
-            (universe)
-        );
+        loop {}
     }
 }
