@@ -13,18 +13,18 @@ use crate::raycast::Ray;
 use crate::space::{SetCubeError, Space};
 use crate::universe::URef;
 mod attributes;
-pub use attributes::*;
+pub(crate) use attributes::*;
 mod block_def;
-pub use block_def::*;
+pub(crate) use block_def::*;
 pub(crate) mod builder;
 #[doc(inline)]
-pub use builder::BlockBuilder;
+pub(crate) use builder::BlockBuilder;
 mod evaluated;
-pub use evaluated::*;
+pub(crate) use evaluated::*;
 mod modifier;
-pub use modifier::*;
+pub(crate) use modifier::*;
 mod resolution;
-pub use resolution::*;
+pub(crate) use resolution::*;
 /// A [`Block`] is something that can exist in the grid of a [`Space`]; it occupies one
 /// unit cube of simulated physical space, and has a specified appearance and behavior.
 ///
@@ -60,7 +60,7 @@ struct BlockParts {
 /// The possible fundamental representations of a [`Block`]'s shape.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub enum Primitive {
+pub(crate) enum Primitive {
     /// A block whose definition is stored elsewhere in a
     /// [`Universe`](crate::universe::Universe).
     ///
@@ -309,7 +309,7 @@ impl From<Rgba> for Block {
 /// as well as other algorithms treating it as replaceable or discardable.
 ///
 /// When evaluated, will always produce [`AIR_EVALUATED`].
-pub const AIR: Block = Block(BlockPtr::Static(&Primitive::Air));
+pub(crate) const AIR: Block = Block(BlockPtr::Static(&Primitive::Air));
 /// Given the `resolution` of some recursive block occupying `cube`, transform `ray`
 /// into an equivalent ray intersecting the recursive grid.
 ///

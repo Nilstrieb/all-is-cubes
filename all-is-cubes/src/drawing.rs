@@ -74,7 +74,7 @@ pub struct DrawingPlane<'s, T, C> {
 /// Builds on [`PixelColor`] by defining a conversion to [`Block`]s and tracking depth.
 /// [`PixelColor::Raw`] is ignored; the supertrait is present only because
 /// [`embedded_graphics`] requires it.
-pub trait VoxelColor<'a>: PixelColor {
+pub(crate) trait VoxelColor<'a>: PixelColor {
     /// Returns a corresponding [`VoxelBrush`], the most general form of blocky drawing.
     fn into_blocks(self) -> VoxelBrush<'a>;
 }
