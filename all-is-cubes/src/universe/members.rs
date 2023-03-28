@@ -73,11 +73,3 @@ impl_universe_for_member!(BlockDef, blocks);
 impl_universe_for_member!(Character, characters);
 impl_universe_for_member!(Space, spaces);
 member_enums!((BlockDef), (Character), (Space),);
-impl super::URefErased for AnyURef {
-    fn name(&self) -> Name {
-        loop {}
-    }
-    fn universe_id(&self) -> Option<super::UniverseId> {
-        loop {}
-    }
-}

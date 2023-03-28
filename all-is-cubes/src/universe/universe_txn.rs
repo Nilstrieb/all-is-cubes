@@ -157,34 +157,6 @@ impl Debug for AnyTransaction {
         loop {}
     }
 }
-/// Each implementation of [`UTransactional`] corresponds to a variant of [`AnyTransaction`].
-mod any_transaction {
-    use super::*;
-    impl UTransactional for BlockDef {
-        fn bind(
-            target: URef<Self>,
-            transaction: Self::Transaction,
-        ) -> UniverseTransaction {
-            loop {}
-        }
-    }
-    impl UTransactional for Character {
-        fn bind(
-            target: URef<Self>,
-            transaction: Self::Transaction,
-        ) -> UniverseTransaction {
-            loop {}
-        }
-    }
-    impl UTransactional for Space {
-        fn bind(
-            target: URef<Self>,
-            transaction: Self::Transaction,
-        ) -> UniverseTransaction {
-            loop {}
-        }
-    }
-}
 /// A [`Transaction`] which operates on one or more objects in a [`Universe`]
 /// simultaneously.
 ///
@@ -216,9 +188,6 @@ pub struct UniverseMergeCheck(HashMap<Name, MemberMergeCheck>);
 pub struct UniverseCommitCheck {
     members: HashMap<Name, MemberCommitCheck>,
     anonymous_insertions: Vec<MemberCommitCheck>,
-}
-impl Transactional for Universe {
-    type Transaction = UniverseTransaction;
 }
 impl UniverseTransaction {
     /// Convert from a transaction on a single member to [`UniverseTransaction`].
@@ -362,69 +331,6 @@ impl Merge for MemberTxn {
     where
         Self: Sized,
     {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    //! Additional tests of universe transactions also exist in [`super::tests`]
-    //! (where they are parallel with non-transaction behavior tests).
-    use super::*;
-    use crate::content::make_some_blocks;
-    use crate::space::SpaceTransaction;
-    use crate::transaction::{ExecuteError, TransactionTester};
-    use crate::universe::UniverseIndex;
-    use indoc::indoc;
-    use std::collections::HashMap;
-    #[test]
-    fn has_default() {
-        loop {}
-    }
-    #[test]
-    fn debug() {
-        loop {}
-    }
-    #[test]
-    fn merge_unrelated() {
-        loop {}
-    }
-    #[test]
-    fn merge_conflict() {
-        loop {}
-    }
-    #[test]
-    fn merges_members() {
-        loop {}
-    }
-    #[test]
-    fn insert_affects_clones() {
-        loop {}
-    }
-    /// Anonymous refs require special handling because, before being inserted, they do
-    /// not have unique names.
-    #[test]
-    fn insert_anonymous() {
-        loop {}
-    }
-    #[test]
-    #[ignore]
-    fn systematic() {
-        loop {}
-    }
-    #[test]
-    fn wrong_universe_execute() {
-        loop {}
-    }
-    #[test]
-    fn wrong_universe_merge() {
-        loop {}
-    }
-    #[test]
-    fn insert_named_already_in_different_universe() {
-        loop {}
-    }
-    #[test]
-    fn insert_anonymous_already_in_different_universe() {
         loop {}
     }
 }
