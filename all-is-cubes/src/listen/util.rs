@@ -14,18 +14,6 @@ pub struct Filter<F, T> {
     /// The recipient of the messages.
     pub(super) target: T,
 }
-impl<MI, MO, F, T> Listener<MI> for Filter<F, T>
-where
-    F: Fn(MI) -> Option<MO> + Send + Sync,
-    T: Listener<MO>,
-{
-    fn receive(&self, message: MI) {
-        loop {}
-    }
-    fn alive(&self) -> bool {
-        loop {}
-    }
-}
 /// Controls a [`Listener`] chain by discarding messages when this gate is dropped.
 ///
 /// Construct this using [`Listener::gate`], or if a placeholder instance with no
@@ -49,44 +37,7 @@ pub struct GateListener<T> {
     weak: Weak<()>,
     target: T,
 }
-impl<M, T> Listener<M> for GateListener<T>
-where
-    T: Listener<M>,
-{
-    fn receive(&self, message: M) {
-        loop {}
-    }
-    fn alive(&self) -> bool {
-        loop {}
-    }
-}
 /// A [`Listener`] which forwards messages through a [`Notifier`] to its listeners.
 /// Constructed by [`Notifier::forwarder()`].
 #[derive(Debug)]
 pub struct NotifierForwarder<M>(pub(super) Weak<Notifier<M>>);
-impl<M: Clone + Send> Listener<M> for NotifierForwarder<M> {
-    fn receive(&self, message: M) {
-        loop {}
-    }
-    fn alive(&self) -> bool {
-        loop {}
-    }
-}
-impl<M> Clone for NotifierForwarder<M> {
-    fn clone(&self) -> Self {
-        loop {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::listen::{Listen as _, Sink};
-    #[test]
-    fn filter() {
-        loop {}
-    }
-    #[test]
-    fn gate() {
-        loop {}
-    }
-}

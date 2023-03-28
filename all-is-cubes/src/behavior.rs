@@ -89,17 +89,6 @@ impl<H: BehaviorHost> PartialEq for BehaviorSetEntry<H> {
             && Arc::ptr_eq(&self.behavior, &other.behavior)
     }
 }
-/// Result of [`BehaviorSet::query()`].
-#[non_exhaustive]
-pub struct QueryItem<'a, H: BehaviorHost, B: Behavior<H> + ?Sized> {
-    /// The found behavior's current value.
-    pub(crate) behavior: &'a B,
-    /// The found behavior's current attachment.
-    ///
-    /// An attachment is additional data about “where” the behavior is attached to the host
-    /// what part of the host should be affected by the behavior.
-    pub(crate) attachment: &'a H::Attachment,
-}
 /// A [`Transaction`] that adds or modifies [`Behavior`]s in a [`BehaviorSet`].
 #[derive(Debug)]
 pub struct BehaviorSetTransaction<H: BehaviorHost> {
