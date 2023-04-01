@@ -29,7 +29,7 @@ where
     /// Dirty flags listening to `space`.
     todo: Arc<Mutex<CsmTodo<CHUNK_SIZE>>>,
 
-    block_meshes: VersionedBlockMeshes<Vert, Tex::Tile>,
+    block_meshes: (Vert, Tex::Tile),
 
     /// Invariant: the set of present chunks (keys here) is the same as the set of keys
     /// in `todo.read().unwrap().chunks`.
@@ -50,7 +50,7 @@ impl CustomFormat<StatusText> for CsmUpdateInfo {
 #[derive(Debug)]
 struct VersionedBlockMeshes<Vert, Tile> {
     /// Indices of this vector are block IDs in the Space.
-    meshes: Vec<(Vert, Tile)>,
+    meshes: (Vert, Tile),
 }
 
 impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes<Vert, Tile> {
@@ -59,10 +59,9 @@ impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMes
     }
 }
 
-/// Entry in [`VersionedBlockMeshes`].
 #[derive(Debug)]
 struct VersionedBlockMesh<Vert, Tile> {
-    mesh: BlockMesh<Vert, Tile>,
+    mesh: (Vert, Tile),
     /// Version ID used to track whether chunks have stale block meshes (ones that don't
     /// match the current definition of that block-index in the space).
     version: BlockMeshVersion,
