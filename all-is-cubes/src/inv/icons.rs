@@ -1,6 +1,6 @@
-use std::fmt;
+
 use exhaust::Exhaust;
-use crate::linking::BlockModule;
+
 #[cfg(doc)]
 use crate::inv::Tool;
 /// Blocks that are icons for [`Tool`]s.

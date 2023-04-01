@@ -12,7 +12,7 @@ use std::fmt;
 mod cursor;
 pub(crate) use cursor::*;
 mod spawn;
-pub(crate) use spawn::*;
+
 /// A `Character`:
 ///
 /// * knows what [`Space`] it is looking at, by reference,

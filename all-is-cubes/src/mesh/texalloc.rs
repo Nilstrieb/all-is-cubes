@@ -1,6 +1,6 @@
 //! Traits for texture atlas/array allocator for block textures.
 use cgmath::Point3;
-use crate::block::Evoxels;
+
 use crate::math::GridAab;
 use crate::mesh::TextureCoordinate;
 /// Color data accepted by [`TextureAllocator`].

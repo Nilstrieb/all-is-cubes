@@ -1,10 +1,10 @@
 //! TODO: Maybe this file is too small
-use std::fmt;
-use crate::behavior::{self, BehaviorSet, BehaviorSetTransaction};
-use crate::block::Block;
-use crate::drawing::DrawingPlane;
-use crate::math::{GridMatrix, GridPoint};
-use crate::space::{GridAab, Space};
+
+use crate::behavior::{BehaviorSet, BehaviorSetTransaction};
+
+
+
+use crate::space::{Space};
 use crate::transaction::{
     CommitError, Merge, NoOutput, PreconditionFailed, Transaction, TransactionConflict,
     Transactional,

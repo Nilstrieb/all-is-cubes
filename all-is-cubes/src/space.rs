@@ -1,13 +1,13 @@
 //! That which contains many blocks.
-use crate::block::{Block, EvalBlockError};
+
 #[cfg(doc)]
 use crate::character::Character;
-use crate::listen::{Listen, Listener};
-use crate::math::{GridAab, GridPoint};
-use crate::universe::{RefVisitor, VisitRefs};
+
+use crate::math::{GridAab};
+
 use std::fmt;
 mod light;
-pub(crate) use light::PackedLight;
+
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
@@ -31,15 +31,15 @@ pub struct SpaceBehaviorAttachment {}
 #[allow(clippy::exhaustive_enums)]
 pub(crate) enum SpaceChange {
     /// The block at the given location was replaced.
-    Block(GridPoint),
+    Block(),
     /// The light level value at the given location changed.
-    Lighting(GridPoint),
+    Lighting(),
     /// The given block index number was reassigned and now refers to a different
     /// [`Block`] value.
-    Number(BlockIndex),
+    Number(),
     /// The definition of the block referred to by the given block index number was
     /// changed; the result of [`Space::get_evaluated`] may differ.
-    BlockValue(BlockIndex),
+    BlockValue(),
     /// Equivalent to [`SpaceChange::Block`] for every cube and [`SpaceChange::Number`]
     /// for every index.
     EveryBlock,

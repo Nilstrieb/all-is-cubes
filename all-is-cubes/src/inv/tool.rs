@@ -1,13 +1,13 @@
 //! [`Tool`] and related.
-use std::borrow::Cow;
-use std::sync::Arc;
-use std::{fmt, hash};
+
+
+
 use crate::block::Block;
-use crate::character::Cursor;
-use crate::inv::{self, Icons, StackLimit};
-use crate::linking::BlockProvider;
-use crate::math::GridPoint;
-use crate::universe::{RefError, RefVisitor, UniverseTransaction, VisitRefs};
+
+
+
+
+use crate::universe::{RefError};
 /// A `Tool` is an object which a character can use to have some effect in the game,
 /// such as placing or removing a block. In particular, a tool use usually corresponds
 /// to a click.

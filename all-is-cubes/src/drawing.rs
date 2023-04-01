@@ -14,10 +14,10 @@
 //! *   Coordinates are considered to refer to pixel centers rather than low corners,
 //!     and rectangles have inclusive upper bounds (whereas our [`GridAab`]s have
 //!     exclusive upper bounds).
-use std::borrow::Cow;
+
 use std::marker::PhantomData;
-use crate::block::Block;
-use crate::math::GridPoint;
+
+
 /// Adapter to use a [`Space`] or [`SpaceTransaction`] as a [`DrawTarget`].
 /// Use [`Space::draw_target`] to construct this.
 ///

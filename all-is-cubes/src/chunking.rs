@@ -3,15 +3,15 @@
 //! Note: this module is currently private and a little crufty.
 //! We will probably want to expose it but clean up the API first, particularly
 //! clarifying the treatment of distances and squared distances.
-use cgmath::Vector3;
-use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint};
+
+use crate::math::{GridCoordinate};
 /// Type to distinguish chunk coordinates from cube coordinates.
 ///
 /// Parameter `CHUNK_SIZE` is the number of cubes along the edge of a chunk.
 /// The consequences are unspecified if it is not positive.
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 #[allow(clippy::exhaustive_structs)]
-pub struct ChunkPos<const CHUNK_SIZE: GridCoordinate>(pub GridPoint);
+pub struct ChunkPos<const CHUNK_SIZE: GridCoordinate>();
 impl<const CHUNK_SIZE: GridCoordinate> std::fmt::Debug for ChunkPos<CHUNK_SIZE> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         loop {}
@@ -22,4 +22,4 @@ impl<const CHUNK_SIZE: GridCoordinate> std::fmt::Debug for ChunkPos<CHUNK_SIZE> 
 /// In order to use the same pattern for all possible view positions, the view position is
 /// rounded to enclosing chunk position.
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ChunkChart<const CHUNK_SIZE: GridCoordinate> {}
+pub(crate) struct ChunkChart<const CHUNK_SIZE: GridCoordinate> {}

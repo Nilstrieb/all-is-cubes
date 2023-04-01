@@ -1,7 +1,7 @@
 //! Axis-aligned unit vectors: the [`Face6`] and [`Face7`] types.
 //! This module is private but reexported by its parent.
-use cgmath::{BaseNum, Vector3};
-use crate::math::*;
+
+
 /// Identifies a face of a cube or an orthogonal unit vector.
 ///
 /// See also the similar type [`Face7`], which adds a “zero” or “within the cube”

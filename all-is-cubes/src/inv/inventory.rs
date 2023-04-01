@@ -1,14 +1,14 @@
 //! [`Inventory`] for storing items.
-use std::borrow::Cow;
-use std::num::NonZeroU16;
-use crate::block::Block;
-use crate::character::{Character, Cursor};
-use crate::inv::{Icons, Tool, ToolError};
-use crate::linking::BlockProvider;
+
+
+
+
+
+
 use crate::transaction::{
     CommitError, Merge, PreconditionFailed, Transaction, TransactionConflict,
 };
-use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
+
 /// A collection of [`Tool`]s (items).
 ///
 /// Note that unlike many other game objects in `all_is_cubes`, an `Inventory` does not

@@ -1,8 +1,8 @@
 use crate::block::BlockDef;
 use crate::character::Character;
 use crate::space::Space;
-use crate::universe::{Name, URef, URootRef};
-use std::collections::BTreeMap;
+use crate::universe::{URef};
+
 /// Generates enums which cover all universe types.
 macro_rules! member_enums {
     ($(($member_type:ident),)*) => {

@@ -1,5 +1,5 @@
 use std::fmt::Debug;
-use crate::math::GridRotation;
+
 use crate::mesh::BlockMesh;
 use crate::space::BlockIndex;
 /// A triangle mesh representation of a [`Space`] (or part of it) which may

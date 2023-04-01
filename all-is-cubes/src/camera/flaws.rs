@@ -1,4 +1,4 @@
-use std::fmt;
+
 bitflags::bitflags! {
     #[doc = " Deficiencies of a rendering."] #[doc = ""] #[doc =
     " This type describes the ways in which a rendered image could fail to accurately"]

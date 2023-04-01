@@ -1,4 +1,4 @@
-use std::ops;
+
 #[cfg(doc)]
 use crate::block::{EvaluatedBlock, Modifier, Primitive};
 /// Scale factor between a [recursive block](Primitive::Recur) and its component voxels.
@@ -37,7 +37,7 @@ pub(crate) enum Resolution {
     R128 = 7,
 }
 use std::fmt;
-use crate::math::GridCoordinate;
+
 impl fmt::Debug for Resolution {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}

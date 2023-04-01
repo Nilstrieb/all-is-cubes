@@ -1,13 +1,11 @@
 //! Axis-aligned integer-coordinate box volumes ([`GridAab`]), arrays bounded by them
 //! ([`GridArray`]), and related.
-use std::fmt;
-use std::iter::FusedIterator;
-use std::ops::Range;
-use cgmath::{Point3, Vector3};
-use crate::block::Resolution;
-use crate::math::{
-    Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint, GridVector,
-};
+
+
+
+
+
+
 /// An axis-aligned box with integer coordinates, whose volume is no larger than [`usize::MAX`].
 /// [`GridAab`]s are used to specify the coordinate extent of [`Space`](crate::space::Space)s, and
 /// regions within them.

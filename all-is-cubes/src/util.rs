@@ -1,6 +1,6 @@
 //! Tools that we could imagine being in the Rust standard library, but aren't.
-use std::fmt::{self, Debug, Display};
-use std::ops::AddAssign;
+use std::fmt::{self, Debug};
+
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).
 ///
 /// This can be thought of as a mechanism to easily create a new special-purpose
@@ -50,4 +50,4 @@ pub(crate) struct StatusText;
 /// TODO: Consider generalizing this to quantities other than time? Probably not.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 #[non_exhaustive]
-pub struct TimeStats {}
+pub(crate) struct TimeStats {}

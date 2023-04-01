@@ -2,8 +2,8 @@
 //!
 //! This module is internal and reexported by its parent.
 use std::fmt::Debug;
-use crate::mesh::{BlockVertex, MeshOptions, TextureAllocator, TextureTile};
-use crate::space::Space;
+
+
 /// Part of the triangle mesh calculated for a [`Block`], stored in a [`BlockMesh`] keyed
 /// by [`Face7`].
 ///

@@ -4,16 +4,16 @@
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
 use std::fmt;
-use crate::listen::Listener;
-use crate::math::{GridRotation, Rgb, Rgba};
+
+
 mod attributes;
-pub(crate) use attributes::*;
+
 mod block_def;
 pub(crate) use block_def::*;
 mod evaluated;
 pub(crate) use evaluated::*;
 mod modifier;
-pub(crate) use modifier::*;
+
 mod resolution;
 pub(crate) use resolution::*;
 /// A [`Block`] is something that can exist in the grid of a [`Space`]; it occupies one
@@ -32,7 +32,7 @@ pub(crate) use resolution::*;
 /// Use [`Block::listen()`] to be informed of possible changes to the result of
 /// evaluation.
 #[derive(Clone)]
-pub struct Block();
+pub(crate) struct Block();
 impl fmt::Debug for Block {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
