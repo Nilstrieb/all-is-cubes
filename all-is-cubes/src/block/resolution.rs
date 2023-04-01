@@ -38,30 +38,7 @@ pub(crate) enum Resolution {
 }
 use std::fmt;
 use crate::math::GridCoordinate;
-impl Resolution {
-    /// Returns the [`Resolution`] that’s twice this one, or [`None`] at the limit.
-    #[inline]
-    pub(crate) const fn double(self) -> Option<Self> {
-        loop {}
-    }
-    /// Returns the [`Resolution`] that’s half this one, or [`None`] if `self` is
-    /// [`R1`](Self::R1).
-    #[inline]
-    pub(crate) const fn halve(self) -> Option<Self> {
-        loop {}
-    }
-    #[inline]
-    #[doc(hidden)]
-    pub(crate) const fn to_grid(self) -> GridCoordinate {
-        loop {}
-    }
-}
 impl fmt::Debug for Resolution {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl fmt::Display for Resolution {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
     }
@@ -85,30 +62,6 @@ impl_try_from!(u32);
 impl_try_from!(u64);
 impl_try_from!(u128);
 impl_try_from!(usize);
-impl ops::Mul<Resolution> for Resolution {
-    type Output = Option<Resolution>;
-    fn mul(self, rhs: Resolution) -> Self::Output {
-        loop {}
-    }
-}
-impl ops::Div<Resolution> for Resolution {
-    type Output = Option<Resolution>;
-    fn div(self, rhs: Resolution) -> Self::Output {
-        loop {}
-    }
-}
-impl serde::Serialize for Resolution {
-    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        loop {}
-    }
-}
-impl<'de> serde::Deserialize<'de> for Resolution {
-    fn deserialize<D: serde::Deserializer<'de>>(
-        deserializer: D,
-    ) -> Result<Self, D::Error> {
-        loop {}
-    }
-}
 /// Error type produced by [`TryFrom`] for [`Resolution`], and deserializing resolutions,
 /// when the number is not a permitted resolution value.
 #[derive(Debug, Clone, Copy, Eq, Hash, PartialEq, thiserror::Error)]

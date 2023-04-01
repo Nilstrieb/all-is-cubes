@@ -1,9 +1,8 @@
 //! Mathematical utilities and decisions.
 use std::fmt;
-use cgmath::{Vector3};
+use cgmath::Vector3;
 use num_traits::identities::Zero;
-pub(crate) use ordered_float::{NotNan};
-
+pub(crate) use ordered_float::NotNan;
 mod aab;
 pub(crate) use aab::*;
 #[macro_use]
@@ -64,19 +63,6 @@ macro_rules! notnan {
         ::math::NotNan::new_unchecked(value) }; let _ = if false { unsafe { $crate
         ::math::NotNan::new_unchecked(0.0) } } else { result }; result } }
     };
-}
-#[inline]
-pub(crate) fn smoothstep(x: f64) -> f64 {
-    loop {}
-}
-#[inline]
-pub(crate) fn point_checked_add(p: GridPoint, v: GridVector) -> Option<GridPoint> {
-    loop {}
-}
-/// Sort exactly two items; swap them if `a > b`.
-#[inline]
-pub(crate) fn sort_two<T: PartialOrd>(a: &mut T, b: &mut T) {
-    loop {}
 }
 /// Common features of objects that have a location and shape in space.
 pub(crate) trait Geometry {

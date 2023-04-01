@@ -4,16 +4,12 @@
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
 use std::fmt;
-
 use crate::listen::Listener;
 use crate::math::{GridRotation, Rgb, Rgba};
-
-
 mod attributes;
 pub(crate) use attributes::*;
 mod block_def;
 pub(crate) use block_def::*;
-pub(crate) mod builder;
 mod evaluated;
 pub(crate) use evaluated::*;
 mod modifier;
@@ -37,198 +33,8 @@ pub(crate) use resolution::*;
 /// evaluation.
 #[derive(Clone)]
 pub struct Block();
-/// Pointer to data of a [`Block`] value.
-///
-/// This is a separate type so that the enum variants are not exposed.
-/// It does not implement Eq and Hash, but Block does through it.
-#[derive(Clone, Debug)]
-enum BlockPtr {
-    Static(),
-    Owned(),
-}
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-struct BlockParts {}
-/// The possible fundamental representations of a [`Block`]'s shape.
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-#[non_exhaustive]
-pub(crate) enum Primitive {
-    /// A block whose definition is stored elsewhere in a
-    /// [`Universe`](crate::universe::Universe).
-    ///
-    /// Note that this is a reference to a [`Block`], not a [`Primitive`]; the referenced
-    /// [`BlockDef`] may have its own [`Modifier`]s, and thus the result of
-    /// [evaluating](Block::evaluate) a primitive with no modifiers is not necessarily
-    /// free of the effects of modifiers.
-    Indirect(),
-    /// A block that is a single-colored unit cube. (It may still be be transparent or
-    /// non-solid to physics; in fact, [`AIR`] is such an atom.)
-    Atom(),
-    /// A block that is composed of smaller blocks, defined by the referenced [`Space`].
-    Recur {},
-    /// An invisible, unselectable, inert block used as “no block”; the primitive of [`AIR`].
-    ///
-    /// This is essentially a specific [`Primitive::Atom`]. There are a number of
-    /// algorithms which treat this block specially or which return it (e.g. outside the
-    /// bounds of a `Space`), so it exists here to make it an explicit element of the
-    /// data model — so that if it is, say, serialized and loaded in a future version,
-    /// it is still recognized as [`AIR`]. Additionally, it's cheaper to compare this way.
-    Air,
-}
 impl fmt::Debug for Block {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl Block {
-    /// Returns the [`Primitive`] which defines this block before any
-    /// [`Modifier`]s are applied.
-    pub(crate) fn primitive(&self) -> &Primitive {
-        loop {}
-    }
-    /// Returns a mutable reference to the [`Primitive`] which defines this block before
-    /// any [`Modifier`]s are applied.
-    ///
-    /// This may cause part or all of the block's data to stop sharing storage with other
-    /// blocks.
-    pub(crate) fn primitive_mut(&mut self) -> &mut Primitive {
-        loop {}
-    }
-    /// Returns all the modifiers of this block.
-    ///
-    /// Modifiers are arranged in order of their application to the primitive,
-    /// or “innermost” to “outermost”.
-    ///
-    /// Note that this does not necessarily return all modifiers involved in its
-    /// definition; modifiers on the far end of a [`Primitive::Indirect`] are
-    /// not reported here, even though they take effect when evaluated.
-    pub(crate) fn modifiers(&self) -> &[Modifier] {
-        loop {}
-    }
-    /// Returns a mutable reference to the vector of [`Modifier`]s on this block.
-    ///
-    /// This may cause part or all of the block's data to stop sharing storage with other
-    /// blocks.
-    pub(crate) fn modifiers_mut(&mut self) -> &mut Vec<Modifier> {
-        loop {}
-    }
-    fn make_parts_mut(&mut self) -> &mut BlockParts {
-        loop {}
-    }
-    /// Add the given modifier to this block.
-    ///
-    /// This is a convenience operation which is exactly equivalent to
-    /// doing `block.modifiers_mut().push(modifier.into())`. It does not do any of the
-    /// special case logic that, for example, [`Block::rotate()`] does.
-    #[must_use]
-    pub(crate) fn with_modifier(mut self, modifier: impl Into<Modifier>) -> Self {
-        loop {}
-    }
-    /// Rotates this block by the specified rotation.
-    ///
-    /// Compared to direct use of [`Modifier::Rotate`], this will:
-    ///
-    /// * Avoid constructing chains of redundant modifiers.
-    /// * Not rotate blocks that should never appear rotated (including atom blocks).
-    ///
-    /// (TODO: This should be replaced with `with_modifier()` or similar having a general
-    /// rule set for combining modifiers.)
-    ///
-    /// ```
-    /// use all_is_cubes::block::{AIR, Block, Modifier};
-    /// use all_is_cubes::content::make_some_voxel_blocks;
-    /// use all_is_cubes::math::{GridRotation, Rgba};
-    /// use all_is_cubes::universe::Universe;
-    ///
-    /// let mut universe = Universe::new();
-    /// let [block] = make_some_voxel_blocks(&mut universe);
-    /// let clockwise = GridRotation::CLOCKWISE;
-    ///
-    /// // Basic rotation
-    /// let rotated = block.clone().rotate(clockwise);
-    /// assert_eq!(rotated.modifiers(), &[Modifier::Rotate(clockwise)]);
-    ///
-    /// // Multiple rotations are combined
-    /// let double = rotated.clone().rotate(clockwise);
-    /// assert_eq!(double.modifiers(), &[Modifier::Rotate(clockwise * clockwise)]);
-    ///
-    /// // Atoms and AIR are never rotated
-    /// let atom = Block::from(Rgba::WHITE);
-    /// assert_eq!(atom.clone().rotate(clockwise), atom);
-    /// assert_eq!(AIR.rotate(clockwise), AIR);
-    /// ```
-    #[must_use]
-    pub(crate) fn rotate(mut self, rotation: GridRotation) -> Self {
-        loop {}
-    }
-    /// Standardizes any characteristics of this block which may be presumed to be
-    /// specific to its usage in its current location, so that it can be used elsewhere
-    /// or compared with others. Specifically, it has the following effects:
-    ///
-    /// * Removes [`Modifier::Rotate`].
-    ///
-    /// In future versions there may be additional changes or ones customizable per block.
-    ///
-    /// # Examples
-    ///
-    /// Removing rotation:
-    /// ```
-    /// use all_is_cubes::block::Block;
-    /// # use all_is_cubes::content::make_some_voxel_blocks;
-    /// use all_is_cubes::math::GridRotation;
-    /// use all_is_cubes::universe::Universe;
-    ///
-    /// let mut universe = Universe::new();
-    /// let [block] = make_some_voxel_blocks(&mut universe);
-    /// let rotated = block.clone().rotate(GridRotation::CLOCKWISE);
-    ///
-    /// assert_ne!(&block, &rotated);
-    /// assert_eq!(vec![block], rotated.clone().unspecialize());
-    /// ```
-    #[must_use]
-    pub(crate) fn unspecialize(&self) -> Vec<Block> {
-        loop {}
-    }
-    /// Converts this `Block` into a “flattened” and snapshotted form which contains all
-    /// information needed for rendering and physics, and does not require [`URef`] access
-    /// to other objects.
-    pub(crate) fn evaluate(&self) -> Result<EvaluatedBlock, EvalBlockError> {
-        loop {}
-    }
-    #[inline]
-    fn evaluate_impl(&self, depth: u8) -> Result<MinEval, EvalBlockError> {
-        loop {}
-    }
-    /// Registers a listener for mutations of any data sources which may affect this
-    /// block's [`Block::evaluate`] result.
-    ///
-    /// Note that this does not listen for mutations of the [`Block`] value itself, in the
-    /// sense that none of the methods on [`Block`] will cause this listener to fire.
-    /// Rather, it listens for changes in by-reference-to-interior-mutable-data sources
-    /// such as the [`Space`] referred to by a [`Primitive::Recur`] or the [`BlockDef`]
-    /// referred to by a [`Primitive::Indirect`].
-    ///
-    /// This may fail under the same conditions as [`Block::evaluate()`]; it returns the
-    /// same error type so that callers which both evaluate and listen don't need to
-    /// handle this separately.
-    ///
-    /// This is not an implementation of [`Listen`] because it can fail.
-    pub(crate) fn listen(
-        &self,
-        listener: impl Listener<BlockChange> + Clone + Send + Sync + 'static,
-    ) -> Result<(), EvalBlockError> {
-        loop {}
-    }
-    fn listen_impl(
-        &self,
-        listener: impl Listener<BlockChange> + Clone + Send + Sync + 'static,
-        depth: u8,
-    ) -> Result<(), EvalBlockError> {
-        loop {}
-    }
-    /// Returns the single [`Rgba`] color of this block's [`Primitive::Atom`] or
-    /// [`Primitive::Air`], or panics if it has a different kind of primitive.
-    /// **Intended for use in tests only.**
-    pub(crate) fn color(&self) -> Rgba {
         loop {}
     }
 }
@@ -243,30 +49,7 @@ impl std::hash::Hash for Block {
         loop {}
     }
 }
-impl From<&'static Primitive> for Block {
-    fn from(r: &'static Primitive) -> Self {
-        loop {}
-    }
-}
-impl From<Primitive> for Block {
-    fn from(primitive: Primitive) -> Self {
-        loop {}
-    }
-}
-/// Convert a color to a block with default attributes.
-impl From<Rgb> for Block {
-    fn from(color: Rgb) -> Self {
-        loop {}
-    }
-}
-/// Convert a color to a block with default attributes.
-impl From<Rgba> for Block {
-    fn from(color: Rgba) -> Self {
-        loop {}
-    }
-}
 /// Notification when an [`EvaluatedBlock`] result changes.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
 pub(crate) struct BlockChange {}
-impl BlockChange {}

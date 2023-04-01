@@ -47,7 +47,3 @@ pub(crate) struct BlockMesh<V, T> {
     /// to be responsible for optimizing opaque blocks into 6 face textures.
     pub(super) textures_used: Vec<T>,
 }
-/// Array of [`BlockMesh`] indexed by a [`Space`]'s block indices; a convenience
-/// alias for the return type of [`block_meshes_for_space`].
-/// Pass it to [`SpaceMesh::new()`](super::SpaceMesh::new) to use it.
-pub(crate) type BlockMeshes<V, A> = Box<[BlockMesh<V, A>]>;

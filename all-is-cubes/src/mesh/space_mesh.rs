@@ -1,7 +1,4 @@
-
 use std::fmt::Debug;
-
-
 use crate::math::GridRotation;
 use crate::mesh::BlockMesh;
 use crate::space::BlockIndex;
@@ -33,40 +30,4 @@ pub struct SpaceMesh<V, T> {
 pub(crate) trait BlockMeshProvider<'a, V, T> {
     /// Obtain a mesh for the given block index, or `None` if the index is out of range.
     fn get(&mut self, index: BlockIndex) -> Option<&'a BlockMesh<V, T>>;
-}
-/// Identifies a back-to-front order in which to draw triangles (of a [`SpaceMesh`]),
-/// based on the direction from which they are being viewed.
-#[allow(clippy::exhaustive_enums)]
-#[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
-pub(crate) enum DepthOrdering {
-    /// Any ordering is acceptable.
-    Any,
-    /// The viewpoint is within the volume; therefore dynamic rather than precomputed
-    /// sorting must be used.
-    Within,
-    /// The viewpoint is outside the volume in a particular direction.
-    ///
-    /// The [`GridRotation`] is a rotation which will rotate the vector pointing from
-    /// the viewpoint to the triangles such that it lies in the crooked-pyramid-shaped
-    /// 48th of space where <var>x</var> &ge; <var>y</var> &ge; <var>z</var> &ge; 0.
-    ///
-    /// For more information on this classification scheme and the sort that uses it,
-    /// see [volumetric sort (2006)].
-    ///
-    /// [volumetric sort (2006)]: https://iquilezles.org/www/articles/volumesort/volumesort.htm
-    Direction(),
-}
-impl DepthOrdering {
-    const ROT_COUNT: usize = GridRotation::ALL.len();
-    const COUNT: usize = Self::ROT_COUNT + 1;
-    #[allow(dead_code)]
-    fn from_index(index: usize) -> Self {
-        loop {}
-    }
-    fn to_index(self) -> usize {
-        loop {}
-    }
-    fn rev(self) -> Self {
-        loop {}
-    }
 }

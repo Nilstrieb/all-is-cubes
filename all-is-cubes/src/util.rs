@@ -1,9 +1,6 @@
 //! Tools that we could imagine being in the Rust standard library, but aren't.
 use std::fmt::{self, Debug, Display};
 use std::ops::AddAssign;
-
-mod yield_progress;
-
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).
 ///
 /// This can be thought of as a mechanism to easily create a new special-purpose
@@ -54,13 +51,3 @@ pub(crate) struct StatusText;
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 #[non_exhaustive]
 pub struct TimeStats {}
-impl AddAssign for TimeStats {
-    fn add_assign(&mut self, rhs: Self) {
-        loop {}
-    }
-}
-impl Display for TimeStats {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}

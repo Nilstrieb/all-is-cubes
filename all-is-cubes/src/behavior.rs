@@ -1,10 +1,8 @@
 //! Dynamic add-ons to game objects; we might also have called them “components”.
 use crate::transaction::{self, Transaction};
-use crate::universe::{VisitRefs};
+use crate::universe::VisitRefs;
 use downcast_rs::{impl_downcast, Downcast};
-
 use std::fmt::{self, Debug};
-
 /// Dynamic add-ons to game objects; we might also have called them “components”.
 /// Each behavior is owned by a “host” of type `H` which determines when the behavior
 /// is invoked.
@@ -33,19 +31,8 @@ pub struct BehaviorSet<H: BehaviorHost> {
 struct BehaviorSetEntry<H: BehaviorHost> {
     attachment: H::Attachment,
 }
-impl<H: BehaviorHost> Clone for BehaviorSetEntry<H> {
-    fn clone(&self) -> Self {
-        loop {}
-    }
-}
 impl<H: BehaviorHost> Debug for BehaviorSetEntry<H> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl<H: BehaviorHost> PartialEq for BehaviorSetEntry<H> {
-    #[allow(clippy::vtable_address_comparisons)]
-    fn eq(&self, other: &Self) -> bool {
         loop {}
     }
 }
@@ -54,10 +41,6 @@ impl<H: BehaviorHost> PartialEq for BehaviorSetEntry<H> {
 pub struct BehaviorSetTransaction<H: BehaviorHost> {
     /// Newly inserted behaviors.
     insert: Vec<BehaviorSetEntry<H>>,
-}
-#[derive(Debug)]
-struct Replace<H: BehaviorHost> {
-    new: BehaviorSetEntry<H>,
 }
 impl<H: BehaviorHost> Transaction<BehaviorSet<H>> for BehaviorSetTransaction<H> {
     type CommitCheck = ();
@@ -90,19 +73,3 @@ impl<H: BehaviorHost> transaction::Merge for BehaviorSetTransaction<H> {
         loop {}
     }
 }
-impl<H: BehaviorHost> Clone for BehaviorSetTransaction<H> {
-    fn clone(&self) -> Self {
-        loop {}
-    }
-}
-impl<H: BehaviorHost> Default for BehaviorSetTransaction<H> {
-    fn default() -> Self {
-        loop {}
-    }
-}
-impl<H: BehaviorHost> PartialEq for BehaviorSetTransaction<H> {
-    fn eq(&self, other: &Self) -> bool {
-        loop {}
-    }
-}
-impl<H: BehaviorHost> Eq for BehaviorSetTransaction<H> {}

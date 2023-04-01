@@ -1,4 +1,3 @@
-
 use ordered_float::NotNan;
 use crate::math::{FreeCoordinate, Rgb, Rgba};
 /// Options for controlling rendering (not affecting gameplay except informationally).
@@ -68,44 +67,6 @@ pub(crate) struct GraphicsOptions {
     /// Draw the light rays that contribute to the selected block.
     pub(crate) debug_light_rays_at_cursor: bool,
 }
-impl GraphicsOptions {
-    /// A set of graphics options which differs from [`GraphicsOptions::default()`] in
-    /// that it disables all operations which change colors away from their obvious
-    /// values; that is, the [`Rgba`] colors you get from a rendering will be identical
-    /// (except for quantization error and background colors) to the [`Rgba`] colors
-    /// in the depicted [`Atom`](crate::block::Primitive::Atom)s.
-    ///
-    /// * [`Self::bloom_intensity`] = `0`
-    /// * [`Self::fog`] = [`FogOption::None`]
-    /// * [`Self::lighting_display`] = [`LightingOption::None`]
-    /// * [`Self::tone_mapping`] = [`ToneMappingOperator::Clamp`]
-    ///
-    /// Future versions may set other options as necessary to maintain the intended
-    /// property.
-    pub(crate) const UNALTERED_COLORS: Self = Self {
-        fog: FogOption::None,
-        fov_y: notnan!(90.),
-        tone_mapping: ToneMappingOperator::Clamp,
-        exposure: ExposureOption::Fixed(notnan!(1.)),
-        bloom_intensity: notnan!(0.),
-        view_distance: notnan!(200.),
-        lighting_display: LightingOption::None,
-        transparency: TransparencyOption::Volumetric,
-        show_ui: true,
-        antialiasing: AntialiasingOption::None,
-        use_frustum_culling: true,
-        debug_info_text: true,
-        debug_behaviors: false,
-        debug_chunk_boxes: false,
-        debug_collision_boxes: false,
-        debug_light_rays_at_cursor: false,
-    };
-    /// Constrain fields to valid/practical values.
-    #[must_use]
-    pub(crate) fn repair(mut self) -> Self {
-        loop {}
-    }
-}
 impl Default for GraphicsOptions {
     /// Default graphics options broadly have “everything reasonable” turned on
     /// (they may disable things that are not well-implemented yet).
@@ -142,13 +103,6 @@ pub(crate) enum ToneMappingOperator {
     /// overly dark.
     Reinhard,
 }
-impl ToneMappingOperator {
-    /// Apply this operator to the given high-dynamic-range color value.
-    #[inline]
-    pub(crate) fn apply(&self, input: Rgb) -> Rgb {
-        loop {}
-    }
-}
 /// “Camera exposure” control: selection of algorithm to control the scaling factor from
 /// scene luminance to displayed luminance. Part of a [`GraphicsOptions`].
 ///
@@ -162,16 +116,6 @@ pub(crate) enum ExposureOption {
     Fixed(NotNan<f32>),
     /// Exposure adjusts to compensate for the actual brightness of the scene.
     Automatic,
-}
-impl ExposureOption {
-    pub(crate) fn initial(&self) -> NotNan<f32> {
-        loop {}
-    }
-}
-impl Default for ExposureOption {
-    fn default() -> Self {
-        loop {}
-    }
 }
 /// How to display light in a [`Space`]; part of a [`GraphicsOptions`].
 ///
@@ -205,19 +149,6 @@ pub(crate) enum TransparencyOption {
     /// or fully transparent, respectively.
     Threshold(NotNan<f32>),
 }
-impl TransparencyOption {
-    /// Replace a color's alpha value according to the requested threshold,
-    /// if any.
-    #[inline]
-    pub(crate) fn limit_alpha(&self, color: Rgba) -> Rgba {
-        loop {}
-    }
-    #[inline]
-    #[doc(hidden)]
-    pub(crate) fn will_output_alpha(&self) -> bool {
-        loop {}
-    }
-}
 /// Choices for [`GraphicsOptions::antialiasing`].
 #[derive(Clone, Debug, Default, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
@@ -233,11 +164,4 @@ pub(crate) enum AntialiasingOption {
     IfCheap,
     /// Always perform antialiasing, even if it is expensive.
     Always,
-}
-impl AntialiasingOption {
-    /// True if GPU renderers should enable multisampling
-    #[doc(hidden)]
-    pub(crate) fn is_msaa(&self) -> bool {
-        loop {}
-    }
 }

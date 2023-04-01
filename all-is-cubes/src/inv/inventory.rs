@@ -1,8 +1,6 @@
 //! [`Inventory`] for storing items.
 use std::borrow::Cow;
-
 use std::num::NonZeroU16;
-
 use crate::block::Block;
 use crate::character::{Character, Cursor};
 use crate::inv::{Icons, Tool, ToolError};
@@ -22,24 +20,6 @@ use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
 pub struct Inventory {}
-impl Inventory {
-    /// Use a tool stored in this inventory.
-    ///
-    /// `character` must be the character containing the inventory. TODO: Bad API
-    pub(crate) fn use_tool(
-        &self,
-        cursor: Option<&Cursor>,
-        character: URef<Character>,
-        slot_index: usize,
-    ) -> Result<UniverseTransaction, ToolError> {
-        loop {}
-    }
-}
-impl VisitRefs for Inventory {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
-}
 /// The direct child of [`Inventory`]; a container for any number of identical [`Tool`]s.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
@@ -48,46 +28,6 @@ pub(crate) enum Slot {
     Empty,
     /// Slot contains one or more of the given [`Tool`].
     Stack(),
-}
-impl Slot {
-    const COUNT_ONE: NonZeroU16 = { loop {} };
-    /// Returns the icon to use for this tool in the user interface.
-    ///
-    /// Note that this is _not_ the same as the block that a [`Tool::Block`] places.
-    pub(crate) fn icon<'a>(
-        &'a self,
-        predefined: &'a BlockProvider<Icons>,
-    ) -> Cow<'a, Block> {
-        loop {}
-    }
-    /// Returns the count of items in this slot.
-    pub(crate) fn count(&self) -> u16 {
-        loop {}
-    }
-    /// Moves as many items as possible from `self` to `destination` while obeying item
-    /// stacking rules.
-    ///
-    /// Does nothing if `self` and `destination` contain different items.
-    ///
-    /// Returns whether anything was moved.
-    fn unload_to(&mut self, destination: &mut Self) -> bool {
-        loop {}
-    }
-}
-impl From<Tool> for Slot {
-    fn from(tool: Tool) -> Self {
-        loop {}
-    }
-}
-impl From<Option<Tool>> for Slot {
-    fn from(tool: Option<Tool>) -> Self {
-        loop {}
-    }
-}
-impl VisitRefs for Slot {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
 }
 /// Specifies a limit on the number of a particular item that should be combined in a
 /// single [`Slot`].
@@ -101,13 +41,6 @@ pub(crate) enum StackLimit {
     One,
     Standard,
 }
-impl StackLimit {
-    /// TODO: This is not public because we don't know what environment parameters it
-    /// should need yet.
-    pub(crate) fn get(self) -> u16 {
-        loop {}
-    }
-}
 /// Transaction type for [`Inventory`].
 ///
 /// The output type is the change notification which should be passed on after commit,
@@ -116,7 +49,6 @@ impl StackLimit {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[must_use]
 pub struct InventoryTransaction {}
-impl InventoryTransaction {}
 impl Transaction<Inventory> for InventoryTransaction {
     type CommitCheck = Option<InventoryCheck>;
     type Output = InventoryChange;

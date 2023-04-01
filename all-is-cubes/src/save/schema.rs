@@ -17,12 +17,3 @@ use serde::{Deserialize, Serialize};
 use crate::math::{Face6, GridRotation};
 use crate::universe::URef;
 use crate::{block, space, universe};
-fn return_true() -> bool {
-    loop {}
-}
-fn is_true(value: &bool) -> bool {
-    loop {}
-}
-fn is_default<T: Default + PartialEq + Copy>(value: &T) -> bool {
-    loop {}
-}

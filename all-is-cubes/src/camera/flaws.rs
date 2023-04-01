@@ -27,17 +27,3 @@ bitflags::bitflags! {
     " Surfaces that should have textures rather than a solid color don't."] const
     MISSING_TEXTURES = 1 << 6; }
 }
-impl Default for Flaws {
-    /// Equivalent to [`Self::empty()`].
-    fn default() -> Self {
-        loop {}
-    }
-}
-impl fmt::Display for Flaws {
-    /// Displays the flags as text like “`UNFINISHED | NO_FOG`".
-    ///
-    /// TODO: Change this to “English” text like “unfinished, no fog”?
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}

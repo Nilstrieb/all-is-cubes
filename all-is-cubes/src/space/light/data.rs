@@ -1,9 +1,7 @@
 //! Data structures for light storage and algorithms.
-
 use std::fmt;
 use cgmath::{Vector3, Vector4};
 use crate::math::*;
-
 /// One component of a `PackedLight`.
 pub(crate) type PackedLightScalar = u8;
 /// Special reasons for a cube having zero light in it.
@@ -32,130 +30,6 @@ pub(crate) struct PackedLight {
     value: Vector3<PackedLightScalar>,
     status: LightStatus,
 }
-impl PackedLight {
-    const LOG_SCALE: f32 = 16.0;
-    const LOG_OFFSET: f32 = 128.0;
-    pub(crate) const ZERO: Self = Self::none(LightStatus::Visible);
-    pub(crate) const OPAQUE: Self = Self::none(LightStatus::Opaque);
-    pub(crate) const NO_RAYS: Self = Self::none(LightStatus::NoRays);
-    pub(crate) const ONE: PackedLight = PackedLight {
-        status: LightStatus::Visible,
-        value: Vector3 {
-            x: Self::LOG_OFFSET as PackedLightScalar,
-            y: Self::LOG_OFFSET as PackedLightScalar,
-            z: Self::LOG_OFFSET as PackedLightScalar,
-        },
-    };
-    pub(crate) fn some(value: Rgb) -> Self {
-        loop {}
-    }
-    pub(crate) const fn none(status: LightStatus) -> Self {
-        loop {}
-    }
-    /// Returns the light level.
-    #[inline]
-    pub(crate) fn value(&self) -> Rgb {
-        loop {}
-    }
-    /// Returns true if the light value is meaningful, or false if it is
-    /// inside an opaque block or in empty unlit air (in which case [`Self::value`]
-    /// always returns zero).
-    pub(crate) fn valid(&self) -> bool {
-        loop {}
-    }
-    /// RGB color plus a fourth component which is a “weight” value which indicates how
-    /// much this color should actually contribute to the surface color. It is usually
-    /// 0 or 1, but is set slightly above zero for opaque blocks to create the ambient
-    /// occlusion effect.
-    pub(crate) fn value_with_ambient_occlusion(&self) -> Vector4<f32> {
-        loop {}
-    }
-    #[inline]
-    #[doc(hidden)]
-    pub(crate) fn as_texel(self) -> [u8; 4] {
-        loop {}
-    }
-    /// Computes a degree of difference between two [`PackedLight`] values, used to decide
-    /// update priority.
-    /// The value is zero if and only if the two inputs are equal.
-    #[inline]
-    pub(crate) fn difference_priority(self, other: PackedLight) -> PackedLightScalar {
-        loop {}
-    }
-    fn scalar_in(value: impl Into<f32>) -> PackedLightScalar {
-        loop {}
-    }
-    /// Convert a `PackedLightScalar` value to a linear color component value.
-    /// This function is guaranteed (and tested) to only return finite floats.
-    fn scalar_out(value: PackedLightScalar) -> f32 {
-        loop {}
-    }
-    fn scalar_out_nn(value: PackedLightScalar) -> NotNan<f32> {
-        loop {}
-    }
-}
-impl fmt::Debug for PackedLight {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl From<Rgb> for PackedLight {
-    #[inline]
-    fn from(value: Rgb) -> Self {
-        loop {}
-    }
-}
-/// An entry in the queue of cubes that need their light updated.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct LightUpdateRequest {}
-impl LightUpdateRequest {
-    /// A priority comparison for entries with equal specified priority:
-    /// prefer cubes closer to the origin. (This is for prettier initial startup:
-    /// assuming the viewpoint starts close to the origin it will see good nearby
-    /// lighting sooner.)
-    fn fallback_priority(&self) -> GridCoordinate {
-        loop {}
-    }
-}
-impl Ord for LightUpdateRequest {
-    fn cmp(&self, other: &LightUpdateRequest) -> std::cmp::Ordering {
-        loop {}
-    }
-}
-impl PartialOrd for LightUpdateRequest {
-    fn partial_cmp(&self, other: &LightUpdateRequest) -> Option<std::cmp::Ordering> {
-        loop {}
-    }
-}
 /// A priority queue for [`LightUpdateRequest`]s which contains cubes
 /// at most once, even when added with different priorities.
 pub(crate) struct LightUpdateQueue {}
-impl LightUpdateQueue {
-    pub(crate) fn new() -> Self {
-        loop {}
-    }
-    /// Inserts a queue entry or increases the priority of an existing one.
-    #[inline]
-    pub(crate) fn insert(&mut self, request: LightUpdateRequest) {
-        loop {}
-    }
-    /// Removes the specified queue entry and returns whether it was present.
-    pub(crate) fn remove(&mut self, cube: GridPoint) -> bool {
-        loop {}
-    }
-    #[inline]
-    pub(crate) fn pop(&mut self) -> Option<LightUpdateRequest> {
-        loop {}
-    }
-    #[inline]
-    pub(crate) fn len(&self) -> usize {
-        loop {}
-    }
-    #[inline]
-    pub(crate) fn peek_priority(&self) -> PackedLightScalar {
-        loop {}
-    }
-    pub(crate) fn clear(&mut self) {
-        loop {}
-    }
-}

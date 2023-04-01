@@ -16,9 +16,8 @@
 //!     exclusive upper bounds).
 use std::borrow::Cow;
 use std::marker::PhantomData;
-
 use crate::block::Block;
-use crate::math::{GridPoint};
+use crate::math::GridPoint;
 /// Adapter to use a [`Space`] or [`SpaceTransaction`] as a [`DrawTarget`].
 /// Use [`Space::draw_target`] to construct this.
 ///
@@ -29,10 +28,3 @@ pub(crate) struct DrawingPlane<'s, T, C> {
     space: &'s mut T,
     _color: PhantomData<fn(C)>,
 }
-/// A shape of multiple blocks to “paint” with. This may be used to make copies of a
-/// simple shape, or to make multi-layered "2.5D" drawings using [`DrawingPlane`].
-///
-/// Note that only `&VoxelBrush` implements [`PixelColor`]; this is because `PixelColor`
-/// requires a value implementing [`Copy`].
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub(crate) struct VoxelBrush<'a>(Vec<(GridPoint, Cow<'a, Block>)>);

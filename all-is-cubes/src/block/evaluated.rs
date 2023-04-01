@@ -1,21 +1,10 @@
 //! [`EvaluatedBlock`] and [`Evoxel`].
 use std::fmt;
-use crate::block::{Resolution};
+use crate::block::Resolution;
 use crate::math::{GridAab, GridPoint};
 use crate::universe::RefError;
 #[cfg(doc)]
 use super::{Block, Primitive, URef, AIR};
-/// A snapshotted form of [`Block`] which contains all information needed for rendering
-/// and physics, and does not require dereferencing [`URef`]s or unbounded computation.
-#[derive(Clone, Eq, PartialEq)]
-#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-#[non_exhaustive]
-pub(crate) struct EvaluatedBlock {}
-impl fmt::Debug for EvaluatedBlock {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
 /// Errors resulting from [`Block::evaluate`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
 #[non_exhaustive]
@@ -62,53 +51,6 @@ pub(crate) enum Evoxels {
     /// `GridAab::for_block(resolution)`.
     Many(Resolution),
 }
-impl Evoxels {
-    /// Returns the resolution (scale factor) of this set of voxels.
-    /// See [`Resolution`] for more information.
-    #[inline]
-    pub(crate) fn resolution(&self) -> Resolution {
-        loop {}
-    }
-    /// If this has a resolution of 1, then return that single voxel.
-    #[inline]
-    pub(crate) fn single_voxel(&self) -> Option<Evoxel> {
-        loop {}
-    }
-    /// Get the single voxel at the specified position, or [`None`] if the position is
-    /// out of bounds of the data (which is not necessarily out of bounds of the block;
-    /// missing data should be taken as [`Evoxel::AIR`]).
-    ///
-    /// Generally behaves like [`GridArray::get()`].
-    ///
-    /// TODO: Should we inherently return AIR instead of None?
-    #[inline]
-    pub(crate) fn get(&self, position: GridPoint) -> Option<Evoxel> {
-        loop {}
-    }
-    /// Returns the bounds of the voxel data.
-    #[inline]
-    pub(crate) fn bounds(&self) -> GridAab {
-        loop {}
-    }
-}
-impl std::ops::Index<GridPoint> for Evoxels {
-    type Output = Evoxel;
-    #[inline]
-    #[track_caller]
-    fn index(&self, position: GridPoint) -> &Self::Output {
-        loop {}
-    }
-}
-#[cfg(feature = "arbitrary")]
-#[mutants::skip]
-impl<'a> arbitrary::Arbitrary<'a> for Evoxels {
-    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
-        loop {}
-    }
-    fn size_hint(depth: usize) -> (usize, Option<usize>) {
-        loop {}
-    }
-}
 /// A minimal version of [`EvaluatedBlock`] which contains all the fundamental data, but
 /// none of the computed data.
 ///
@@ -118,13 +60,3 @@ impl<'a> arbitrary::Arbitrary<'a> for Evoxels {
 /// This type is never exposed as part of the public API; only [`EvaluatedBlock`] is.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct MinEval {}
-impl From<MinEval> for EvaluatedBlock {
-    fn from(value: MinEval) -> Self {
-        loop {}
-    }
-}
-impl MinEval {
-    pub(crate) fn resolution(&self) -> Resolution {
-        loop {}
-    }
-}

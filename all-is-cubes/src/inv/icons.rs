@@ -27,14 +27,3 @@ pub(crate) enum Icons {
     /// Icon for [`Tool::Jetpack`].
     Jetpack {},
 }
-impl BlockModule for Icons {
-    fn namespace() -> &'static str {
-        loop {}
-    }
-}
-impl fmt::Display for Icons {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl Icons {}
