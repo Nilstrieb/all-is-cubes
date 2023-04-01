@@ -6,20 +6,17 @@ use crate::character::Character;
 use crate::character::Spawn;
 use cgmath::Vector3;
 
+use crate::listen::{Gate, Listen, Listener, Notifier};
+use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
+use crate::universe::{RefVisitor, VisitRefs};
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex};
-use crate::listen::{Gate, Listen, Listener, Notifier};
-use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
-use crate::transaction::{Merge, Transaction as _};
-use crate::universe::{RefVisitor, VisitRefs};
 
-use crate::util::{CustomFormat};
 mod builder;
-pub(crate) use builder::SpaceBuilderBounds;
 mod light;
 use light::LightUpdateQueue;
-pub(crate) use light::{PackedLight};
+pub(crate) use light::PackedLight;
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
@@ -177,7 +174,9 @@ pub(crate) enum LightPhysics {
     },
 }
 impl LightPhysics {
-    pub(crate) const DEFAULT: Self = Self::Rays { maximum_distance: 30 };
+    pub(crate) const DEFAULT: Self = Self::Rays {
+        maximum_distance: 30,
+    };
 }
 impl Default for LightPhysics {
     fn default() -> Self {
