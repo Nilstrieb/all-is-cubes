@@ -6,13 +6,12 @@ use cgmath::Point3;
 use fnv::{FnvHashMap, FnvHashSet};
 use instant::{Duration, Instant};
 
-use crate::camera::{Camera, Flaws};
+use crate::camera::Flaws;
 use crate::chunking::{ChunkChart, ChunkPos};
 use crate::listen::Listener;
 use crate::math::GridCoordinate;
 use crate::mesh::{
-    BlockMesh, BlockMeshProvider, GfxVertex, LineVertex, MeshOptions, SpaceMesh, TextureAllocator,
-    TextureTile,
+    BlockMesh, BlockMeshProvider, GfxVertex, MeshOptions, SpaceMesh, TextureAllocator, TextureTile,
 };
 use crate::space::{BlockIndex, Space, SpaceChange};
 use crate::universe::URef;
@@ -50,19 +49,6 @@ where
     /// The chunk in which the last [`Camera`] provided is located.
     view_chunk: ChunkPos<CHUNK_SIZE>,
 
-    /// Whether, on the previous frame, we did not finish updating all visible chunks.
-    ///
-    /// If so, then we prioritize adding new chunks over updating existing ones,
-    /// because blank world is a worse outcome than slightly stale world.
-    did_not_finish_chunks: bool,
-
-    /// The [`MeshOptions`] specified by the last [`Camera`] provided.
-    last_mesh_options: Option<MeshOptions>,
-
-    /// Most recent time at which we reset to no data.
-    zero_time: Instant,
-    /// Earliest time prior to `zero_time` at which we finished everything in the queues.
-    complete_time: Option<Instant>,
 }
 
 /// Performance info from a [`ChunkedSpaceMesh`]'s per-frame update.
