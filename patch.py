@@ -5,7 +5,7 @@ with open("all-is-cubes/src/mesh/chunked_mesh.rs") as fold:
 
 start = old.find("/////// MOVE START")
 end = old.find("/////// MOVE END")
-early = old.find("/// If true, enables reporting")
+early = 0
 
 very_pre = old[:early]
 center = old[early:start]
