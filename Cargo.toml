@@ -1,8 +1,19 @@
-[workspace]
-members = [
-  "all-is-cubes",
-]
+[package]
+name = "all-is-cubes"
+version = "0.5.0"
+authors = ["Kevin Reid <kpreid@switchb.org>"]
+edition = "2021"
+rust-version = "1.65"
+description = "Recursive voxel game engine. Can be used for voxel raytracing."
+# TODO: add homepage = "..." when we have one
+repository = "https://github.com/kpreid/all-is-cubes"
+license = "MIT OR Apache-2.0"
+# TODO: revisit categories once it's more settled how useful this is as a game engine
+categories = ["games", "graphics", "rendering::engine"]
 
-# Use feature resolver version 2 (latest). (This must be specified explicitly
-# in a workspace, but would be implicit in a single package with edition="2021".)
-resolver = "2"
+
+[lib]
+# Disable running as benchmark so that the default doesn't interfere with Criterion usage.
+bench = false
+
+[dependencies]

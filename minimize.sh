@@ -2,16 +2,16 @@
 
 #export RUSTFLAGS=-Zincremental-verify-ich
 
-cp all-is-cubes/src/lib.rs premesh.rs
-cargo clean -p all-is-cubes
-cargo check -p all-is-cubes
+cp src/lib.rs premesh.rs
+cargo clean
+cargo check
 
 ./patch.py
-mv out.rs all-is-cubes/src/lib.rs
+mv out.rs src/lib.rs
 
-OUT=$(cargo check -p all-is-cubes 2>&1)
+OUT=$(cargo check 2>&1)
 
-cp premesh.rs all-is-cubes/src/lib.rs
+cp premesh.rs src/lib.rs
 
 if echo $OUT | grep "internal compiler error";
 then

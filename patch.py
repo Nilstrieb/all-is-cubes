@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-with open("all-is-cubes/src/lib.rs") as fold:
+with open("src/lib.rs") as fold:
     old = fold.read()
 
 start = old.find("/////// MOVE START")
