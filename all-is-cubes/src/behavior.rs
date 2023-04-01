@@ -6,9 +6,10 @@ use std::fmt::{self, Debug};
 /// Dynamic add-ons to game objects; we might also have called them “components”.
 /// Each behavior is owned by a “host” of type `H` which determines when the behavior
 /// is invoked.
-pub(crate) trait Behavior<
-    H: BehaviorHost,
->: Debug + Send + Sync + Downcast + VisitRefs + 'static {}
+pub(crate) trait Behavior<H: BehaviorHost>:
+    Debug + Send + Sync + Downcast + VisitRefs + 'static
+{
+}
 impl_downcast!(Behavior < H > where H : BehaviorHost);
 /// A type that can have attached behaviors.
 pub trait BehaviorHost: transaction::Transactional + 'static {

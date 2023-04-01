@@ -1,10 +1,6 @@
-
-
-use std::fmt::{Debug};
-use crate::transaction::{
-    Transactional,
-};
-use crate::universe::{URef};
+use crate::transaction::Transactional;
+use crate::universe::URef;
+use std::fmt::Debug;
 /// Conversion from concrete transaction types to [`UniverseTransaction`].
 ///
 /// Most code should be able to call [`Transaction::bind`] rather than mentioning this

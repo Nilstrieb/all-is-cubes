@@ -1,6 +1,6 @@
 //! The [`Transaction`] trait, for modifying game objects.
-use std::fmt::Debug;
 use crate::universe::{URef, UTransactional, UniverseTransaction};
+use std::fmt::Debug;
 /// A `Transaction` is a description of a mutation to an object or collection thereof that
 /// should occur in a logically atomic fashion (all or nothing), with a set of
 /// preconditions for it to happen at all.

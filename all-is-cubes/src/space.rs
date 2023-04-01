@@ -2,7 +2,6 @@
 #[cfg(doc)]
 use crate::character::Character;
 
-
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.

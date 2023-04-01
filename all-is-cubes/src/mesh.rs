@@ -12,4 +12,3 @@ pub(crate) mod chunked_mesh;
 mod space_mesh;
 
 mod texalloc;
-

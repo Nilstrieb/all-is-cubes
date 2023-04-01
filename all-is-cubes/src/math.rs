@@ -1,6 +1,5 @@
 //! Mathematical utilities and decisions.
 
-
 #[macro_use]
 mod color;
 
@@ -13,4 +12,3 @@ pub(crate) use grid_aab::*;
 mod matrix;
 
 mod rotation;
-

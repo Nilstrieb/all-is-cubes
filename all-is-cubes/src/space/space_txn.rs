@@ -2,9 +2,7 @@
 
 use crate::behavior::{BehaviorSet, BehaviorSetTransaction};
 
-
-
-use crate::space::{Space};
+use crate::space::Space;
 use crate::transaction::{
     CommitError, Merge, NoOutput, PreconditionFailed, Transaction, TransactionConflict,
     Transactional,
@@ -17,9 +15,8 @@ impl Transactional for Space {
 #[must_use]
 pub struct SpaceTransaction {}
 impl Transaction<Space> for SpaceTransaction {
-    type CommitCheck = <BehaviorSetTransaction<
-        Space,
-    > as Transaction<BehaviorSet<Space>>>::CommitCheck;
+    type CommitCheck =
+        <BehaviorSetTransaction<Space> as Transaction<BehaviorSet<Space>>>::CommitCheck;
     type Output = NoOutput;
     fn check(&self, space: &Space) -> Result<Self::CommitCheck, PreconditionFailed> {
         loop {}
@@ -35,10 +32,7 @@ impl Transaction<Space> for SpaceTransaction {
 }
 impl Merge for SpaceTransaction {
     type MergeCheck = <BehaviorSetTransaction<Space> as Merge>::MergeCheck;
-    fn check_merge(
-        &self,
-        other: &Self,
-    ) -> Result<Self::MergeCheck, TransactionConflict> {
+    fn check_merge(&self, other: &Self) -> Result<Self::MergeCheck, TransactionConflict> {
         loop {}
     }
     fn commit_merge(mut self, mut other: Self, check: Self::MergeCheck) -> Self {
