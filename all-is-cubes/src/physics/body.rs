@@ -1,42 +1,15 @@
-use cgmath::{Point3, Vector3};
-use ordered_float::NotNan;
-use std::fmt;
 use super::collision::Contact;
-use crate::math::{Aab, FreeCoordinate};
-use crate::space::Space;
-use crate::time::Tick;
+use crate::math::FreeCoordinate;
+
 use crate::transaction::{self, Transaction};
 use crate::util::{ConciseDebug, CustomFormat, StatusText};
+use cgmath::Vector3;
+use std::fmt;
 /// An object with a position, velocity, and collision volume.
 /// What it collides with is determined externally.
 #[derive(Clone, PartialEq)]
 #[non_exhaustive]
-pub struct Body {
-    /// Position.
-    pub(crate) position: Point3<FreeCoordinate>,
-    /// Velocity, in position units per second.
-    pub(crate) velocity: Vector3<FreeCoordinate>,
-    /// Collision volume, defined with `position` as the origin.
-    pub(crate) collision_box: Aab,
-    /// Is this body not subject to gravity?
-    pub(crate) flying: bool,
-    /// Is this body not subject to collision?
-    pub(crate) noclip: bool,
-    /// Yaw of the camera look direction, in degrees clockwise from looking towards -Z.
-    ///
-    /// The preferred range is 0 inclusive to 360 exclusive.
-    ///
-    /// This does not affect the behavior of the [`Body`] itself; it has nothing to do with
-    /// the direction of the velocity.
-    pub(crate) yaw: FreeCoordinate,
-    /// Pitch of the camera look direction, in degrees downward from looking horixontally.
-    ///
-    /// The preferred range is -90 to 90, inclusive.
-    ///
-    /// This does not affect the behavior of the [`Body`] itself; it has nothing to do with
-    /// the direction of the velocity.
-    pub(crate) pitch: FreeCoordinate,
-}
+pub struct Body {}
 impl fmt::Debug for Body {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -45,80 +18,6 @@ impl fmt::Debug for Body {
 /// Omits collision box on the grounds that it is presumably constant
 impl CustomFormat<StatusText> for Body {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        loop {}
-    }
-}
-impl Body {
-    /// Constructs a [`Body`] requiring only information that can't be reasonably defaulted.
-    pub(crate) fn new_minimal(
-        position: impl Into<Point3<FreeCoordinate>>,
-        collision_box: impl Into<Aab>,
-    ) -> Self {
-        loop {}
-    }
-    /// Advances time for the body.
-    ///
-    /// If `colliding_space` is present then the body may collide with blocks in that space
-    /// (constraining possible movement) and `collision_callback` will be called with all
-    /// such blocks. It is not guaranteed that `collision_callback` will be called only once
-    /// per block.
-    pub(crate) fn step<CC>(
-        &mut self,
-        tick: Tick,
-        mut colliding_space: Option<&Space>,
-        mut collision_callback: CC,
-    ) -> BodyStepInfo
-    where
-        CC: FnMut(Contact),
-    {
-        loop {}
-    }
-    /// Perform a single straight-line position change, stopping at the first obstacle.
-    /// Returns the remainder of `delta_position` that should be retried for sliding movement.
-    fn collide_and_advance<CC>(
-        &mut self,
-        space: &Space,
-        collision_callback: &mut CC,
-        mut delta_position: Vector3<FreeCoordinate>,
-    ) -> (Vector3<FreeCoordinate>, MoveSegment)
-    where
-        CC: FnMut(Contact),
-    {
-        loop {}
-    }
-    /// Check if we're intersecting any blocks and fix that if so.
-    fn push_out(&mut self, space: &Space) -> Option<Vector3<FreeCoordinate>> {
-        loop {}
-    }
-    /// Try moving in the given direction, find an empty space, and
-    /// return the position and distance to it.
-    fn attempt_push_out(
-        &self,
-        space: &Space,
-        direction: Vector3<FreeCoordinate>,
-    ) -> Option<(Point3<FreeCoordinate>, NotNan<FreeCoordinate>)> {
-        loop {}
-    }
-    /// Returns the body's collision box in world coordinates
-    /// (`collision_box` translated by `position`).
-    ///
-    /// ```
-    /// use all_is_cubes::math::Aab;
-    /// use all_is_cubes::physics::Body;
-    ///
-    /// let body = Body::new_minimal(
-    ///     (0.0, 20.0, 0.0),
-    ///     Aab::new(-1.0, 1.0, -2.0, 2.0, -3.0, 3.0)
-    /// );
-    /// assert_eq!(body.collision_box_abs(), Aab::new(-1.0, 1.0, 18.0, 22.0, -3.0, 3.0));
-    /// ```
-    pub(crate) fn collision_box_abs(&self) -> Aab {
-        loop {}
-    }
-    /// Changes [`self.yaw`](Self::yaw) and [`self.pitch`](Self::pitch) to look directly
-    /// towards the given point within the same coordinate system as
-    /// [`self.position`](Self::position).
-    pub(crate) fn look_at(&mut self, point: impl Into<Point3<FreeCoordinate>>) {
         loop {}
     }
 }
@@ -139,11 +38,7 @@ pub(crate) struct BodyStepInfo {
     pub(crate) move_segments: [MoveSegment; 3],
 }
 impl CustomFormat<ConciseDebug> for BodyStepInfo {
-    fn fmt(
-        &self,
-        fmt: &mut fmt::Formatter<'_>,
-        format_type: ConciseDebug,
-    ) -> fmt::Result {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, format_type: ConciseDebug) -> fmt::Result {
         loop {}
     }
 }
@@ -184,10 +79,7 @@ impl transaction::Transactional for Body {
 impl Transaction<Body> for BodyTransaction {
     type CommitCheck = ();
     type Output = transaction::NoOutput;
-    fn check(
-        &self,
-        _body: &Body,
-    ) -> Result<Self::CommitCheck, transaction::PreconditionFailed> {
+    fn check(&self, _body: &Body) -> Result<Self::CommitCheck, transaction::PreconditionFailed> {
         loop {}
     }
     fn commit(
