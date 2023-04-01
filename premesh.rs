@@ -13,7 +13,7 @@ const LOG_CHUNK_UPDATES: bool = false;
 
 #[derive(Debug)]
 pub struct ChunkedSpaceMesh<const CHUNK_SIZE: GridCoordinate> {
-    chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<CHUNK_SIZE>>,
+    chunks: [(); CHUNK_SIZE],
 }
 
 #[derive(Debug)]
