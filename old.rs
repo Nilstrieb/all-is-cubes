@@ -1,22 +1,16 @@
 use std::fmt::Debug;
 
-#[derive(Debug)]
-pub struct ChunkMesh<const CHUNK_SIZE: usize> {
-    position: [(); CHUNK_SIZE],
+#[derive(Debug)] // I am not able to expand this derive.
+pub struct ConstGeneric<const CHUNK_SIZE: usize> {
+    _p: [(); CHUNK_SIZE],
 }
 
-
-
-
-
-
-
-
 /////// MOVE START
-impl<const CHUNK_SIZE: usize> ChunkMesh<CHUNK_SIZE> {}
-struct ChunkTodo {}
+impl<const CHUNK_SIZE: usize> ConstGeneric<CHUNK_SIZE> {}
 
-impl core::fmt::Debug for ChunkTodo {
+struct Empty {}
+
+impl core::fmt::Debug for Empty {
     fn fmt(&self, _: &mut core::fmt::Formatter) -> core::fmt::Result {
         loop {}
     }
