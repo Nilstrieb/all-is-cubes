@@ -1,7 +1,6 @@
 //! Algorithm for converting individual blocks to triangle meshes.
 //!
 //! This module is internal and reexported by its parent.
-
 use std::fmt::Debug;
 use crate::block::EvaluatedBlock;
 use crate::camera::Flaws;
@@ -72,89 +71,6 @@ pub(crate) struct BlockMesh<V, T> {
     pub(super) voxel_opacity_mask: Option<GridArray<OpacityCategory>>,
     /// Flaws in this mesh, that should be reported as flaws in any rendering containing it.
     flaws: Flaws,
-}
-impl<V, T> BlockMesh<V, T> {
-    /// Iterate over all seven [`BlockFaceMesh`]es, including the interior vertices.
-    ///
-    /// This function is not public because it is mostly a helper for higher-level
-    /// operations, and the details of [`BlockFaceMesh`] may change.
-    pub(super) fn all_face_meshes(
-        &self,
-    ) -> impl Iterator<Item = (Face7, &BlockFaceMesh<V>)> {
-        std::iter::once((Face7::Within, &self.interior_vertices))
-            .chain(self.face_vertices.iter().map(|(f, mesh)| (Face7::from(f), mesh)))
-    }
-    /// Return the textures used for this block. This may be used to retain the textures
-    /// for as long as the associated vertices are being used, rather than only as long as
-    /// the life of this mesh.
-    pub(crate) fn textures(&self) -> &[T] {
-        loop {}
-    }
-    /// Reports any flaws in this mesh: reasons why using it to create a rendering would
-    /// fail to accurately represent the scene.
-    pub(crate) fn flaws(&self) -> Flaws {
-        loop {}
-    }
-    /// Returns whether this mesh contains no vertices so it has no visual effect.
-    pub(crate) fn is_empty(&self) -> bool {
-        loop {}
-    }
-    /// Update this mesh's textures in-place to the given new block data, if this is
-    /// possible without changing the vertices.
-    #[must_use]
-    #[mutants::skip]
-    pub(crate) fn try_update_texture_only(&mut self, block: &EvaluatedBlock) -> bool
-    where
-        T: TextureTile,
-    {
-        loop {}
-    }
-}
-impl<V, T> BlockMesh<V, T>
-where
-    V: From<BlockVertex<<T as TextureTile>::Point>>,
-    T: TextureTile,
-{
-    /// Generate the [`BlockMesh`] for a block's current appearance.
-    ///
-    /// This may then be may be used as input to [`SpaceMesh::new`](super::SpaceMesh::new).
-    pub(crate) fn new<A>(
-        block: &EvaluatedBlock,
-        texture_allocator: &A,
-        options: &MeshOptions,
-    ) -> Self
-    where
-        A: TextureAllocator<Tile = T>,
-    {
-        loop {}
-    }
-    fn clear(&mut self) {
-        loop {}
-    }
-    /// Generate the [`BlockMesh`] for a block's current appearance, writing it into
-    /// `self`. This is equivalent to [`BlockMesh::new()`] except that it reuses existing
-    /// memory allocations.
-    ///
-    /// TODO: This does not currently reuse the texture allocation.
-    /// Add the capability to do so if the caller requests it.
-    pub(crate) fn compute<A>(
-        &mut self,
-        block: &EvaluatedBlock,
-        texture_allocator: &A,
-        options: &MeshOptions,
-    )
-    where
-        A: TextureAllocator<Tile = T>,
-    {
-        loop {}
-    }
-}
-impl<V, T> Default for BlockMesh<V, T> {
-    /// Returns a [`BlockMesh`] that contains no vertices.
-    #[inline]
-    fn default() -> Self {
-        loop {}
-    }
 }
 /// Computes [`BlockMeshes`] for blocks currently present in a [`Space`].
 /// Pass the result to [`SpaceMesh::new()`](super::SpaceMesh::new) to use it.

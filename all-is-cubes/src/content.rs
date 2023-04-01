@@ -7,7 +7,6 @@ use crate::inv::Slot;
 use crate::math::{GridCoordinate, Rgba};
 use crate::space::{SetCubeError, Space};
 use crate::universe::Universe;
-pub(crate) mod palette;
 /// Generate a set of distinct [`Primitive::Atom`] blocks for use in tests.
 /// They will have distinct colors and names, and all other attributes default.
 /// They will be fully opaque.

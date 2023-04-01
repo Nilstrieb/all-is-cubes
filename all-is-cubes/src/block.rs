@@ -3,10 +3,8 @@
 //!
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
-
 use std::fmt;
 use std::sync::Arc;
-
 use crate::listen::Listener;
 use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
 use crate::raycast::Ray;
@@ -298,13 +296,6 @@ impl From<Rgba> for Block {
         loop {}
     }
 }
-/// An invisible, unselectable, inert block used as “no block”.
-///
-/// It is used by [`Space`] to respond to out-of-bounds requests,
-/// as well as other algorithms treating it as replaceable or discardable.
-///
-/// When evaluated, will always produce [`AIR_EVALUATED`].
-pub(crate) const AIR: Block = Block(BlockPtr::Static(&Primitive::Air));
 /// Given the `resolution` of some recursive block occupying `cube`, transform `ray`
 /// into an equivalent ray intersecting the recursive grid.
 ///

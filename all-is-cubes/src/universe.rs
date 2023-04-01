@@ -13,14 +13,12 @@
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
 use std::fmt;
-
 use std::sync::Arc;
 use std::time::Duration;
 use crate::block::BlockDef;
 use crate::character::Character;
 use crate::space::{Space, SpaceStepInfo};
 use crate::time::Tick;
-
 use crate::util::{CustomFormat, StatusText};
 mod members;
 pub(crate) use members::*;
@@ -90,7 +88,6 @@ impl fmt::Debug for Universe {
         loop {}
     }
 }
-
 /// Trait implemented once for each type of object that can be stored in a [`Universe`]
 /// that permits lookups of that type.
 pub(crate) trait UniverseIndex<T>
@@ -168,26 +165,6 @@ pub(crate) enum InsertErrorKind {
 impl std::error::Error for InsertError {}
 impl fmt::Display for InsertError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-/// Performance data returned by [`Universe::step`]. The exact contents of this structure
-/// are unstable; use only `Debug` formatting to examine its contents unless you have
-/// a specific need for one of the values.
-#[derive(Clone, Debug, Default, PartialEq)]
-#[non_exhaustive]
-pub(crate) struct UniverseStepInfo {
-    #[doc(hidden)]
-    pub(crate) computation_time: Duration,
-    space_step: SpaceStepInfo,
-}
-impl std::ops::AddAssign<UniverseStepInfo> for UniverseStepInfo {
-    fn add_assign(&mut self, other: Self) {
-        loop {}
-    }
-}
-impl CustomFormat<StatusText> for UniverseStepInfo {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
         loop {}
     }
 }
