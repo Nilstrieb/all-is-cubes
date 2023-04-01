@@ -1,10 +1,10 @@
 use bitvec::vec::BitVec;
-use cgmath::Vector3;
+
 use std::fmt::Debug;
 use std::ops::Range;
 use crate::camera::Flaws;
-use crate::math::{Face6, GridCoordinate, GridPoint, GridRotation};
-use crate::mesh::{BlockMesh, GfxVertex, TextureTile};
+use crate::math::{GridRotation};
+use crate::mesh::{BlockMesh};
 use crate::space::BlockIndex;
 /// A triangle mesh representation of a [`Space`] (or part of it) which may
 /// then be rasterized.

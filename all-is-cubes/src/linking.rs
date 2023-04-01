@@ -12,7 +12,7 @@ use std::fmt;
 use std::hash::Hash;
 use exhaust::Exhaust;
 use crate::block::Block;
-use crate::universe::Name;
+
 /// Types whose values identify blocks in a set of related blocks, which may be
 /// stored in a [`BlockProvider`] or under specific names in a [`Universe`].
 ///

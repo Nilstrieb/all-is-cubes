@@ -14,19 +14,19 @@
 //! *   Coordinates are considered to refer to pixel centers rather than low corners,
 //!     and rectangles have inclusive upper bounds (whereas our [`GridAab`]s have
 //!     exclusive upper bounds).
-use embedded_graphics::geometry::Dimensions;
-use embedded_graphics::pixelcolor::PixelColor;
-use embedded_graphics::prelude::Drawable;
-use embedded_graphics::primitives::Rectangle;
+
+
+
+
 use std::borrow::Cow;
 use std::marker::PhantomData;
-use std::ops::Range;
+
 /// Re-export the version of the [`embedded_graphics`] crate we're using.
 pub(crate) use embedded_graphics;
-use crate::block::{Block, BlockAttributes, Resolution};
-use crate::math::{GridAab, GridCoordinate, GridMatrix, GridPoint};
-use crate::space::{SetCubeError, Space};
-use crate::universe::Universe;
+use crate::block::{Block};
+use crate::math::{GridMatrix, GridPoint};
+
+
 /// Adapter to use a [`Space`] or [`SpaceTransaction`] as a [`DrawTarget`].
 /// Use [`Space::draw_target`] to construct this.
 ///
@@ -38,16 +38,6 @@ pub(crate) struct DrawingPlane<'s, T, C> {
     /// Defines the coordinate transformation from 2D graphics to the [`Space`].
     transform: GridMatrix,
     _color: PhantomData<fn(C)>,
-}
-/// Allows “drawing” blocks onto a [`DrawingPlane`], a two-dimensional coordinate system
-/// established within a [`Space`].
-///
-/// Builds on [`PixelColor`] by defining a conversion to [`Block`]s and tracking depth.
-/// [`PixelColor::Raw`] is ignored; the supertrait is present only because
-/// [`embedded_graphics`] requires it.
-pub(crate) trait VoxelColor<'a>: PixelColor {
-    /// Returns a corresponding [`VoxelBrush`], the most general form of blocky drawing.
-    fn into_blocks(self) -> VoxelBrush<'a>;
 }
 /// A shape of multiple blocks to “paint” with. This may be used to make copies of a
 /// simple shape, or to make multi-layered "2.5D" drawings using [`DrawingPlane`].

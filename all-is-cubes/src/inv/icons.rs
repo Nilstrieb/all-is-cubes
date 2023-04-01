@@ -1,10 +1,10 @@
 use std::fmt;
 use exhaust::Exhaust;
-use crate::linking::{BlockModule, BlockProvider};
-use crate::universe::Universe;
+use crate::linking::{BlockModule};
+
 #[cfg(doc)]
 use crate::inv::Tool;
-use crate::util::YieldProgress;
+
 /// Blocks that are icons for [`Tool`]s.
 ///
 /// TODO: Should this be considered strictly part of the UI/content and not fundamentals,

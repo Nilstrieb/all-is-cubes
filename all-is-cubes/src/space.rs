@@ -5,7 +5,7 @@ use crate::block::{Block, EvalBlockError, EvaluatedBlock};
 use crate::character::Character;
 use crate::character::Spawn;
 use cgmath::Vector3;
-use instant::Duration;
+
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex};
@@ -13,13 +13,13 @@ use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
 use crate::transaction::{Merge, Transaction as _};
 use crate::universe::{RefVisitor, VisitRefs};
-use crate::util::TimeStats;
-use crate::util::{CustomFormat, StatusText};
+
+use crate::util::{CustomFormat};
 mod builder;
 pub(crate) use builder::SpaceBuilderBounds;
 mod light;
 use light::LightUpdateQueue;
-pub(crate) use light::{LightUpdatesInfo, PackedLight};
+pub(crate) use light::{PackedLight};
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
@@ -222,39 +222,6 @@ pub(crate) enum SpaceChange {
     /// Equivalent to [`SpaceChange::Block`] for every cube and [`SpaceChange::Number`]
     /// for every index.
     EveryBlock,
-}
-/// Performance data returned by [`Space::step`]. The exact contents of this structure
-/// are unstable; use only `Debug` formatting to examine its contents unless you have
-/// a specific need for one of the values.
-#[derive(Clone, Debug, Default, PartialEq)]
-#[non_exhaustive]
-pub(crate) struct SpaceStepInfo {
-    /// Number of spaces whose updates were aggregated into this value.
-    pub(crate) spaces: usize,
-    /// Time and count of block re-evaluations.
-    ///
-    /// Note that this does not count evaluations resulting from modifications
-    /// that add new blocks to the space.
-    pub(crate) evaluations: TimeStats,
-    /// Number of individual cubes processed (`tick_action`).
-    cube_ticks: usize,
-    /// Time spent on processing individual cube updates
-    /// (measured as a whole because transaction conflict checking is needed),
-    cube_time: Duration,
-    /// Time spent on processing behaviors.
-    behaviors_time: Duration,
-    /// Performance data about light updates within the space.
-    pub(crate) light: LightUpdatesInfo,
-}
-impl std::ops::AddAssign<SpaceStepInfo> for SpaceStepInfo {
-    fn add_assign(&mut self, other: Self) {
-        loop {}
-    }
-}
-impl CustomFormat<StatusText> for SpaceStepInfo {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        loop {}
-    }
 }
 /// [`Space`]'s set of things that need recomputing based on notifications.
 ///

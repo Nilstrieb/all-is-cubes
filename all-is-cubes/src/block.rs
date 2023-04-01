@@ -7,16 +7,15 @@ use std::fmt;
 use std::sync::Arc;
 use crate::listen::Listener;
 use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
-use crate::raycast::Ray;
-use crate::space::{SetCubeError, Space};
+
+use crate::space::{Space};
 use crate::universe::URef;
 mod attributes;
 pub(crate) use attributes::*;
 mod block_def;
 pub(crate) use block_def::*;
 pub(crate) mod builder;
-#[doc(inline)]
-pub(crate) use builder::BlockBuilder;
+
 mod evaluated;
 pub(crate) use evaluated::*;
 mod modifier;

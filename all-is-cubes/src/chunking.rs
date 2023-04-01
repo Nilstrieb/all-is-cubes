@@ -5,7 +5,7 @@
 //! clarifying the treatment of distances and squared distances.
 use std::ops::RangeTo;
 use std::sync::Arc;
-use cgmath::{Point3, Vector3};
+use cgmath::{Vector3};
 use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint, GridVector};
 /// Type to distinguish chunk coordinates from cube coordinates.
 ///

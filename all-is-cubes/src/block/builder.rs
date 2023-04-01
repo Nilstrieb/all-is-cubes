@@ -1,13 +1,5 @@
 //! Lesser-used helpers for [`BlockBuilder`].
-
-
-use crate::block::{
-    BlockAttributes, Modifier,
-};
-
-
-
-
+use crate::block::{BlockAttributes, Modifier};
 /// Tool for constructing [`Block`] values conveniently.
 ///
 /// To create one, call [`Block::builder()`].
@@ -35,8 +27,3 @@ pub(crate) struct BlockBuilder<P> {
     primitive_builder: P,
     modifiers: Vec<Modifier>,
 }
-/// Placeholder type for an incomplete [`BlockBuilder`]'s content. The builder
-/// cannot create an actual block until this is replaced.
-#[allow(clippy::exhaustive_structs)]
-#[derive(Copy, Clone, Debug, Default, Eq, Hash, PartialEq)]
-pub(crate) struct NeedsPrimitive;
