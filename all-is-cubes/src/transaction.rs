@@ -187,27 +187,7 @@ enum CommitErrorKind {
     #[error("in transaction part '{component}'")]
     Context { component: String, #[source] error: Arc<CommitError> },
 }
-impl CommitError {
-    /// Wrap an arbitrary unexpected error as a [`CommitError`].
-    /// `T` should be the type of the transaction that caught it.
-    #[must_use]
-    pub(crate) fn catch<T, E: Error + Send + Sync + 'static>(error: E) -> Self {
-        loop {}
-    }
-    /// Construct a [`CommitError`] with a string description.
-    /// `T` should be the type of the transaction that detected the problem.
-    #[must_use]
-    pub(crate) fn message<T>(message: String) -> Self {
-        loop {}
-    }
-    /// Report an error propagating up from an inner transaction.
-    /// `component` should describe which part of the current transaction
-    /// returned the error from its `commit()`.
-    #[must_use]
-    pub(crate) fn context(self, component: String) -> Self {
-        loop {}
-    }
-}
+
 /// Error type returned by [`Merge::check_merge`].
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -224,6 +204,3 @@ pub trait Transactional {
 }
 /// Type of `Output` for a [`Transaction`] that never produces any outputs.
 pub type NoOutput = std::convert::Infallible;
-/// Output callback function for committing a [`Transaction`] whose `Output` type is
-/// [`NoOutput`] and therefore cannot produce any outputs.
-pub(crate) fn no_outputs(_: NoOutput) {}

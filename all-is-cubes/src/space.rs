@@ -1,24 +1,22 @@
 //! That which contains many blocks.
-use std::borrow::Cow;
-use std::collections::{HashMap, HashSet};
-use std::fmt;
-use std::sync::{Arc, Mutex, Weak};
-use cgmath::Vector3;
-use instant::Duration;
-use crate::behavior::{BehaviorSet};
-use crate::block::{
-    Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR,
-};
+use crate::behavior::BehaviorSet;
+use crate::block::{Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR};
 #[cfg(doc)]
 use crate::character::Character;
 use crate::character::Spawn;
 use crate::content::palette;
 use crate::drawing::DrawingPlane;
+use cgmath::Vector3;
+use instant::Duration;
+use std::borrow::Cow;
+use std::collections::{HashMap, HashSet};
+use std::fmt;
+use std::sync::{Arc, Mutex, Weak};
 
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{
-    FreeCoordinate, GridAab, GridArray, GridCoordinate, GridMatrix, GridPoint,
-    GridRotation, NotNan, Rgb,
+    FreeCoordinate, GridAab, GridArray, GridCoordinate, GridMatrix, GridPoint, GridRotation,
+    NotNan, Rgb,
 };
 use crate::time::Tick;
 use crate::transaction::{Merge, Transaction as _};
@@ -29,7 +27,7 @@ mod builder;
 pub(crate) use builder::{SpaceBuilder, SpaceBuilderBounds};
 mod light;
 
-use light::{LightUpdateQueue};
+use light::LightUpdateQueue;
 pub(crate) use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;
 
@@ -93,285 +91,6 @@ impl fmt::Debug for SpaceBlockData {
 }
 /// Number used to identify distinct blocks within a [`Space`].
 pub(crate) type BlockIndex = u16;
-impl Space {
-    /// Returns a [`SpaceBuilder`] configured for a block,
-    /// which may be used to construct a new [`Space`].
-    ///
-    /// This means that its bounds are as per [`GridAab::for_block()`], and its
-    /// [`physics`](Self::physics) is [`SpacePhysics::DEFAULT_FOR_BLOCK`].
-    pub(crate) fn for_block(resolution: Resolution) -> SpaceBuilder<GridAab> {
-        loop {}
-    }
-    /// Returns a [`SpaceBuilder`] with the given bounds and all default values,
-    /// which may be used to construct a new [`Space`].
-    pub(crate) fn builder(bounds: GridAab) -> SpaceBuilder<GridAab> {
-        loop {}
-    }
-    /// Constructs a [`Space`] that is entirely filled with [`AIR`].
-    ///
-    /// Equivalent to `Space::builder(bounds).build()`
-    pub(crate) fn empty(bounds: GridAab) -> Space {
-        loop {}
-    }
-    /// Implementation of [`SpaceBuilder`]'s terminal methods.
-    fn new_from_builder(builder: SpaceBuilder<GridAab>) -> Self {
-        loop {}
-    }
-    /// Constructs a `Space` that is entirely empty and whose coordinate system
-    /// is in the +X+Y+Z octant. This is a shorthand intended mainly for tests.
-    pub(crate) fn empty_positive(
-        wx: GridCoordinate,
-        wy: GridCoordinate,
-        wz: GridCoordinate,
-    ) -> Space {
-        loop {}
-    }
-    /// Returns the [`GridAab`] describing the bounds of this space; no blocks may exist
-    /// outside it.
-    pub(crate) fn bounds(&self) -> GridAab {
-        loop {}
-    }
-    /// Returns the internal unstable numeric ID for the block at the given position,
-    /// which may be mapped to a [`Block`] by [`Space::block_data`].
-    /// If you are looking for *simple* access, use `space[position]` (the
-    /// [`std::ops::Index`] trait) instead.
-    ///
-    /// These IDs may be used to perform efficient processing of many blocks, but they
-    /// may be renumbered after any mutation.
-    #[inline(always)]
-    pub(crate) fn get_block_index(
-        &self,
-        position: impl Into<GridPoint>,
-    ) -> Option<BlockIndex> {
-        loop {}
-    }
-    /// Copy data out of a portion of the space in a caller-chosen format.
-    ///
-    /// If the provided [`GridAab`] contains portions outside of this space's bounds,
-    /// those positions in the output will be treated as if they are filled with [`AIR`]
-    /// and lit by [`SpacePhysics::sky_color`].
-    pub(crate) fn extract<V>(
-        &self,
-        subgrid: GridAab,
-        mut extractor: impl FnMut(Option<BlockIndex>, &SpaceBlockData, PackedLight) -> V,
-    ) -> GridArray<V> {
-        loop {}
-    }
-    /// Gets the [`EvaluatedBlock`] of the block in this space at the given position.
-    #[inline(always)]
-    pub(crate) fn get_evaluated(
-        &self,
-        position: impl Into<GridPoint>,
-    ) -> &EvaluatedBlock {
-        loop {}
-    }
-    /// Returns the light occupying the given cube.
-    ///
-    /// This value may be considered as representing the average of the light reflecting
-    /// off of all surfaces within, or immediately adjacent to and facing toward, this cube.
-    /// If there are no such surfaces, or if the given position is out of bounds, the result
-    /// is arbitrary. If the position is within an opaque block, the result is black.
-    ///
-    /// Lighting is updated asynchronously after modifications, so all above claims about
-    /// the meaning of this value are actually “will eventually be, if no more changes are
-    /// made”.
-    #[inline(always)]
-    pub(crate) fn get_lighting(&self, position: impl Into<GridPoint>) -> PackedLight {
-        loop {}
-    }
-    /// Replace the block in this space at the given position.
-    ///
-    /// If the position is out of bounds, there is no effect.
-    ///
-    /// ```
-    /// use all_is_cubes::block::*;
-    /// use all_is_cubes::math::Rgba;
-    /// use all_is_cubes::space::Space;
-    /// let mut space = Space::empty_positive(1, 1, 1);
-    /// let a_block = Block::builder().color(Rgba::new(1.0, 0.0, 0.0, 1.0)).build();
-    /// space.set((0, 0, 0), &a_block);
-    /// assert_eq!(space[(0, 0, 0)], a_block);
-    /// ```
-    pub(crate) fn set<'a>(
-        &mut self,
-        position: impl Into<GridPoint>,
-        block: impl Into<Cow<'a, Block>>,
-    ) -> Result<bool, SetCubeError> {
-        loop {}
-    }
-    fn set_impl(
-        &mut self,
-        position: GridPoint,
-        block: Cow<'_, Block>,
-    ) -> Result<bool, SetCubeError> {
-        loop {}
-    }
-    /// Implement the consequences of changing a block.
-    ///
-    /// `content_index` is redundant with `position` but saves computation.
-    #[inline]
-    fn side_effects_of_set(
-        &mut self,
-        block_index: BlockIndex,
-        position: GridPoint,
-        contents_index: usize,
-    ) {
-        loop {}
-    }
-    /// Replace blocks in `region` with a block computed by the function.
-    ///
-    /// The function may return a reference to a block or a block. If it returns [`None`],
-    /// the existing block is left unchanged.
-    ///
-    /// The operation will stop on the first error, potentially leaving some blocks
-    /// replaced. (Exception: If the `region` extends outside of
-    /// [`self.bounds()`](Self::bounds), that will always be rejected before any changes
-    /// are made.)
-    ///
-    /// ```
-    /// use all_is_cubes::block::{AIR, Block};
-    /// use all_is_cubes::math::{GridAab, Rgba};
-    /// use all_is_cubes::space::Space;
-    ///
-    /// let mut space = Space::empty_positive(10, 10, 10);
-    /// let a_block: Block = Rgba::new(1.0, 0.0, 0.0, 1.0).into();
-    ///
-    /// space.fill(GridAab::from_lower_size([0, 0, 0], [2, 1, 1]), |_point| Some(&a_block)).unwrap();
-    ///
-    /// assert_eq!(space[(0, 0, 0)], a_block);
-    /// assert_eq!(space[(1, 0, 0)], a_block);
-    /// assert_eq!(space[(0, 1, 0)], AIR);
-    /// ```
-    ///
-    /// TODO: Support providing the previous block as a parameter (take cues from `extract`).
-    ///
-    /// See also [`Space::fill_uniform`] for filling a region with one block.
-    pub(crate) fn fill<F, B>(
-        &mut self,
-        region: GridAab,
-        mut function: F,
-    ) -> Result<(), SetCubeError>
-    where
-        F: FnMut(GridPoint) -> Option<B>,
-        B: std::borrow::Borrow<Block>,
-    {
-        loop {}
-    }
-    /// Replace blocks in `region` with the given block.
-    ///
-    /// TODO: Document error behavior
-    ///
-    /// ```
-    /// use all_is_cubes::block::{AIR, Block};
-    /// use all_is_cubes::math::{GridAab, Rgba};
-    /// use all_is_cubes::space::Space;
-    ///
-    /// let mut space = Space::empty_positive(10, 10, 10);
-    /// let a_block: Block = Rgba::new(1.0, 0.0, 0.0, 1.0).into();
-    ///
-    /// space.fill_uniform(GridAab::from_lower_size([0, 0, 0], [2, 1, 1]), &a_block).unwrap();
-    ///
-    /// assert_eq!(&space[(0, 0, 0)], &a_block);
-    /// assert_eq!(&space[(1, 0, 0)], &a_block);
-    /// assert_eq!(&space[(0, 1, 0)], &AIR);
-    /// ```
-    ///
-    /// See also [`Space::fill`] for non-uniform fill and bulk copies.
-    pub(crate) fn fill_uniform<'b>(
-        &mut self,
-        region: GridAab,
-        block: impl Into<Cow<'b, Block>>,
-    ) -> Result<(), SetCubeError> {
-        loop {}
-    }
-    /// Provides an [`DrawTarget`](embedded_graphics::prelude::DrawTarget)
-    /// adapter for 2.5D drawing.
-    ///
-    /// For more information on how to use this, see
-    /// [`all_is_cubes::drawing`](crate::drawing).
-    pub(crate) fn draw_target<C>(
-        &mut self,
-        transform: GridMatrix,
-    ) -> DrawingPlane<'_, Space, C> {
-        loop {}
-    }
-    /// Returns all distinct block types found in the space.
-    ///
-    /// TODO: This was invented for testing the indexing of blocks and should
-    /// be replaced with something else *if* it only gets used for testing.
-    pub(crate) fn distinct_blocks(&self) -> Vec<Block> {
-        loop {}
-    }
-    /// Returns data about all the blocks assigned internal IDs (indices) in the space,
-    /// as well as placeholder data for any deallocated indices.
-    ///
-    /// The indices of this slice correspond to the results of [`Space::get_block_index`].
-    pub(crate) fn block_data(&self) -> &[SpaceBlockData] {
-        loop {}
-    }
-    /// Advance time in the space.
-    pub(crate) fn step(
-        &mut self,
-        self_ref: Option<&URef<Space>>,
-        tick: Tick,
-    ) -> (SpaceStepInfo, UniverseTransaction) {
-        loop {}
-    }
-    /// Perform lighting updates until there are none left to do. Returns the number of
-    /// updates performed.
-    ///
-    /// This may take a while. It is appropriate for when the goal is to
-    /// render a fully lit scene non-interactively.
-    ///
-    /// `epsilon` specifies a threshold at which to stop doing updates.
-    /// Zero means to run to full completion; one is the smallest unit of light level
-    /// difference; and so on.
-    pub(crate) fn evaluate_light(
-        &mut self,
-        epsilon: u8,
-        mut progress_callback: impl FnMut(LightUpdatesInfo),
-    ) -> usize {
-        loop {}
-    }
-    /// Returns the current [`SpacePhysics`] data, which determines global characteristics
-    /// such as the behavior of light and gravity.
-    pub(crate) fn physics(&self) -> &SpacePhysics {
-        loop {}
-    }
-    /// Sets the physics parameters, as per [`physics`](Self::physics).
-    ///
-    /// This may cause recomputation of lighting.
-    pub(crate) fn set_physics(&mut self, physics: SpacePhysics) {
-        loop {}
-    }
-    /// Returns the current default [`Spawn`], which determines where new [`Character`]s
-    /// are placed in the space if no alternative applies.
-    pub(crate) fn spawn(&self) -> &Spawn {
-        loop {}
-    }
-    /// Sets the default [`Spawn`], which determines where new [`Character`]s are placed
-    /// in the space if no alternative applies.
-    pub(crate) fn set_spawn(&mut self, spawn: Spawn) {
-        loop {}
-    }
-    /// Returns the [`BehaviorSet`] of behaviors attached to this space.
-    pub(crate) fn behaviors(&self) -> &BehaviorSet<Space> {
-        loop {}
-    }
-    /// Finds or assigns an index to denote the block.
-    ///
-    /// The caller is responsible for incrementing `self.block_data[index].count`.
-    #[inline]
-    fn ensure_block_index(
-        &mut self,
-        block: Cow<'_, Block>,
-    ) -> Result<BlockIndex, SetCubeError> {
-        loop {}
-    }
-    fn listener_for_block(&self, index: BlockIndex) -> SpaceBlockChangeListener {
-        loop {}
-    }
-}
 impl<T: Into<GridPoint>> std::ops::Index<T> for Space {
     type Output = Block;
     /// Gets a reference to the block in this space at the given position.
@@ -406,25 +125,6 @@ impl crate::behavior::BehaviorHost for Space {
 pub struct SpaceBehaviorAttachment {
     bounds: GridAab,
     rotation: GridRotation,
-}
-impl SpaceBehaviorAttachment {
-    /// Constructs a new [`SpaceBehaviorAttachment`] with no rotation.
-    pub(crate) fn new(bounds: GridAab) -> Self {
-        loop {}
-    }
-    /// Returns the bounds of this attachment, which specify (without mandating) what
-    /// region the behavior should affect.
-    pub(crate) fn bounds(&self) -> GridAab {
-        loop {}
-    }
-    /// Returns the rotation of this attachment, which specifies, if applicable, which
-    /// orientation the behavior should operate in relative to the space.
-    /// The exact meaning of this is up to the behavior.
-    ///
-    /// TODO: explain with an example once we have a good one
-    pub(crate) fn rotation(&self) -> GridRotation {
-        loop {}
-    }
 }
 /// The global characteristics of a [`Space`], more or less independent of location within
 /// the block grid.
@@ -487,7 +187,9 @@ pub(crate) enum LightPhysics {
     },
 }
 impl LightPhysics {
-    pub(crate) const DEFAULT: Self = Self::Rays { maximum_distance: 30 };
+    pub(crate) const DEFAULT: Self = Self::Rays {
+        maximum_distance: 30,
+    };
 }
 impl Default for LightPhysics {
     fn default() -> Self {
