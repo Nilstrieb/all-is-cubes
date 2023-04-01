@@ -11,41 +11,10 @@ license = "MIT OR Apache-2.0"
 # TODO: revisit categories once it's more settled how useful this is as a game engine
 categories = ["games", "graphics", "rendering::engine"]
 
-[package.metadata.docs.rs]
-features = ["arbitrary"]
 
 [lib]
 # Disable running as benchmark so that the default doesn't interfere with Criterion usage.
 bench = false
-
-[[bench]]
-name = "block_bench"
-harness = false
-
-[[bench]]
-name = "chunk_bench"
-harness = false
-
-[[bench]]
-name = "lighting_bench"
-harness = false
-
-[[bench]]
-name = "mesh_bench"
-harness = false
-
-[[bench]]
-name = "raycast_bench"
-harness = false
-
-[[bench]]
-name = "space_bench"
-harness = false
-
-[features]
-default = []
-arbitrary = ["dep:arbitrary", "ordered-float/arbitrary"]
-threads = ["dep:rayon"]
 
 [dependencies]
 arbitrary = { workspace = true, optional = true }
@@ -76,11 +45,3 @@ rayon = { workspace = true, optional = true }
 # std and rc features needed because we are [de]serializing `Arc`s
 serde = { workspace = true, features = ["derive", "std", "rc"] }
 thiserror = { workspace = true }
-
-[dev-dependencies]
-criterion = { workspace = true }
-pretty_assertions = { workspace = true }
-serde_json = { workspace = true }
-# Using tokio for async test-running.
-tokio = { workspace = true, features = ["macros", "rt"] }
-
