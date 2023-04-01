@@ -76,18 +76,18 @@ where
     Tex::Tile: PartialEq,
 {
     pub fn new(space: URef<Space>) -> Self {
-        todo!()
+        loop {}
     }
 
     /// Returns a reference to the [`Space`] this watches.
     pub fn space(&self) -> &URef<Space> {
-        &self.space
+        loop {}
     }
 
     /// Returns a [`ChunkChart`] for the view distance used by the most recent
     /// [`Self::update_blocks_and_some_chunks`].
     pub fn chunk_chart(&self) -> &ChunkChart<CHUNK_SIZE> {
-        &self.chunk_chart
+        loop {}
     }
 
     /// Iterate over the [`ChunkMesh`]es of all chunks, in arbitrary order.
@@ -191,41 +191,7 @@ pub struct CsmUpdateInfo {
 
 impl CustomFormat<StatusText> for CsmUpdateInfo {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        let CsmUpdateInfo {
-            flaws,
-            total_time: _,
-            prep_time,
-            chunk_scan_time,
-            chunk_mesh_generation_times,
-            chunk_mesh_callback_times,
-            depth_sort_time,
-            block_updates,
-            chunk_count,
-            chunk_total_cpu_byte_size,
-        } = self;
-        write!(
-            fmt,
-            indoc! {"
-                Space prep     {prep_time}       Mesh flaws: {flaws}
-                Block mesh gen {block_updates}
-                Chunk scan     {chunk_scan_time}
-                      mesh gen {chunk_mesh_generation_times}
-                      upload   {chunk_mesh_callback_times}
-                      depthsort {depth_sort_time}
-                Mem: {chunk_mib} MiB for {chunk_count} chunks\
-            "},
-            flaws = flaws,
-            prep_time = prep_time.custom_format(StatusText),
-            block_updates = block_updates,
-            chunk_scan_time = chunk_scan_time.custom_format(StatusText),
-            chunk_mesh_generation_times = chunk_mesh_generation_times,
-            chunk_mesh_callback_times = chunk_mesh_callback_times,
-            depth_sort_time = depth_sort_time
-                .unwrap_or(Duration::ZERO)
-                .custom_format(StatusText),
-            chunk_mib = chunk_total_cpu_byte_size / (1024 * 1024),
-            chunk_count = chunk_count,
-        )
+        loop {}
     }
 }
 
@@ -243,17 +209,14 @@ where
     Tile: TextureTile + PartialEq,
 {
     fn new() -> Self {
-        Self {
-            meshes: Vec::new(),
-            last_version_counter: NonZeroU32::new(u32::MAX).unwrap(),
-        }
+        loop {}
     }
 
     /// Discard all meshes.
     /// Use this to ensure that in case of “everything changes” we don't store
     /// extra data.
     fn clear(&mut self) {
-        self.meshes.clear();
+        loop {}
     }
 
     /// Update block meshes based on the given [`Space`].
@@ -274,136 +237,13 @@ where
     where
         A: TextureAllocator<Tile = Tile>,
     {
-        if todo.is_empty() {
-            // Don't increment the version counter if we don't need to.
-            return TimeStats::default();
-        }
-
-        // Bump version number.
-        self.last_version_counter = match self.last_version_counter.get().checked_add(1) {
-            None => NonZeroU32::new(1).unwrap(),
-            Some(n) => NonZeroU32::new(n).unwrap(),
-        };
-        let current_version_number = BlockMeshVersion::Numbered(self.last_version_counter);
-
-        let block_data = space.block_data();
-
-        // Synchronize the mesh storage vector's length.
-        {
-            let old_len = self.meshes.len();
-            let new_len = block_data.len();
-            if old_len > new_len {
-                self.meshes.truncate(new_len);
-            } else {
-                // Increase length, and initialize the new elements.
-                // This must be done quickly, so that we do not have a hiccup when initializing
-                // from a space with many blocks.
-
-                let mut fast_options = mesh_options.clone();
-                fast_options.ignore_voxels = true;
-
-                self.meshes.reserve(new_len);
-                for bd in &block_data[self.meshes.len()..new_len] {
-                    let evaluated = bd.evaluated();
-                    self.meshes
-                        .push(if evaluated.resolution() > Resolution::R1 {
-                            // If the block has voxels, generate a placeholder mesh,
-                            // marked as not-ready so it will be replaced eventually.
-                            VersionedBlockMesh {
-                                mesh: BlockMesh::new(
-                                    evaluated,
-                                    block_texture_allocator,
-                                    &fast_options,
-                                ),
-                                version: BlockMeshVersion::NotReady,
-                            }
-                        } else {
-                            // If the block does not have voxels, then we can just generate the
-                            // final mesh as quick as the placeholder.
-                            VersionedBlockMesh {
-                                mesh: BlockMesh::new(
-                                    evaluated,
-                                    block_texture_allocator,
-                                    mesh_options,
-                                ),
-                                version: current_version_number,
-                            }
-                        });
-                }
-            }
-        }
-
-        // Update individual meshes.
-        let mut last_start_time = Instant::now();
-        let mut stats = TimeStats::default();
-        while last_start_time < deadline && !todo.is_empty() {
-            let index: BlockIndex = todo.iter().next().copied().unwrap();
-            todo.remove(&index);
-            let index: usize = index.into();
-
-            let bd = &block_data[index];
-            let new_evaluated_block: &EvaluatedBlock = bd.evaluated();
-            let current_mesh_entry: &mut VersionedBlockMesh<_, _> = &mut self.meshes[index];
-
-            // TODO: Consider re-introducing approximate cost measurement
-            // to hit the deadline better.
-            // cost += match &new_evaluated_block.voxels {
-            //     Some(voxels) => voxels.bounds().volume(),
-            //     None => 1,
-            // };
-
-            if current_mesh_entry
-                .mesh
-                .try_update_texture_only(new_evaluated_block)
-            {
-                // Updated the texture in-place. No need for mesh updates.
-            } else {
-                // Compute a new mesh.
-                // TODO: Try using BlockMesh::compute() to reuse allocations.
-                // The catch is that then we will no longer be able to compare the new mesh
-                // to the existing mesh below, so this won't be a pure win.
-                let new_block_mesh =
-                    BlockMesh::new(new_evaluated_block, block_texture_allocator, mesh_options);
-
-                // Only invalidate the chunks if we actually have different data.
-                // Note: This comparison depends on such things as the definition of PartialEq
-                // for Tex::Tile.
-                // TODO: We don't currently make use of this optimally because textures are never
-                // reused, except in the case of texture-only updates handled above.
-                // (If they were, we'd need to consider what we want to do about stale chunks with
-                // updated texture tiles, which might have geometry gaps or otherwise be obviously
-                // inconsistent.)
-                if new_block_mesh != current_mesh_entry.mesh
-                    || current_mesh_entry.version == BlockMeshVersion::NotReady
-                {
-                    *current_mesh_entry = VersionedBlockMesh {
-                        mesh: new_block_mesh,
-                        version: current_version_number,
-                    };
-                } else {
-                    // The new mesh is identical to the old one (which might happen because
-                    // interior voxels or non-rendered attributes were changed), so don't invalidate
-                    // the chunks.
-                }
-            }
-            let duration = stats.record_consecutive_interval(&mut last_start_time, Instant::now());
-            if duration > Duration::from_millis(4) {
-                log::trace!(
-                    "Block mesh took {}: {:?} {:?}",
-                    duration.custom_format(StatusText),
-                    new_evaluated_block.attributes.display_name,
-                    bd.block(),
-                );
-            }
-        }
-
-        stats
+        loop {}
     }
 }
 
 impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes<Vert, Tile> {
     fn get(&mut self, index: BlockIndex) -> Option<&'a BlockMesh<Vert, Tile>> {
-        Some(&self.meshes.get(usize::from(index))?.mesh)
+        loop {}
     }
 }
 
@@ -473,30 +313,14 @@ struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
 
 impl<const CHUNK_SIZE: GridCoordinate> CsmTodo<CHUNK_SIZE> {
     fn initially_dirty() -> Self {
-        Self {
-            all_blocks_and_chunks: true,
-            blocks: HashSet::default(),
-            chunks: HashMap::default(),
-        }
+        loop {}
     }
 
     fn modify_block_and_adjacent<F>(&mut self, cube: GridPoint, mut f: F)
     where
         F: FnMut(&mut ChunkTodo),
     {
-        // Mark adjacent blocks to account for opaque faces hiding adjacent
-        // blocks' faces. We don't need to bother with the current block since
-        // the adjacent chunks will always include it (presuming that the chunk
-        // size is greater than 1).
-        for axis in 0..3 {
-            for offset in &[-1, 1] {
-                let mut adjacent = cube;
-                adjacent[axis] += offset;
-                if let Some(chunk) = self.chunks.get_mut(&cube_to_chunk(adjacent)) {
-                    f(chunk);
-                }
-            }
-        }
+        loop {}
     }
 }
 
@@ -506,35 +330,7 @@ struct TodoListener<const CHUNK_SIZE: GridCoordinate>(Weak<Mutex<CsmTodo<CHUNK_S
 
 impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CHUNK_SIZE> {
     fn receive(&self, message: SpaceChange) {
-        if let Some(cell) = self.0.upgrade() {
-            if let Ok(mut todo) = cell.lock() {
-                match message {
-                    SpaceChange::EveryBlock => {
-                        todo.all_blocks_and_chunks = true;
-                        todo.blocks.clear();
-                        todo.chunks.clear();
-                    }
-                    SpaceChange::Block(p) => {
-                        todo.modify_block_and_adjacent(p, |chunk_todo| {
-                            chunk_todo.recompute_mesh = true;
-                        });
-                    }
-                    SpaceChange::Lighting(_p) => {
-                        // Meshes are not affected by light
-                    }
-                    SpaceChange::Number(index) => {
-                        if !todo.all_blocks_and_chunks {
-                            todo.blocks.insert(index);
-                        }
-                    }
-                    SpaceChange::BlockValue(index) => {
-                        if !todo.all_blocks_and_chunks {
-                            todo.blocks.insert(index);
-                        }
-                    }
-                }
-            }
-        }
+        loop {}
     }
 
     fn alive(&self) -> bool {
@@ -556,12 +352,12 @@ where
 
     #[inline]
     pub fn mesh(&self) -> &SpaceMesh<Vert, Tex::Tile> {
-        &self.mesh
+        loop {}
     }
 
     #[inline]
     pub fn position(&self) -> ChunkPos<CHUNK_SIZE> {
-        self.position
+        loop {}
     }
 
     fn borrow_for_update(
