@@ -48,9 +48,7 @@ impl CustomFormat<StatusText> for CsmUpdateInfo {
 }
 
 #[derive(Debug)]
-struct VersionedBlockMeshes {
-
-}
+struct VersionedBlockMeshes {}
 
 impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes {
     fn get(&mut self, index: BlockIndex) -> Option<&'a BlockMesh<Vert, Tile>> {
@@ -87,7 +85,7 @@ where
     Tex: TextureAllocator,
 {
     position: ChunkPos<CHUNK_SIZE>,
-    mesh: SpaceMesh<Vert, Tex::Tile>,
+    mesh: SpaceMesh<Vert, Tex>,
     pub render_data: D,
     block_dependencies: Vec<(BlockIndex, BlockMeshVersion)>,
 
