@@ -27,17 +27,6 @@ impl fmt::Debug for Character {
         loop {}
     }
 }
-impl CustomFormat<StatusText> for Character {
-    #[mutants::skip]
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        loop {}
-    }
-}
-impl VisitRefs for Character {
-    fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
-        loop {}
-    }
-}
 impl Transactional for Character {
     type Transaction = CharacterTransaction;
 }
@@ -48,7 +37,6 @@ impl crate::behavior::BehaviorHost for Character {
 #[derive(Clone, Debug, Default, PartialEq)]
 #[must_use]
 pub struct CharacterTransaction {}
-impl CharacterTransaction {}
 #[allow(clippy::type_complexity)]
 impl Transaction<Character> for CharacterTransaction {
     type CommitCheck = (
@@ -93,13 +81,4 @@ impl Merge for CharacterTransaction {
     ) -> Self {
         loop {}
     }
-}
-/// Description of a change to a [`Character`] for use in listeners.
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-#[allow(clippy::exhaustive_enums)]
-pub(crate) enum CharacterChange {
-    /// Inventory contents.
-    Inventory(),
-    /// Which inventory slots are selected.
-    Selections,
 }
