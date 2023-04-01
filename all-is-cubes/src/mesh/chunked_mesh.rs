@@ -148,51 +148,8 @@ where
     Vert: GfxVertex,
     Tex: TextureAllocator,
 {
-    fn new(position: ChunkPos<CHUNK_SIZE>) -> Self {
-        todo!()
-    }
 
-    #[inline]
-    pub fn mesh(&self) -> &SpaceMesh<Vert, Tex::Tile> {
-        loop {}
-    }
 
-    #[inline]
-    pub fn position(&self) -> ChunkPos<CHUNK_SIZE> {
-        loop {}
-    }
-
-    fn borrow_for_update(
-        &mut self,
-        indices_only: bool,
-    ) -> ChunkMeshUpdate<'_, D, Vert, Tex::Tile, CHUNK_SIZE> {
-        todo!()
-    }
-
-    fn recompute_mesh(
-        &mut self,
-        chunk_todo: &mut ChunkTodo,
-        space: &Space,
-        options: &MeshOptions,
-        block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>,
-    ) {
-        todo!()
-    }
-
-    /// Sort the existing indices of `self.transparent_range(DepthOrdering::Within)` for
-    /// the given view position in world coordinates.
-    ///
-    /// This is intended to be cheap enough to do every frame.
-    ///
-    /// Returns whether anything was done, i.e. whether the new indices should be copied
-    /// to the GPU.
-    pub fn depth_sort_for_view(&mut self, view_position: Point3<Vert::Coordinate>) -> bool {
-        todo!()
-    }
-
-    fn stale_blocks(&self, block_meshes: &VersionedBlockMeshes<Vert, Tex::Tile>) -> bool {
-        todo!()
-    }
 }
 
 /// What might be dirty about a single chunk.
