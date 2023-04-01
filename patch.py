@@ -13,7 +13,6 @@ post = old[end:]
 
 result = f"{very_pre}\
 mod chunk;\n\
-pub use chunk::*;\n\
 {center}\
 {post}"
 
