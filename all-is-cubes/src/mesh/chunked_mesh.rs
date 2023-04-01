@@ -75,20 +75,6 @@ where
     update_debug: bool,
 }
 
-/// Provides mutable access to the render data of type `D` in a [`ChunkMesh`].
-///
-/// This struct is provided to the callbacks of
-/// [`ChunkedSpaceMesh::update_blocks_and_some_chunks()`].
-#[derive(Debug)]
-#[non_exhaustive]
-pub struct ChunkMeshUpdate<'a, D, V, T, const CHUNK_SIZE: GridCoordinate> {
-    pub position: ChunkPos<CHUNK_SIZE>,
-    pub mesh: &'a SpaceMesh<V, T>,
-    pub render_data: &'a mut D,
-    /// Whether *only* the indices need to be copied (and their length has not changed).
-    pub indices_only: bool,
-}
-
 /// [`ChunkedSpaceMesh`]'s set of things that need recomputing.
 #[derive(Debug, Default)]
 struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
