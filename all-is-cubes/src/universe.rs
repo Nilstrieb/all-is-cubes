@@ -85,84 +85,12 @@ pub(crate) struct Universe {
     /// as long as steps occur routinely.
     wants_gc: bool,
 }
-impl Universe {
-    /// Constructs an empty [`Universe`].
-    pub(crate) fn new() -> Self {
-        loop {}
-    }
-    /// Returns a [`URef`] for the object in this universe with the given name,
-    /// regardless of its type, or [`None`] if there is none.
-    ///
-    /// This is a dynamically-typed version of [`UniverseIndex::get`].
-    pub(crate) fn get_any(&self, name: &Name) -> Option<Box<dyn URefErased>> {
-        loop {}
-    }
-    /// Returns the character named `"character"`.
-    /// This is currently assumed to be the “player character” for this universe.
-    ///
-    /// TODO: this is a temporary shortcut to be replaced with something with more nuance
-    /// (e.g. we might have temporary characters for editing purposes, which are 'current'
-    /// but not 'primary').
-    pub(crate) fn get_default_character(&self) -> Option<URef<Character>> {
-        loop {}
-    }
-    /// Returns a unique identifier for this particular [`Universe`] (within this memory space).
-    ///
-    /// It may be used to determine whether a given [`URef`] belongs to this universe or not.
-    pub(crate) fn universe_id(&self) -> UniverseId {
-        loop {}
-    }
-    /// Advance time for all members.
-    pub(crate) fn step(&mut self, tick: Tick) -> UniverseStepInfo {
-        loop {}
-    }
-    /// Inserts a new object without giving it a specific name, and returns
-    /// a reference to it.
-    pub(crate) fn insert_anonymous<T>(&mut self, value: T) -> URef<T>
-    where
-        Self: UniverseIndex<T>,
-        T: UniverseMember,
-    {
-        loop {}
-    }
-    /// Convert a possibly-[pending](Name::Pending) [`Name`] into a name that may be an
-    /// actual name in this universe (which is always either [`Name::Specific`] or
-    /// [`Name::Anonym`] if it succeeds).
-    ///
-    /// Fails if:
-    ///
-    /// * The name is already present.
-    /// * The name is an [`Name::Anonym`] (which may not be pre-selected, only allocated).
-    fn allocate_name(&mut self, proposed_name: &Name) -> Result<Name, InsertError> {
-        loop {}
-    }
-    /// Delete a member.
-    ///
-    /// (Use [`UniverseTransaction::delete()`] as the public interface to this.)
-    ///
-    /// Returns whether the entry actually existed.
-    pub(crate) fn delete(&mut self, name: &Name) -> bool {
-        loop {}
-    }
-    /// Delete all anonymous members which have no references to them.
-    ///
-    /// This may happen at any time during operations of the universe; calling this method
-    /// merely ensures that it happens now and not earlier.
-    pub(crate) fn gc(&mut self) {
-        loop {}
-    }
-}
 impl fmt::Debug for Universe {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
     }
 }
-fn format_members<T>(universe: &Universe, ds: &mut fmt::DebugStruct<'_, '_>)
-where
-    Universe: UniverseTable<T>,
-{
-    loop {}
-}
+
 /// Trait implemented once for each type of object that can be stored in a [`Universe`]
 /// that permits lookups of that type.
 pub(crate) trait UniverseIndex<T>
@@ -262,8 +190,4 @@ impl CustomFormat<StatusText> for UniverseStepInfo {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
         loop {}
     }
-}
-/// Helper for [`Universe::gc()`].
-fn gc_members<T>(table: &mut Storage<T>) {
-    loop {}
 }

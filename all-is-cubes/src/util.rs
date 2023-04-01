@@ -68,12 +68,7 @@ impl CustomFormat<StatusText> for Duration {
         loop {}
     }
 }
-fn format_error_chain(
-    fmt: &mut fmt::Formatter<'_>,
-    mut error: &(dyn Error + '_),
-) -> fmt::Result {
-    loop {}
-}
+
 /// Aggregation of the time taken by a set of events.
 ///
 /// TODO: Consider including an identifier for the longest.
@@ -90,25 +85,7 @@ pub struct TimeStats {
     /// The maximum duration of all events, or [`Duration::ZERO`] if there were no events.
     pub(crate) max: Duration,
 }
-impl TimeStats {
-    /// Constructs a [`TimeStats`] for a single event.
-    ///
-    /// Multiple of these may then be aggregated using the `+=` operator.
-    pub(crate) const fn one(duration: Duration) -> Self {
-        loop {}
-    }
-    /// Record an event based on the given previous time and current time, then update
-    /// the previous time value.
-    ///
-    /// Returns the duration that was recorded.
-    pub(crate) fn record_consecutive_interval(
-        &mut self,
-        last_marked_instant: &mut Instant,
-        now: Instant,
-    ) -> Duration {
-        loop {}
-    }
-}
+
 impl AddAssign for TimeStats {
     fn add_assign(&mut self, rhs: Self) {
         loop {}
@@ -119,5 +96,3 @@ impl Display for TimeStats {
         loop {}
     }
 }
-#[doc(hidden)]
-pub(crate) fn assert_send_sync<T: Send + Sync>() {}
