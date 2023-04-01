@@ -29,8 +29,7 @@ enum BlockMeshVersion {
 /// data, and incidentals.
 #[derive(Debug, Eq, PartialEq)]
 pub struct ChunkMesh<const CHUNK_SIZE: GridCoordinate> {
-    position: ChunkPos<CHUNK_SIZE>,
-    block_dependencies: Vec<(BlockIndex, BlockMeshVersion)>,
+    position: [(); CHUNK_SIZE],
 
     /// Toggled whenever the mesh is updated. Value is arbitrary (this is a looping
     /// 2-state counter).
