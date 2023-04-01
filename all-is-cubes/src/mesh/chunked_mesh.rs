@@ -32,8 +32,6 @@ pub struct ChunkedSpaceMesh<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate>
 where
     Tex: TextureAllocator,
 {
-    space: URef<Space>,
-
     /// Dirty flags listening to `space`.
     todo: Arc<Mutex<CsmTodo<CHUNK_SIZE>>>,
 
@@ -42,42 +40,12 @@ where
     /// Invariant: the set of present chunks (keys here) is the same as the set of keys
     /// in `todo.read().unwrap().chunks`.
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D, Vert, Tex, CHUNK_SIZE>>,
-
-    /// Resized as needed upon each [`Self::update_blocks_and_some_chunks()`].
-    chunk_chart: ChunkChart<CHUNK_SIZE>,
-
-    /// The chunk in which the last [`Camera`] provided is located.
-    view_chunk: ChunkPos<CHUNK_SIZE>,
-
 }
 
 /// Performance info from a [`ChunkedSpaceMesh`]'s per-frame update.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 #[non_exhaustive]
-pub struct CsmUpdateInfo {
-    /// Flaws detected during update.
-    /// Note that this does not include mesh flaws; the caller must gather those when
-    /// drawing the chunks.
-    pub flaws: Flaws,
-    pub total_time: Duration,
-    /// Time spent on gathering information before starting the chunk scan.
-    pub prep_time: Duration,
-    /// Time spent on traversing chunks in view this frame,
-    /// excluding the actual chunk mesh generation operations.
-    pub chunk_scan_time: Duration,
-    /// Time spent on building chunk meshes this frame.
-    pub chunk_mesh_generation_times: TimeStats,
-    /// Time spent on `chunk_mesh_updater` callbacks this frame.
-    pub chunk_mesh_callback_times: TimeStats,
-    depth_sort_time: Option<Duration>,
-    /// Time spent on building block meshes this frame.
-    pub block_updates: TimeStats,
-
-    /// Number of chunks that currently exist.
-    pub chunk_count: usize,
-    /// Total in-memory size of chunk data (not counting [`ChunkMesh::render_data`]).
-    pub chunk_total_cpu_byte_size: usize,
-}
+pub struct CsmUpdateInfo {}
 
 impl CustomFormat<StatusText> for CsmUpdateInfo {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
@@ -88,10 +56,7 @@ impl CustomFormat<StatusText> for CsmUpdateInfo {
 #[derive(Debug)]
 struct VersionedBlockMeshes<Vert, Tile> {
     /// Indices of this vector are block IDs in the Space.
-    meshes: Vec<VersionedBlockMesh<Vert, Tile>>,
-
-    last_version_counter: NonZeroU32,
-}
+    meshes: Vec<(Vert, Tile)>,}
 
 impl<Vert, Tile> VersionedBlockMeshes<Vert, Tile>
 where
