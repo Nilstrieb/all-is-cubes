@@ -5,7 +5,9 @@
 cp premesh.rs all-is-cubes/src/mesh/chunked_mesh.rs
 cargo clean -p all-is-cubes
 cargo check -p all-is-cubes
-git apply crash.patch
+
+./patch.py
+mv out.rs all-is-cubes/src/mesh/chunked_mesh.rs
 
 OUT=$(cargo check -p all-is-cubes 2>&1)
 
