@@ -1,11 +1,5 @@
 //! Axis-aligned integer-coordinate box volumes ([`GridAab`]), arrays bounded by them
 //! ([`GridArray`]), and related.
-
-
-
-
-
-
 /// An axis-aligned box with integer coordinates, whose volume is no larger than [`usize::MAX`].
 /// [`GridAab`]s are used to specify the coordinate extent of [`Space`](crate::space::Space)s, and
 /// regions within them.
@@ -19,4 +13,4 @@
 /// The different possibilities are not considered equal; thus, points, lines, and planes may be
 /// represented, which may be useful for procedural-generation purposes.
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub struct GridAab {}
+pub(crate) struct GridAab {}

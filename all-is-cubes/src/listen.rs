@@ -10,37 +10,4 @@
 //! `Weak<Mutex<...>>` or similar multiply-owned mutable structure to aggregate incoming
 //! messages, which will then be read and cleared by a later task.
 use std::sync::Arc;
-mod util;
 pub(crate) use util::*;
-
-pub(crate) trait Listener<M> {
-    fn receive(&self, message: M) {}
-
-    fn alive(&self) -> bool {
-        loop {}
-    }
-
-    fn erased(self) -> DynListener<M>
-    where
-        Self: Sized + Send + Sync + 'static,
-    {
-        loop {}
-    }
-
-    fn filter<MI, F>(self, function: F) -> Filter<F, Self>
-    where
-        Self: Sized,
-        F: Fn(MI) -> Option<M> + Sync,
-    {
-        loop {}
-    }
-
-    fn gate(self) -> (Gate, GateListener<Self>)
-    where
-        Self: Sized,
-    {
-        loop {}
-    }
-}
-
-pub(crate) type DynListener<M> = Arc<dyn Listener<M> + Send + Sync>;

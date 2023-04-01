@@ -12,7 +12,7 @@
 //! For the time being, if you wish to use a [`Universe`] from multiple threads, you must
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
-use std::fmt;
+
 mod universe_txn;
 pub(crate) use universe_txn::*;
 mod uref;

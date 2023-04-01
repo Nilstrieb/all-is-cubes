@@ -1,8 +1,8 @@
-use std::fmt;
-use std::hash;
+
+
 use std::sync::Mutex;
-use std::sync::{Arc, RwLock, RwLockWriteGuard};
-use ouroboros::self_referencing;
+use std::sync::{Arc, RwLock};
+
 use crate::universe::{Name, UniverseId};
 /// Type of a strong reference to an entry in a [`Universe`]. Defined to make types
 /// parameterized with this somewhat less hairy.

@@ -10,15 +10,6 @@ pub(crate) use block_mesh::*;
 #[doc(hidden)]
 pub(crate) mod chunked_mesh;
 mod space_mesh;
-pub(crate) use space_mesh::*;
+
 mod texalloc;
-pub(crate) use texalloc::*;
-/// Parameters for creating meshes that aren't the block/space data itself
-/// (or the texture allocator, since that may need to be mutable).
-///
-/// Creating this and comparing it against a previous instance is appropriate for
-/// determining when to invalidate previously computed meshes. This type is also intended
-/// to make the API future-proof against additional configuration being needed.
-#[derive(Clone, Debug, Eq, PartialEq)]
-#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub(crate) struct MeshOptions {}
+
