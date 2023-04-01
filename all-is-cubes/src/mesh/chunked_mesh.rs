@@ -22,20 +22,16 @@ const LOG_CHUNK_UPDATES: bool = false;
 /// initialized using `D::default()`. This value may be a reference to a corresponding
 /// GPU buffer, for example. It will usually need to be an [`Option`] of something.
 #[derive(Debug)]
-pub struct ChunkedSpaceMesh<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate>
-where
-    Tex: TextureAllocator,
-{
+pub struct ChunkedSpaceMesh<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> {
     /// Dirty flags listening to `space`.
     todo: Arc<Mutex<CsmTodo<CHUNK_SIZE>>>,
 
-    block_meshes: (Vert, Tex::Tile),
+    block_meshes: (Vert, Tex),
 
     /// Invariant: the set of present chunks (keys here) is the same as the set of keys
     /// in `todo.read().unwrap().chunks`.
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D, Vert, Tex, CHUNK_SIZE>>,
 }
-
 
 #[derive(Debug)]
 struct VersionedBlockMesh<Vert, Tile> {
@@ -61,10 +57,7 @@ enum BlockMeshVersion {
 /// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
 /// data, and incidentals.
 #[derive(Debug, Eq, PartialEq)]
-pub struct ChunkMesh<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate>
-where
-    Tex: TextureAllocator,
-{
+pub struct ChunkMesh<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> {
     position: ChunkPos<CHUNK_SIZE>,
     mesh: SpaceMesh<Vert, Tex>,
     pub render_data: D,
