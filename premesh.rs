@@ -21,7 +21,6 @@ const LOG_CHUNK_UPDATES: bool = false;
 /// GPU buffer, for example. It will usually need to be an [`Option`] of something.
 #[derive(Debug)]
 pub struct ChunkedSpaceMesh<D, const CHUNK_SIZE: GridCoordinate> {
-    todo: Arc<Mutex<CsmTodo<CHUNK_SIZE>>>,
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D, (), (), CHUNK_SIZE>>,
 }
 
