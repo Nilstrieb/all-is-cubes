@@ -7,7 +7,7 @@
 use std::fmt;
 use std::sync::Arc;
 
-use crate::listen::{Listener};
+use crate::listen::Listener;
 use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
 use crate::raycast::Ray;
 use crate::space::{SetCubeError, Space};
