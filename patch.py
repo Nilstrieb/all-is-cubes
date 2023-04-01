@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-with open("all-is-cubes/src/mesh/chunked_mesh.rs") as fold:
+with open("all-is-cubes/src/chunked_mesh.rs") as fold:
     old = fold.read()
 
 start = old.find("/////// MOVE START")

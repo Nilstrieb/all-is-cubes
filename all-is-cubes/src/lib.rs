@@ -1,1 +1,1 @@
-pub(crate) mod mesh;
+pub(crate) mod chunked_mesh;
