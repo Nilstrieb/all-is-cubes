@@ -12,7 +12,6 @@ center = old[early:start]
 post = old[end:]
 
 result = f"{very_pre}\
-mod chunked_mesh;\n\
 {center}\
 {post}"
 
