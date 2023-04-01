@@ -1,25 +1,25 @@
-use std::collections::{hash_map::Entry::*, HashMap, HashSet};
+use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::num::NonZeroU32;
 use std::sync::{Arc, Mutex, Weak};
 
-use cgmath::{EuclideanSpace, Point3};
+use cgmath::Point3;
 use fnv::{FnvHashMap, FnvHashSet};
 use indoc::indoc;
 use instant::{Duration, Instant};
 
 use crate::block::{EvaluatedBlock, Resolution};
 use crate::camera::{Camera, Flaws};
-use crate::chunking::{cube_to_chunk, point_to_chunk, ChunkChart, ChunkPos, OctantMask};
-use crate::listen::{Listen as _, Listener};
-use crate::math::{Aab, FreeCoordinate, Geometry as _, GridCoordinate, GridPoint};
+use crate::chunking::{cube_to_chunk, ChunkChart, ChunkPos};
+use crate::listen::Listener;
+use crate::math::{GridCoordinate, GridPoint};
 use crate::mesh::{
     BlockMesh, BlockMeshProvider, GfxVertex, LineVertex, MeshOptions, SpaceMesh, TextureAllocator,
     TextureTile,
 };
 use crate::space::{BlockIndex, Space, SpaceChange};
 use crate::universe::URef;
-use crate::util::{ConciseDebug, CustomFormat, StatusText, TimeStats};
+use crate::util::{CustomFormat, StatusText, TimeStats};
 
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
 const LOG_CHUNK_UPDATES: bool = false;
@@ -596,8 +596,6 @@ where
         todo!()
     }
 }
-
-
 
 /// What might be dirty about a single chunk.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
