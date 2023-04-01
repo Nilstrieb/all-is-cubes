@@ -12,62 +12,19 @@
 use std::sync::Arc;
 mod util;
 pub(crate) use util::*;
-/// A receiver of messages (typically from something implementing [`Listen`]) which can
-/// indicate when it is no longer interested in them (typically because the associated
-/// recipient has been dropped).
-///
-/// Please note the requirements set out in [`Listener::receive()`].
-///
-/// Implementors should also implement [`Clone`] whenever possible; this allows
-/// for a "listen" operation to be implemented in terms of delegating to several others.
-/// This is not required, so that the `Listener` trait remains object-safe.
-///
-/// Implementors should also implement [`Send`] and [`Sync`], as most usage of listeners
-/// might cross threads. However, this is not strictly required.
+
 pub(crate) trait Listener<M> {
-    /// Process and store a message.
-    ///
-    /// Note that, since this method takes `&Self`, a `Listener` must use interior
-    /// mutability of some variety to store the message. As a `Listener` may be called
-    /// from various contexts, and in particular while the sender is still performing
-    /// its work, that mutability should in general be limited to setting dirty flags
-    /// or inserting into message queues — not attempting to directly perform further
-    /// game state changes, and particularly not taking any locks that are not solely
-    /// used by the `Listener` and its destination, as that could result in deadlock.
-    ///
-    /// The typical pattern is for a listener to contain a `Weak<Mutex<...>>` or similar
-    /// multiply-owned mutable structure to aggregate incoming messages, which will
-    /// then be read and cleared by a later task; see [`FnListener`] for assistance in
-    /// implementing this pattern.
-    ///
-    /// This method should not panic under any circumstances, or inconsistencies may
-    /// result due to further work not being done and messages not being sent.
     fn receive(&self, message: M);
-    /// Whether the [`Listener`]'s destination is still interested in receiving messages.
-    ///
-    /// This method should start returning [`false`] as soon as its destination is no
-    /// longer interested in them or they would not have any effects on the rest of the
-    /// system; this informs [`Notifier`]s that they should drop this listener and avoid
-    /// memory leaks in the form of defunct listeners.
-    ///
-    /// This method should not panic under any circumstances, or inconsistencies may
-    /// result due to further work not being done and messages not being sent.
+
     fn alive(&self) -> bool;
-    /// Convert this listener into trait object form, allowing it to be stored in
-    /// collections or passed non-generically.
-    ///
-    /// The purpose of this method over simply calling [`Arc::new()`] is that it will
-    /// avoid double-wrapping of a listener that's already in [`Arc`]. **Other
-    /// implementors should not override this.**
+
     fn erased(self) -> DynListener<M>
     where
         Self: Sized + Send + Sync + 'static,
     {
         loop {}
     }
-    /// Apply a map/filter function to incoming messages.
-    ///
-    /// TODO: Doc test
+
     fn filter<MI, F>(self, function: F) -> Filter<F, Self>
     where
         Self: Sized,
@@ -75,22 +32,7 @@ pub(crate) trait Listener<M> {
     {
         loop {}
     }
-    /// Wraps `self` to pass messages only until the returned [`Gate`], and any clones
-    /// of it, are dropped.
-    ///
-    /// This may be used to stop forwarding messages when a dependency no longer exists.
-    ///
-    /// ```
-    /// use all_is_cubes::listen::{Listen, Listener, Gate, Sink};
-    ///
-    /// let sink = Sink::new();
-    /// let (gate, gated) = sink.listener().gate();
-    /// gated.receive("kept");
-    /// assert!(sink.take_equal("kept"));
-    /// drop(gate);
-    /// gated.receive("discarded");
-    /// assert!(!sink.take_equal("discarded"));
-    /// ```
+
     fn gate(self) -> (Gate, GateListener<Self>)
     where
         Self: Sized,
@@ -98,5 +40,5 @@ pub(crate) trait Listener<M> {
         loop {}
     }
 }
-/// Type-erased form of a [`Listener`] which accepts messages of type `M`.
+
 pub(crate) type DynListener<M> = Arc<dyn Listener<M> + Send + Sync>;
