@@ -56,44 +56,7 @@ impl CustomFormat<StatusText> for CsmUpdateInfo {
 #[derive(Debug)]
 struct VersionedBlockMeshes<Vert, Tile> {
     /// Indices of this vector are block IDs in the Space.
-    meshes: Vec<(Vert, Tile)>,}
-
-impl<Vert, Tile> VersionedBlockMeshes<Vert, Tile>
-where
-    Vert: GfxVertex<TexPoint = <Tile as TextureTile>::Point> + PartialEq,
-    Tile: TextureTile + PartialEq,
-{
-    fn new() -> Self {
-        loop {}
-    }
-
-    /// Discard all meshes.
-    /// Use this to ensure that in case of “everything changes” we don't store
-    /// extra data.
-    fn clear(&mut self) {
-        loop {}
-    }
-
-    /// Update block meshes based on the given [`Space`].
-    ///
-    /// After this method returns, `self.meshes.len()` will
-    /// always equal `space.block_data().len()`. It may not be fully updated yet, but
-    /// it will be the correct length.
-    ///
-    /// TODO: Missing handling for `mesh_options` changing.
-    fn update<A>(
-        &mut self,
-        todo: &mut FnvHashSet<BlockIndex>,
-        space: &Space,
-        block_texture_allocator: &A,
-        mesh_options: &MeshOptions,
-        deadline: Instant,
-    ) -> TimeStats
-    where
-        A: TextureAllocator<Tile = Tile>,
-    {
-        loop {}
-    }
+    meshes: Vec<(Vert, Tile)>,
 }
 
 impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes<Vert, Tile> {
