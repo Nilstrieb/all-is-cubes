@@ -12,11 +12,11 @@
 //! For the time being, if you wish to use a [`Universe`] from multiple threads, you must
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
-use std::fmt;
-use std::sync::Arc;
 use crate::block::BlockDef;
 use crate::character::Character;
 use crate::space::Space;
+use std::fmt;
+use std::sync::Arc;
 mod members;
 pub(crate) use members::*;
 mod universe_txn;
@@ -124,9 +124,7 @@ where
 }
 /// Iterator type for [`UniverseIndex::iter_by_type`].
 #[derive(Clone, Debug)]
-pub(crate) struct UniverseIter<'u, T>(
-    std::collections::btree_map::Iter<'u, Name, URootRef<T>>,
-);
+pub(crate) struct UniverseIter<'u, T>(std::collections::btree_map::Iter<'u, Name, URootRef<T>>);
 impl Default for Universe {
     fn default() -> Self {
         loop {}
