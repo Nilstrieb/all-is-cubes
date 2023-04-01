@@ -7,7 +7,7 @@ use cgmath::Vector3;
 use instant::Duration;
 use crate::behavior::{BehaviorSet};
 use crate::block::{
-    Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR, AIR_EVALUATED,
+    Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR,
 };
 #[cfg(doc)]
 use crate::character::Character;
@@ -400,39 +400,6 @@ impl Listen for Space {
 impl crate::behavior::BehaviorHost for Space {
     type Attachment = SpaceBehaviorAttachment;
 }
-impl SpaceBlockData {
-    /// A `SpaceBlockData` value used to represent out-of-bounds or placeholder
-    /// situations. The block is [`AIR`] and the count is always zero.
-    pub(crate) const NOTHING: Self = Self {
-        block: AIR,
-        count: 0,
-        evaluated: AIR_EVALUATED,
-        block_listen_gate: None,
-    };
-    /// Value used to fill empty entries in the block data vector.
-    /// This is the same value as [`SpaceBlockData::NOTHING`] but is not merely done
-    /// by `.clone()` because I haven't decided whether providing [`Clone`] for
-    /// `SpaceBlockData` is a good long-term API design decision.
-    fn tombstone() -> Self {
-        loop {}
-    }
-    fn new(
-        block: Block,
-        listener: impl Listener<BlockChange> + Clone + Send + Sync + 'static,
-    ) -> Result<Self, SetCubeError> {
-        loop {}
-    }
-    /// Returns the [`Block`] this data is about.
-    pub(crate) fn block(&self) -> &Block {
-        loop {}
-    }
-    /// Returns the [`EvaluatedBlock`] representation of the block.
-    ///
-    /// TODO: Describe when this may be stale.
-    pub(crate) fn evaluated(&self) -> &EvaluatedBlock {
-        loop {}
-    }
-}
 /// Description of where in a [`Space`] a [`Behavior<Space>`](crate::behavior::Behavior)
 /// exists.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -480,20 +447,6 @@ pub(crate) struct SpacePhysics {
     pub(crate) sky_color: Rgb,
     /// Method used to compute the illumination of individual blocks.
     pub(crate) light: LightPhysics,
-}
-impl SpacePhysics {
-    pub(crate) const DEFAULT: Self = Self {
-        gravity: Vector3::new(notnan!(0.), notnan!(- 20.), notnan!(0.)),
-        sky_color: palette::DAY_SKY_COLOR,
-        light: LightPhysics::DEFAULT,
-    };
-    /// Recommended defaults for spaces which are going to define a [`Block`]'s voxels.
-    /// In particular, disables light since it will not be used.
-    pub(crate) const DEFAULT_FOR_BLOCK: Self = Self {
-        gravity: Vector3::new(notnan!(0.), notnan!(0.), notnan!(0.)),
-        sky_color: rgb_const!(0.5, 0.5, 0.5),
-        light: LightPhysics::None,
-    };
 }
 impl fmt::Debug for SpacePhysics {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

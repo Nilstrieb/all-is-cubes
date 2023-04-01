@@ -57,15 +57,7 @@ pub(crate) enum EvalBlockError {
     #[error("block data inaccessible: {0}")]
     DataRefIs(#[from] RefError),
 }
-impl EvalBlockError {
-    /// Convert this error into an [`EvaluatedBlock`] which represents that an error has
-    /// occurred.
-    ///
-    /// This block is fully opaque and as inert to game mechanics as currently possible.
-    pub(crate) fn to_placeholder(&self) -> EvaluatedBlock {
-        loop {}
-    }
-}
+
 /// Properties of an individual voxel within [`EvaluatedBlock`].
 ///
 /// This is essentially a subset of the information in a full [`EvaluatedBlock`] and
@@ -82,32 +74,7 @@ pub(crate) struct Evoxel {
     /// The effect on a [`Body`](crate::physics::Body) of colliding with this voxel.
     pub(crate) collision: block::BlockCollision,
 }
-impl Evoxel {
-    /// The `Evoxel` value that would have resulted from using [`AIR`] in a recursive block.
-    ///
-    /// TODO: Write a test for that.
-    pub(crate) const AIR: Self = Self {
-        color: Rgba::TRANSPARENT,
-        selectable: false,
-        collision: block::BlockCollision::None,
-    };
-    /// Construct an [`Evoxel`] which represents the given evaluated block.
-    ///
-    /// This is the same operation as is used for each block/voxel in a [`Primitive::Recur`].
-    pub(crate) fn from_block(block: &EvaluatedBlock) -> Self {
-        loop {}
-    }
-    /// Construct the [`Evoxel`] that would have resulted from evaluating a voxel block
-    /// with the given color and default attributes.
-    pub(crate) const fn from_color(color: Rgba) -> Self {
-        const DA: &BlockAttributes = &BlockAttributes::default();
-        Self {
-            color,
-            selectable: DA.selectable,
-            collision: DA.collision,
-        }
-    }
-}
+
 /// Storage of an [`EvaluatedBlock`]'s shape — its _evaluated voxels._
 ///
 /// This voxel data may be smaller than the dimensions implied by [`Self::resolution`],
@@ -189,17 +156,8 @@ impl<'a> arbitrary::Arbitrary<'a> for Evoxels {
 ///
 /// assert_eq!(Ok(AIR_EVALUATED), AIR.evaluate());
 /// ```
-pub(crate) const AIR_EVALUATED: EvaluatedBlock = EvaluatedBlock {
-    attributes: AIR_ATTRIBUTES,
-    color: Rgba::TRANSPARENT,
-    voxels: Evoxels::One(AIR_INNER_EVOXEL),
-    opaque: FaceMap::repeat_copy(false),
-    visible: false,
-    voxel_opacity_mask: None,
-};
 /// Note that this voxel is *not* no-collision and unselectable; the block attributes
 /// override it. For now, all atom blocks work this way. TODO: Perhaps we should change that.
-const AIR_INNER_EVOXEL: Evoxel = Evoxel::from_color(Rgba::TRANSPARENT);
 /// Used only by [`AIR_EVALUATED`].
 const AIR_ATTRIBUTES: BlockAttributes = BlockAttributes {
     display_name: std::borrow::Cow::Borrowed("<air>"),
