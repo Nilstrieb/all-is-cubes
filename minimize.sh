@@ -6,7 +6,8 @@ cp src/lib.rs old.rs
 cargo clean
 cargo check
 
-git apply crash.patch
+# git apply crash.patch
+./patch.py
 
 OUT=$(cargo check 2>&1)
 
