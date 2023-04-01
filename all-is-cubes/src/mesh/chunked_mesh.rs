@@ -20,21 +20,12 @@ pub struct ChunkedSpaceMesh<D, const CHUNK_SIZE: GridCoordinate> {
 #[derive(Debug)]
 struct VersionedBlockMesh<Vert, Tile> {
     mesh: (Vert, Tile),
-    /// Version ID used to track whether chunks have stale block meshes (ones that don't
-    /// match the current definition of that block-index in the space).
     version: BlockMeshVersion,
 }
 
-/// Together with a [`BlockIndex`], uniquely identifies a block mesh.
-/// Used to determine when chunk meshes need updating.
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 enum BlockMeshVersion {
-    /// The block mesh hasn't been computed yet and this is the placeholder mesh.
-    /// Special because it's never assigned as a "good" version number.
     NotReady,
-    /// A specific version.
-    /// u32 is sufficient size because we are extremely unlikely to wrap around u32 space
-    /// in the course of a single batch of updates unless we're perpetually behind.
     Numbered(NonZeroU32),
 }
 
