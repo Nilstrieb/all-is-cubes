@@ -1,9 +1,9 @@
-use std::ops::Deref;
-use std::sync::Arc;
 use crate::block::{Block, BlockChange};
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::transaction::{self, Transaction};
 use crate::universe::{RefVisitor, VisitRefs};
+use std::ops::Deref;
+use std::sync::Arc;
 /// Contains a [`Block`] and can be stored in a [`Universe`](crate::universe::Universe).
 /// Together with [`Primitive::Indirect`], this allows mutation of a block definition such
 /// that all its usages follow.
@@ -13,11 +13,7 @@ use crate::universe::{RefVisitor, VisitRefs};
 ///
 /// To perform a mutation, use [`BlockDefTransaction`].
 #[derive(Debug)]
-pub struct BlockDef {
-    block: Block,
-    notifier: Arc<Notifier<BlockChange>>,
-    block_listen_gate: Gate,
-}
+pub struct BlockDef {}
 impl BlockDef {
     /// Constructs a new [`BlockDef`] that stores the given block (which may be replaced
     /// in the future).

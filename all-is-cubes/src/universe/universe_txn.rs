@@ -123,33 +123,7 @@ impl AnyTransaction {
         loop {}
     }
 }
-impl Transaction<()> for AnyTransaction {
-    type CommitCheck = AnyTransactionCheck;
-    type Output = transaction::NoOutput;
-    fn check(&self, _target: &()) -> Result<Self::CommitCheck, PreconditionFailed> {
-        loop {}
-    }
-    fn commit(
-        &self,
-        _target: &mut (),
-        check: Self::CommitCheck,
-        outputs: &mut dyn FnMut(Self::Output),
-    ) -> Result<(), CommitError> {
-        loop {}
-    }
-}
-impl Merge for AnyTransaction {
-    type MergeCheck = AnyTransactionCheck;
-    fn check_merge(
-        &self,
-        other: &Self,
-    ) -> Result<Self::MergeCheck, TransactionConflict> {
-        loop {}
-    }
-    fn commit_merge(self, other: Self, check: Self::MergeCheck) -> Self {
-        loop {}
-    }
-}
+
 /// Hide the wrapper type entirely since its type is determined entirely by its contents.
 impl Debug for AnyTransaction {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -197,21 +171,6 @@ impl UniverseTransaction {
 }
 impl From<AnyTransaction> for UniverseTransaction {
     fn from(transaction: AnyTransaction) -> Self {
-        loop {}
-    }
-}
-impl Transaction<Universe> for UniverseTransaction {
-    type CommitCheck = UniverseCommitCheck;
-    type Output = transaction::NoOutput;
-    fn check(&self, target: &Universe) -> Result<Self::CommitCheck, PreconditionFailed> {
-        loop {}
-    }
-    fn commit(
-        &self,
-        target: &mut Universe,
-        checks: Self::CommitCheck,
-        outputs: &mut dyn FnMut(Self::Output),
-    ) -> Result<(), CommitError> {
         loop {}
     }
 }
@@ -267,43 +226,3 @@ enum MemberTxn {
 struct MemberMergeCheck(Option<AnyTransactionCheck>);
 #[derive(Debug)]
 struct MemberCommitCheck(Option<AnyTransactionCheck>);
-impl MemberTxn {
-    fn check(
-        &self,
-        universe: &Universe,
-        name: &Name,
-    ) -> Result<MemberCommitCheck, PreconditionFailed> {
-        loop {}
-    }
-    fn commit(
-        &self,
-        universe: &mut Universe,
-        name: &Name,
-        MemberCommitCheck(check): MemberCommitCheck,
-        outputs: &mut dyn FnMut(std::convert::Infallible),
-    ) -> Result<(), CommitError> {
-        loop {}
-    }
-    /// Returns the transaction out of the wrappers.
-    fn transaction_as_debug(&self) -> &dyn Debug {
-        loop {}
-    }
-    fn universe_id(&self) -> Option<UniverseId> {
-        loop {}
-    }
-}
-impl Merge for MemberTxn {
-    type MergeCheck = MemberMergeCheck;
-    fn check_merge(
-        &self,
-        other: &Self,
-    ) -> Result<Self::MergeCheck, TransactionConflict> {
-        loop {}
-    }
-    fn commit_merge(self, other: Self, MemberMergeCheck(check): Self::MergeCheck) -> Self
-    where
-        Self: Sized,
-    {
-        loop {}
-    }
-}
