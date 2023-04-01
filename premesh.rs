@@ -4,18 +4,15 @@ use std::sync::{Arc, Mutex, Weak};
 
 use cgmath::Point3;
 use fnv::{FnvHashMap, FnvHashSet};
-use instant::{Duration, Instant};
 
-use crate::camera::Flaws;
-use crate::chunking::{ChunkChart, ChunkPos};
+use crate::chunking::ChunkPos;
 use crate::listen::Listener;
 use crate::math::GridCoordinate;
 use crate::mesh::{
-    BlockMesh, BlockMeshProvider, GfxVertex, MeshOptions, SpaceMesh, TextureAllocator, TextureTile,
+    BlockMesh, BlockMeshProvider, GfxVertex, MeshOptions, SpaceMesh, TextureAllocator,
 };
 use crate::space::{BlockIndex, Space, SpaceChange};
-use crate::universe::URef;
-use crate::util::{CustomFormat, StatusText, TimeStats};
+use crate::util::{CustomFormat, StatusText};
 
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
 const LOG_CHUNK_UPDATES: bool = false;
