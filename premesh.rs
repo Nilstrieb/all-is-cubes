@@ -14,7 +14,7 @@ const LOG_CHUNK_UPDATES: bool = false;
 
 #[derive(Debug)]
 pub struct ChunkedSpaceMesh<D, const CHUNK_SIZE: GridCoordinate> {
-    chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D, (), (), CHUNK_SIZE>>,
+    chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D,  CHUNK_SIZE>>,
 }
 
 #[derive(Debug)]
@@ -32,9 +32,8 @@ enum BlockMeshVersion {
 /// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
 /// data, and incidentals.
 #[derive(Debug, Eq, PartialEq)]
-pub struct ChunkMesh<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> {
+pub struct ChunkMesh<D, const CHUNK_SIZE: GridCoordinate> {
     position: ChunkPos<CHUNK_SIZE>,
-    mesh: SpaceMesh<Vert, Tex>,
     pub render_data: D,
     block_dependencies: Vec<(BlockIndex, BlockMeshVersion)>,
 
@@ -61,11 +60,10 @@ impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CH
 
 /////// MOVE START
 
-impl<D, Vert, Tex, const CHUNK_SIZE: GridCoordinate> ChunkMesh<D, Vert, Tex, CHUNK_SIZE>
+impl<D, const CHUNK_SIZE: GridCoordinate> ChunkMesh<D, CHUNK_SIZE>
 where
     D: Default, // TODO: This is used for initializing `render_data`, but it might not be ideal.
-    Vert: GfxVertex,
-    Tex: TextureAllocator,
+
 {
 }
 
