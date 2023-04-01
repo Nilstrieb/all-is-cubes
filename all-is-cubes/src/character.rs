@@ -1,18 +1,12 @@
 //! Player-character stuff.
-use crate::behavior::{Behavior, BehaviorSet, BehaviorSetTransaction};
-use crate::camera::ViewTransform;
+use crate::behavior::{BehaviorSet, BehaviorSetTransaction};
 use crate::inv::{Inventory, InventoryChange, InventoryTransaction, TOOL_SELECTIONS};
-use crate::listen::{Listen, Listener};
-use crate::math::FreeCoordinate;
 use crate::physics::{Body, BodyStepInfo, BodyTransaction};
-use crate::space::Space;
-use crate::time::Tick;
 use crate::transaction::{
     self, CommitError, Merge, PreconditionFailed, Transaction, TransactionConflict, Transactional,
 };
 use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
 use crate::util::{CustomFormat, StatusText};
-use cgmath::Vector3;
 use std::fmt;
 mod cursor;
 pub(crate) use cursor::*;
@@ -43,13 +37,7 @@ impl VisitRefs for Character {
         loop {}
     }
 }
-impl Listen for Character {
-    type Msg = CharacterChange;
-    /// Registers a listener for mutations of this character.
-    fn listen<L: Listener<CharacterChange> + Send + Sync + 'static>(&self, listener: L) {
-        loop {}
-    }
-}
+
 impl Transactional for Character {
     type Transaction = CharacterTransaction;
 }
