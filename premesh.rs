@@ -32,11 +32,7 @@ struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkTodo>,
 }
 
-/// [`Listener`] adapter for [`CsmTodo`].
-#[derive(Clone, Debug)]
-struct TodoListener<const CHUNK_SIZE: GridCoordinate>(Weak<Mutex<CsmTodo<CHUNK_SIZE>>>);
 
-impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CHUNK_SIZE> {}
 
 /////// MOVE START
 
