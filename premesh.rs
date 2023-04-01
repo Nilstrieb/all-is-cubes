@@ -36,25 +36,6 @@ where
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D, Vert, Tex, CHUNK_SIZE>>,
 }
 
-/// Performance info from a [`ChunkedSpaceMesh`]'s per-frame update.
-#[derive(Clone, Debug, Default, Eq, PartialEq)]
-#[non_exhaustive]
-pub struct CsmUpdateInfo {}
-
-impl CustomFormat<StatusText> for CsmUpdateInfo {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        loop {}
-    }
-}
-
-#[derive(Debug)]
-struct VersionedBlockMeshes {}
-
-impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes {
-    fn get(&mut self, index: BlockIndex) -> Option<&'a BlockMesh<Vert, Tile>> {
-        loop {}
-    }
-}
 
 #[derive(Debug)]
 struct VersionedBlockMesh<Vert, Tile> {
