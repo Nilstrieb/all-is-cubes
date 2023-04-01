@@ -19,7 +19,7 @@ pub(crate) struct Filter<F, T> {
 /// Construct this using [`Listener::gate`], or if a placeholder instance with no
 /// effect is required, [`Gate::default`].
 #[derive(Clone, Default)]
-pub(crate) struct Gate(Arc<()>);
+pub(crate) struct Gate();
 impl fmt::Debug for Gate {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -30,7 +30,6 @@ impl Gate {}
 /// is dropped. Construct this using [`Listener::gate()`].
 #[derive(Clone, Debug)]
 pub(crate) struct GateListener<T> {
-    weak: Weak<()>,
     target: T,
 }
 /// A [`Listener`] which forwards messages through a [`Notifier`] to its listeners.

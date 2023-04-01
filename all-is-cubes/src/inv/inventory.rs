@@ -21,10 +21,7 @@ use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
 /// other objects directly rather than via [`URef`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub struct Inventory {
-    /// TODO: This probably shouldn't be public forever.
-    pub(crate) slots: Vec<Slot>,
-}
+pub struct Inventory {}
 impl Inventory {
     /// Use a tool stored in this inventory.
     ///
@@ -50,7 +47,7 @@ pub(crate) enum Slot {
     /// Slot contains nothing.
     Empty,
     /// Slot contains one or more of the given [`Tool`].
-    Stack(NonZeroU16, Tool),
+    Stack(),
 }
 impl Slot {
     const COUNT_ONE: NonZeroU16 = { loop {} };
@@ -118,10 +115,7 @@ impl StackLimit {
 #[derive(Clone, Debug, Default, PartialEq)]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[must_use]
-pub struct InventoryTransaction {
-    replace: BTreeMap<usize, (Slot, Slot)>,
-    insert: Vec<Slot>,
-}
+pub struct InventoryTransaction {}
 impl InventoryTransaction {}
 impl Transaction<Inventory> for InventoryTransaction {
     type CommitCheck = Option<InventoryCheck>;
@@ -155,14 +149,8 @@ impl Merge for InventoryTransaction {
 }
 /// Implementation type for [`InventoryTransaction::CommitCheck`].
 #[derive(Debug)]
-pub struct InventoryCheck {
-    new: Vec<Slot>,
-    change: InventoryChange,
-}
+pub struct InventoryCheck {}
 /// Description of a change to an [`Inventory`] for use in listeners.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub struct InventoryChange {
-    /// Which slots of the inventory have been changed.
-    pub(crate) slots: Arc<[usize]>,
-}
+pub struct InventoryChange {}

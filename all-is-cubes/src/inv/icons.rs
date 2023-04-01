@@ -1,10 +1,8 @@
 use std::fmt;
 use exhaust::Exhaust;
-use crate::linking::{BlockModule};
-
+use crate::linking::BlockModule;
 #[cfg(doc)]
 use crate::inv::Tool;
-
 /// Blocks that are icons for [`Tool`]s.
 ///
 /// TODO: Should this be considered strictly part of the UI/content and not fundamentals,
@@ -27,10 +25,7 @@ pub(crate) enum Icons {
     /// Icon for [`Tool::PushPull`].
     PushPull,
     /// Icon for [`Tool::Jetpack`].
-    Jetpack {
-        /// Actually flying?
-        active: bool,
-    },
+    Jetpack {},
 }
 impl BlockModule for Icons {
     fn namespace() -> &'static str {

@@ -7,7 +7,6 @@ use crate::character::{Character, Cursor};
 use crate::inv::{self, Icons, StackLimit};
 use crate::linking::BlockProvider;
 use crate::math::GridPoint;
-
 use crate::universe::{RefError, RefVisitor, URef, UniverseTransaction, VisitRefs};
 /// A `Tool` is an object which a character can use to have some effect in the game,
 /// such as placing or removing a block. In particular, a tool use usually corresponds
@@ -25,10 +24,7 @@ pub(crate) enum Tool {
     /// It may have more functions in the future.
     Activate,
     /// Delete any targeted block from the space.
-    RemoveBlock {
-        /// If true, move it to inventory. If false, discard it entirely.
-        keep: bool,
-    },
+    RemoveBlock {},
     /// Move the given block out of inventory (consuming this tool) into the targeted
     /// empty space.
     Block(Block),
@@ -46,17 +42,9 @@ pub(crate) enum Tool {
     ///
     /// TODO: This should probably be a feature a tool can have rather than a
     /// single-purpose item, but we don't yet have a plan for programmable items.
-    Jetpack {
-        /// Actually currently flying?
-        active: bool,
-    },
+    Jetpack {},
     /// A tool which calls an arbitrary function.
-    ExternalAction {
-        /// Function that will be called when the tool is activated.
-        function: EphemeralOpaque<dyn Fn(&ToolInput) + Send + Sync>,
-        /// Icon for the tool.
-        icon: Block,
-    },
+    ExternalAction {},
 }
 impl Tool {
     #[allow(dead_code)]
@@ -118,15 +106,7 @@ impl VisitRefs for Tool {
 /// parameter list for `Tool::use_tool`.
 #[derive(Debug)]
 #[allow(clippy::exhaustive_structs)]
-pub(crate) struct ToolInput {
-    /// Cursor identifying block(s) to act on. If [`None`] then the tool was used while
-    /// pointing at nothing or by an agent without an ability to aim.
-    pub(crate) cursor: Option<Cursor>,
-    /// Character that is using the tool.
-    ///
-    /// TODO: We want to be able to express “inventory host”, not just specifically Character (but there aren't any other examples).
-    pub(crate) character: Option<URef<Character>>,
-}
+pub(crate) struct ToolInput {}
 impl ToolInput {
     /// Generic handler for a tool that replaces one cube.
     ///

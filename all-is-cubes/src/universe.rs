@@ -33,9 +33,9 @@ pub(crate) use visit::*;
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub(crate) enum Name {
     /// An explicitly set name.
-    Specific(Arc<str>),
+    Specific(),
     /// An automatically assigned name.
-    Anonym(usize),
+    Anonym(),
     /// Not yet been assigned a name; this may be replaced with `Anonym` but not `Specific`.
     Pending,
 }
@@ -53,7 +53,7 @@ impl fmt::Display for Name {
 ///
 /// Used to check whether [`URef`]s belong to particular [`Universe`]s.
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
-pub(crate) struct UniverseId(u64);
+pub(crate) struct UniverseId();
 impl UniverseId {}
 /// A collection of named objects which can refer to each other via [`URef`]. In the
 /// future, it will enable garbage collection and inter-object invariants.
@@ -63,19 +63,7 @@ impl UniverseId {}
 /// **Thread-safety caveat:** See the documentation on [avoiding deadlock].
 ///
 /// [avoiding deadlock]: crate::universe#thread-safety
-pub(crate) struct Universe {
-    blocks: Storage<BlockDef>,
-    characters: Storage<Character>,
-    spaces: Storage<Space>,
-    id: UniverseId,
-    /// Next number to assign to a [`Name::Anonym`].
-    next_anonym: usize,
-    /// Whether to run a garbage collection on the next step().
-    /// This is set to true whenever a new member is inserted, which policy ensures
-    /// that repeated insertion and dropping references cannot lead to unbounded growth
-    /// as long as steps occur routinely.
-    wants_gc: bool,
-}
+pub(crate) struct Universe {}
 impl fmt::Debug for Universe {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -124,7 +112,9 @@ where
 }
 /// Iterator type for [`UniverseIndex::iter_by_type`].
 #[derive(Clone, Debug)]
-pub(crate) struct UniverseIter<'u, T>(std::collections::btree_map::Iter<'u, Name, URootRef<T>>);
+pub(crate) struct UniverseIter<'u, T>(
+    std::collections::btree_map::Iter<'u, Name, URootRef<T>>,
+);
 impl Default for Universe {
     fn default() -> Self {
         loop {}
@@ -133,12 +123,7 @@ impl Default for Universe {
 /// Errors resulting from attempting to insert an object in a [`Universe`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub(crate) struct InsertError {
-    /// The name given for the insertion.
-    pub(crate) name: Name,
-    /// The problem that was detected.
-    pub(crate) kind: InsertErrorKind,
-}
+pub(crate) struct InsertError {}
 /// Specific problems with attempting to insert an object in a [`Universe`].
 /// A component of [`InsertError`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]

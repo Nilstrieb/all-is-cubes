@@ -21,10 +21,6 @@ type StrongEntryRef<T> = Arc<RwLock<UEntry<T>>>;
 ///
 /// [avoiding deadlock]: crate::universe#thread-safety
 pub struct URef<T> {
-    /// Reference to the object. Weak because we don't want to create reference cycles;
-    /// the assumption is that the overall game system will keep the [`Universe`] alive
-    /// and that [`Universe`] will ensure no entry goes away while referenced.
-    weak_ref: Weak<RwLock<UEntry<T>>>,
     state: Arc<Mutex<State<T>>>,
 }
 /// Strongly-referenced mutable state shared by all clones of a [`URef`].
@@ -35,12 +31,6 @@ enum State<T> {
     ///
     /// May transition to [`State::Member`].
     Pending {
-        /// Name that will apply once the ref is in a [`Universe`].
-        ///
-        /// * May be [`Name::Specific`].
-        /// * May be [`Name::Pending`] to assign a [`Name::Anonym`] later.
-        /// * May not be [`Name::Anonym`].
-        name: Name,
         /// Contains a strong reference to the same target as [`URef::weak_ref`].
         /// This is used to allow constructing `URef`s with targets *before* they are
         /// inserted into a [`Universe`], and thus inserting entire trees into the
@@ -49,20 +39,9 @@ enum State<T> {
         strong: StrongEntryRef<T>,
     },
     /// In a [`Universe`] (or has been deleted from one).
-    Member {
-        /// Name of this member within the [`Universe`].
-        ///
-        /// * May be [`Name::Specific`].
-        /// * May be [`Name::Anonym`].
-        /// * May not be [`Name::Pending`].
-        name: Name,
-        /// ID of the universe this ref belongs to.
-        ///
-        /// None or not yet inserted into a universe.
-        universe_id: UniverseId,
-    },
+    Member {},
     /// State of [`URef::new_gone()`].
-    Gone { name: Name },
+    Gone {},
 }
 impl<T: 'static> URef<T> {
     /// Name by which the [`Universe`] knows this ref.
@@ -232,7 +211,6 @@ struct UEntry<T> {
 /// This is essentially a strong-reference version of [`URef`] (which is weak).
 #[derive(Debug)]
 pub(super) struct URootRef<T> {
-    strong_ref: StrongEntryRef<T>,
     state: Arc<Mutex<State<T>>>,
 }
 /// Object-safe trait implemented for [`URef`], to allow code to operate on `URef<T>`

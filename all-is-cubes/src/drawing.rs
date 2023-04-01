@@ -14,19 +14,12 @@
 //! *   Coordinates are considered to refer to pixel centers rather than low corners,
 //!     and rectangles have inclusive upper bounds (whereas our [`GridAab`]s have
 //!     exclusive upper bounds).
-
-
-
-
 use std::borrow::Cow;
 use std::marker::PhantomData;
-
 /// Re-export the version of the [`embedded_graphics`] crate we're using.
 pub(crate) use embedded_graphics;
-use crate::block::{Block};
+use crate::block::Block;
 use crate::math::{GridMatrix, GridPoint};
-
-
 /// Adapter to use a [`Space`] or [`SpaceTransaction`] as a [`DrawTarget`].
 /// Use [`Space::draw_target`] to construct this.
 ///
@@ -35,8 +28,6 @@ use crate::math::{GridMatrix, GridPoint};
 #[derive(Debug)]
 pub(crate) struct DrawingPlane<'s, T, C> {
     space: &'s mut T,
-    /// Defines the coordinate transformation from 2D graphics to the [`Space`].
-    transform: GridMatrix,
     _color: PhantomData<fn(C)>,
 }
 /// A shape of multiple blocks to “paint” with. This may be used to make copies of a

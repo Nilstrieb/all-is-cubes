@@ -5,7 +5,7 @@
 //! clarifying the treatment of distances and squared distances.
 use std::ops::RangeTo;
 use std::sync::Arc;
-use cgmath::{Vector3};
+use cgmath::Vector3;
 use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint, GridVector};
 /// Type to distinguish chunk coordinates from cube coordinates.
 ///
@@ -51,22 +51,7 @@ impl<const CHUNK_SIZE: GridCoordinate> ChunkPos<CHUNK_SIZE> {
 ///   [`ChunkPos`] coordinates `[0, 0, 0]` will be sorted in back-to-front or front-to-back
 ///   order.
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd)]
-pub(crate) struct Distance {
-    /// The squared Euclidean distance between the nearest two chunk corners.
-    ///
-    /// As a concrete example, the distance value between any two chunks which touch on a
-    /// face, edge, or corner has zero in this field; if they have one chunk separating
-    /// them along one axis, then this field would be 1.
-    nearest_approach_squared: GridCoordinate,
-    /// The number of coordinate axes along which the two chunks have coordinates differing
-    /// by more than zero.
-    ///
-    /// This field, being second, acts as an [`Ord`] tie-breaker after
-    /// [`Self::nearest_approach_squared`], counteracting the effect of having subtracted 1
-    /// such that the chunks which lie in the coordinate planes are counted as nearer than
-    /// the ones which don't.
-    off_plane_count: u8,
-}
+pub(crate) struct Distance {}
 impl std::fmt::Debug for Distance {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         loop {}
@@ -77,31 +62,7 @@ impl std::fmt::Debug for Distance {
 /// In order to use the same pattern for all possible view positions, the view position is
 /// rounded to enclosing chunk position.
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ChunkChart<const CHUNK_SIZE: GridCoordinate> {
-    /// The maximum view distance which this chart is designed for,
-    /// squared, in multiples of a whole chunk.
-    view_distance_in_squared_chunks: GridCoordinate,
-    /// One octant of chunk positions (scaled down by CHUNK_SIZE) sorted by distance.
-    /// (It could be further reduced to a 64th by mirroring across the diagonal,
-    /// but then the indexing gets more complicated.)
-    ///
-    /// The full sphere can be constructed by mirroring this, minus the central plane.
-    /// That is, looking at a 2D slice we'd be storing the "#" and mirroring the "+" in:
-    ///
-    /// ```text
-    ///  +##
-    /// ++###
-    /// ++###
-    /// +++++
-    ///  +++
-    /// ```
-    ///
-    /// This vector may contain more than the desired chunks; this is done so that a small
-    /// chart can reuse the work to construct a large one.
-    octant_chunks: Arc<[GridVector]>,
-    /// Range of elements of `octant_chunks` to actually use.
-    octant_range: RangeTo<usize>,
-}
+pub struct ChunkChart<const CHUNK_SIZE: GridCoordinate> {}
 /// A specification of which octants to include in [`ChunkChart::chunks()`].
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub(crate) struct OctantMask {

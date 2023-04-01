@@ -7,15 +7,13 @@ use std::fmt;
 use std::sync::Arc;
 use crate::listen::Listener;
 use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
-
-use crate::space::{Space};
+use crate::space::Space;
 use crate::universe::URef;
 mod attributes;
 pub(crate) use attributes::*;
 mod block_def;
 pub(crate) use block_def::*;
 pub(crate) mod builder;
-
 mod evaluated;
 pub(crate) use evaluated::*;
 mod modifier;
@@ -38,22 +36,18 @@ pub(crate) use resolution::*;
 /// Use [`Block::listen()`] to be informed of possible changes to the result of
 /// evaluation.
 #[derive(Clone)]
-pub struct Block(BlockPtr);
+pub struct Block();
 /// Pointer to data of a [`Block`] value.
 ///
 /// This is a separate type so that the enum variants are not exposed.
 /// It does not implement Eq and Hash, but Block does through it.
 #[derive(Clone, Debug)]
 enum BlockPtr {
-    Static(&'static Primitive),
-    Owned(Arc<BlockParts>),
+    Static(),
+    Owned(),
 }
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-struct BlockParts {
-    primitive: Primitive,
-    /// Modifiers are stored in innermost-first order.
-    modifiers: Vec<Modifier>,
-}
+struct BlockParts {}
 /// The possible fundamental representations of a [`Block`]'s shape.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
@@ -65,23 +59,12 @@ pub(crate) enum Primitive {
     /// [`BlockDef`] may have its own [`Modifier`]s, and thus the result of
     /// [evaluating](Block::evaluate) a primitive with no modifiers is not necessarily
     /// free of the effects of modifiers.
-    Indirect(URef<BlockDef>),
+    Indirect(),
     /// A block that is a single-colored unit cube. (It may still be be transparent or
     /// non-solid to physics; in fact, [`AIR`] is such an atom.)
-    Atom(BlockAttributes, Rgba),
+    Atom(),
     /// A block that is composed of smaller blocks, defined by the referenced [`Space`].
-    Recur {
-        #[allow(missing_docs)]
-        attributes: BlockAttributes,
-        /// The space from which voxels are taken.
-        space: URef<Space>,
-        /// Which portion of the space will be used, specified by the most negative
-        /// corner.
-        offset: GridPoint,
-        /// The side length of the cubical volume of sub-blocks (voxels) used for this
-        /// block.
-        resolution: Resolution,
-    },
+    Recur {},
     /// An invisible, unselectable, inert block used as “no block”; the primitive of [`AIR`].
     ///
     /// This is essentially a specific [`Primitive::Atom`]. There are a number of
@@ -285,9 +268,5 @@ impl From<Rgba> for Block {
 /// Notification when an [`EvaluatedBlock`] result changes.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub(crate) struct BlockChange {
-    /// I expect there _might_ be future uses for a set of flags of what changed;
-    /// this helps preserve the option of adding them.
-    _not_public: (),
-}
+pub(crate) struct BlockChange {}
 impl BlockChange {}

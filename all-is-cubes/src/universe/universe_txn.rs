@@ -36,7 +36,6 @@ where
 /// TODO: Better name.
 #[derive(Debug, Eq)]
 struct TransactionInUniverse<O: Transactional + 'static> {
-    target: URef<O>,
     transaction: O::Transaction,
 }
 impl<O> Transaction<()> for TransactionInUniverse<O>
@@ -104,9 +103,9 @@ where
 enum AnyTransaction {
     #[default]
     Noop,
-    BlockDef(TransactionInUniverse<BlockDef>),
-    Character(TransactionInUniverse<Character>),
-    Space(TransactionInUniverse<Space>),
+    BlockDef(),
+    Character(),
+    Space(),
 }
 /// Not-an-associated-type alias for check values produced by [`AnyTransaction`].
 /// TODO: Make this a newtype struct since we're bothering to name it.
@@ -123,7 +122,6 @@ impl AnyTransaction {
         loop {}
     }
 }
-
 /// Hide the wrapper type entirely since its type is determined entirely by its contents.
 impl Debug for AnyTransaction {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -137,31 +135,13 @@ impl Debug for AnyTransaction {
 /// and combine them into larger transactions with [`Merge::merge`].
 #[derive(Clone, Default, PartialEq)]
 #[must_use]
-pub struct UniverseTransaction {
-    /// Transactions on existing members or named insertions.
-    /// Invariant: None of the names are [`Name::Pending`].
-    members: HashMap<Name, MemberTxn>,
-    /// Insertions of anonymous members, kept separate since they do not have unique [`Name`]s.
-    /// Unlike insertions of named members, these cannot fail to merge or commit.
-    ///
-    /// Note that due to concurrent operations on the ref, some of the entries in this
-    /// vector might turn out to have been given names. In that case, the transaction
-    /// should fail. (TODO: Write test verifying that.)
-    ///
-    /// Invariant: Every element of this vector is a `MemberTxn::Insert`.
-    anonymous_insertions: Vec<MemberTxn>,
-    /// Invariant: Has a universe ID if any of the `members` do.
-    universe_id: Option<UniverseId>,
-}
+pub struct UniverseTransaction {}
 #[doc(hidden)]
 #[derive(Debug)]
 pub struct UniverseMergeCheck(HashMap<Name, MemberMergeCheck>);
 #[doc(hidden)]
 #[derive(Debug)]
-pub(crate) struct UniverseCommitCheck {
-    members: HashMap<Name, MemberCommitCheck>,
-    anonymous_insertions: Vec<MemberCommitCheck>,
-}
+pub(crate) struct UniverseCommitCheck {}
 impl UniverseTransaction {
     /// If this transaction contains any operations that are on a specific member of a
     /// universe, then returns the ID of that universe.
@@ -211,18 +191,18 @@ enum MemberTxn {
     #[default]
     Noop,
     /// Apply given transaction to the existing value.
-    Modify(AnyTransaction),
+    Modify(),
     /// Insert the provided [pending](URef::new_pending) [`URef`] in the universe.
     ///
     /// Note: This transaction can only succeed once, since after the first time it will
     /// no longer be pending.
-    Insert(AnyURef),
+    Insert(),
     /// Delete this member from the universe.
     ///
     /// See [`UniverseTransaction::delete()`] for full documentation.
     Delete,
 }
 #[derive(Debug)]
-struct MemberMergeCheck(Option<AnyTransactionCheck>);
+struct MemberMergeCheck();
 #[derive(Debug)]
-struct MemberCommitCheck(Option<AnyTransactionCheck>);
+struct MemberCommitCheck();

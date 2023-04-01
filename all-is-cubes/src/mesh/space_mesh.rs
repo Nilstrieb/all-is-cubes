@@ -1,10 +1,9 @@
 use bitvec::vec::BitVec;
-
 use std::fmt::Debug;
 use std::ops::Range;
 use crate::camera::Flaws;
-use crate::math::{GridRotation};
-use crate::mesh::{BlockMesh};
+use crate::math::GridRotation;
+use crate::mesh::BlockMesh;
 use crate::space::BlockIndex;
 /// A triangle mesh representation of a [`Space`] (or part of it) which may
 /// then be rasterized.
@@ -20,21 +19,9 @@ use crate::space::BlockIndex;
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SpaceMesh<V, T> {
     vertices: Vec<V>,
-    indices: Vec<u32>,
-    /// Where in `indices` the triangles with no partial transparency are arranged.
-    opaque_range: Range<usize>,
-    /// Ranges of `indices` for all partially-transparent triangles, sorted by depth
-    /// as documented in [`Self::transparent_range()`].
-    ///
-    /// The indices of this array are those produced by [`DepthOrdering::to_index()`].
-    transparent_ranges: [Range<usize>; DepthOrdering::COUNT],
-    /// Set of all [`BlockIndex`]es whose meshes were incorporated into this mesh.
-    block_indices_used: BitVec,
     /// Texture tiles used by the vertices; holding these objects is intended to ensure
     /// the texture coordinates stay valid.
     textures_used: Vec<T>,
-    /// Flaws in this mesh, that should be reported as flaws in any rendering containing it.
-    flaws: Flaws,
 }
 /// Source of [`BlockMesh`] values for [`SpaceMesh::compute`].
 ///
@@ -67,7 +54,7 @@ pub(crate) enum DepthOrdering {
     /// see [volumetric sort (2006)].
     ///
     /// [volumetric sort (2006)]: https://iquilezles.org/www/articles/volumesort/volumesort.htm
-    Direction(GridRotation),
+    Direction(),
 }
 impl DepthOrdering {
     const ROT_COUNT: usize = GridRotation::ALL.len();
