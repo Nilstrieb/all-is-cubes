@@ -1,3 +1,9 @@
+to repro:
+
+```
+./minimize.sh
+```
+
 ```
 export RUSTFLAGS=-Zincremental-verify-ich
 ```

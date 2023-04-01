@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#export RUSTFLAGS=-Zincremental-verify-ich
+export RUSTFLAGS=-Zincremental-verify-ich
 
-cp src/lib.rs premesh.rs
+cp src/lib.rs old.rs
 cargo clean
 cargo check
 
@@ -11,7 +11,7 @@ mv out.rs src/lib.rs
 
 OUT=$(cargo check 2>&1)
 
-cp premesh.rs src/lib.rs
+cp old.rs src/lib.rs
 
 if echo $OUT | grep "internal compiler error";
 then
