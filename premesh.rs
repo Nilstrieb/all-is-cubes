@@ -16,23 +16,8 @@ const LOG_CHUNK_UPDATES: bool = false;
 #[derive(Debug, Eq, PartialEq)]
 pub struct ChunkMesh<const CHUNK_SIZE: GridCoordinate> {
     position: [(); CHUNK_SIZE],
-
-    /// Toggled whenever the mesh is updated. Value is arbitrary (this is a looping
-    /// 2-state counter).
     update_debug: bool,
 }
-
-/// [`ChunkedSpaceMesh`]'s set of things that need recomputing.
-#[derive(Debug, Default)]
-struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
-    // TODO: Benchmark using a BitVec instead.
-    blocks: FnvHashSet<BlockIndex>,
-    /// Membership in this table indicates that the chunk *exists;* todos for chunks
-    /// outside of the view area are not tracked.
-    chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkTodo>,
-}
-
-
 
 /////// MOVE START
 
