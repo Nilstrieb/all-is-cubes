@@ -9,7 +9,7 @@ use instant::{Duration, Instant};
 use crate::camera::{Camera, Flaws};
 use crate::chunking::{ChunkChart, ChunkPos};
 use crate::listen::Listener;
-use crate::math::{GridCoordinate};
+use crate::math::GridCoordinate;
 use crate::mesh::{
     BlockMesh, BlockMeshProvider, GfxVertex, LineVertex, MeshOptions, SpaceMesh, TextureAllocator,
     TextureTile,
@@ -64,8 +64,6 @@ where
     /// Earliest time prior to `zero_time` at which we finished everything in the queues.
     complete_time: Option<Instant>,
 }
-
-
 
 /// Performance info from a [`ChunkedSpaceMesh`]'s per-frame update.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -217,7 +215,6 @@ struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkTodo>,
 }
 
-
 /// [`Listener`] adapter for [`CsmTodo`].
 #[derive(Clone, Debug)]
 struct TodoListener<const CHUNK_SIZE: GridCoordinate>(Weak<Mutex<CsmTodo<CHUNK_SIZE>>>);
@@ -292,6 +289,5 @@ where
 struct ChunkTodo {
     recompute_mesh: bool,
 }
-
 
 /////// MOVE END
