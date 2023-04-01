@@ -5,7 +5,7 @@ use cgmath::Vector3;
 use crate::behavior::{Behavior, BehaviorSet, BehaviorSetTransaction};
 use crate::camera::ViewTransform;
 use crate::inv::{
-    Inventory, InventoryChange, InventoryTransaction, Slot, Tool, ToolError,
+    Inventory, InventoryChange, InventoryTransaction,
     TOOL_SELECTIONS,
 };
 use crate::listen::{Listen, Listener, Notifier};

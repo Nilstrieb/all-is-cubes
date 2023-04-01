@@ -29,10 +29,10 @@ mod builder;
 pub(crate) use builder::{SpaceBuilder, SpaceBuilderBounds};
 mod light;
 
-use light::{LightUpdateQueue, PackedLightScalar};
+use light::{LightUpdateQueue};
 pub(crate) use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;
-pub(crate) use space_txn::*;
+
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
 pub struct Space {
