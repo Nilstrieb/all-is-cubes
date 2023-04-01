@@ -16,7 +16,6 @@ const LOG_CHUNK_UPDATES: bool = false;
 #[derive(Debug, Eq, PartialEq)]
 pub struct ChunkMesh<const CHUNK_SIZE: GridCoordinate> {
     position: [(); CHUNK_SIZE],
-    update_debug: bool,
 }
 
 /////// MOVE START
