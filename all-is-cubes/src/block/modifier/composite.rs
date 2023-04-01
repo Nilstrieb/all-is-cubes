@@ -10,21 +10,21 @@ use crate::universe;
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub struct Composite {
+pub(crate) struct Composite {
     /// The “source” input to the compositing operator.
     /// (The “destination” input is the block this modifier is attached to.)
-    pub source: Block,
+    pub(crate) source: Block,
     /// The compositing operator used to combine the source and destination blocks.
-    pub operator: CompositeOperator,
+    pub(crate) operator: CompositeOperator,
     /// Swap the roles of “source” and “destination” for the [`operator`](Self::operator).
-    pub reverse: bool,
+    pub(crate) reverse: bool,
     /// Whether the block should come apart into its components when removed from its place.
-    pub disassemblable: bool,
+    pub(crate) disassemblable: bool,
 }
 impl Composite {
     /// Construct a new [`Composite`] modifier with the given source and operator, and
     /// `reverse: false`.
-    pub fn new(source: Block, operator: CompositeOperator) -> Self {
+    pub(crate) fn new(source: Block, operator: CompositeOperator) -> Self {
         loop {}
     }
     /// Set the disassemblable flag to true.
@@ -32,7 +32,7 @@ impl Composite {
     /// This will allow the composite to be taken apart by player action.
     /// TODO: explain further
     #[must_use]
-    pub fn with_disassemblable(mut self) -> Self {
+    pub(crate) fn with_disassemblable(mut self) -> Self {
         loop {}
     }
     /// Compose `self` and `destination`, except that:
@@ -53,11 +53,11 @@ impl Composite {
     /// TODO: Figure out a way to express "sorting order" rules for swapping self and
     /// destination, because for corner joints we don't care which is on top but we want
     /// there to be only one kind of corner block, not two depending on operation order.
-    pub fn compose_or_replace(mut self, mut destination: Block) -> Block {
+    pub(crate) fn compose_or_replace(mut self, mut destination: Block) -> Block {
         loop {}
     }
     /// Use [`Composite::compose_or_replace()`] repeatedly to assemble a block from parts.
-    pub fn stack(
+    pub(crate) fn stack(
         destination: Block,
         parts: impl IntoIterator<Item = Composite>,
     ) -> Block {
@@ -91,7 +91,7 @@ impl universe::VisitRefs for Composite {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, serde::Serialize, serde::Deserialize)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum CompositeOperator {
+pub(crate) enum CompositeOperator {
     /// Porter-Duff “over”. If both source and destination are opaque, the source is taken;
     /// otherwise the destination is taken.
     Over,

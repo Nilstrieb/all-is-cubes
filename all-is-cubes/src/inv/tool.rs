@@ -18,7 +18,7 @@ use crate::universe::{RefError, RefVisitor, URef, UniverseTransaction, VisitRefs
 /// future.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub enum Tool {
+pub(crate) enum Tool {
     /// “Click”, or “push button”, or generally “activate the function of this”
     /// as opposed to editing it.
     ///
@@ -74,7 +74,7 @@ impl Tool {
     /// If the transaction does not succeed, the original `Tool` value should be kept.
     ///
     /// TODO: Return type is inelegant
-    pub fn use_tool(
+    pub(crate) fn use_tool(
         self,
         input: &ToolInput,
     ) -> Result<(Option<Self>, UniverseTransaction), ToolError> {
@@ -84,7 +84,7 @@ impl Tool {
     ///
     /// This operation is used for special cases where an action is expressed by a tool
     /// but the tool is not a “game item”.
-    pub fn use_immutable_tool(
+    pub(crate) fn use_immutable_tool(
         &self,
         input: &ToolInput,
     ) -> Result<UniverseTransaction, ToolError> {
@@ -96,7 +96,10 @@ impl Tool {
     ///
     /// TODO (API instability): Eventually we will probably want additional decorations
     /// that probably should not need to be painted into the block itself.
-    pub fn icon<'a>(&'a self, predefined: &'a BlockProvider<Icons>) -> Cow<'a, Block> {
+    pub(crate) fn icon<'a>(
+        &'a self,
+        predefined: &'a BlockProvider<Icons>,
+    ) -> Cow<'a, Block> {
         loop {}
     }
     /// Specifies a limit on the number of this item that should be combined in a single
@@ -116,14 +119,14 @@ impl VisitRefs for Tool {
 /// parameter list for `Tool::use_tool`.
 #[derive(Debug)]
 #[allow(clippy::exhaustive_structs)]
-pub struct ToolInput {
+pub(crate) struct ToolInput {
     /// Cursor identifying block(s) to act on. If [`None`] then the tool was used while
     /// pointing at nothing or by an agent without an ability to aim.
-    pub cursor: Option<Cursor>,
+    pub(crate) cursor: Option<Cursor>,
     /// Character that is using the tool.
     ///
     /// TODO: We want to be able to express “inventory host”, not just specifically Character (but there aren't any other examples).
-    pub character: Option<URef<Character>>,
+    pub(crate) character: Option<URef<Character>>,
 }
 impl ToolInput {
     /// Generic handler for a tool that replaces one cube.
@@ -154,11 +157,11 @@ impl ToolInput {
     /// or because of being used in a context where there cannot be any aiming, returns
     /// [`Err(ToolError::NothingSelected)`](ToolError::NothingSelected) for convenient
     /// propagation.
-    pub fn cursor(&self) -> Result<&Cursor, ToolError> {
+    pub(crate) fn cursor(&self) -> Result<&Cursor, ToolError> {
         loop {}
     }
     /// Add the provided items to the inventory from which the tool was used.
-    pub fn produce_items<S: Into<inv::Slot>, I: IntoIterator<Item = S>>(
+    pub(crate) fn produce_items<S: Into<inv::Slot>, I: IntoIterator<Item = S>>(
         &self,
         items: I,
     ) -> Result<UniverseTransaction, ToolError> {
@@ -168,7 +171,7 @@ impl ToolInput {
 /// Ways that a tool can fail.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
 #[non_exhaustive]
-pub enum ToolError {
+pub(crate) enum ToolError {
     /// There was no tool to use (empty inventory slot, nonexistent slot, nonexistent inventory…).
     #[error("no tool")]
     NoTool,
@@ -194,7 +197,7 @@ impl ToolError {
     ///
     /// TODO: This should have spatial information (located at the cursor target or the
     /// character's "hand" or other).
-    pub fn fluff(&self) -> impl Iterator<Item = Fluff> {
+    pub(crate) fn fluff(&self) -> impl Iterator<Item = Fluff> {
         std::iter::once(Fluff::Beep)
     }
 }
@@ -205,10 +208,10 @@ impl ToolError {
 /// TODO: relocate this type once we figure out where it belongs.
 /// TODO: Probably they should be their own kind of `UniverseMember`, so that they can
 /// be reattached in the future.
-pub struct EphemeralOpaque<T: ?Sized>(pub(crate) Option<Arc<T>>);
+pub(crate) struct EphemeralOpaque<T: ?Sized>(pub(crate) Option<Arc<T>>);
 impl<T: ?Sized> EphemeralOpaque<T> {
     /// Get a reference to the value if it still exists.
-    pub fn try_ref(&self) -> Option<&T> {
+    pub(crate) fn try_ref(&self) -> Option<&T> {
         loop {}
     }
 }

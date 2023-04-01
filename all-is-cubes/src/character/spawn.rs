@@ -1,5 +1,4 @@
 use cgmath::{Point3, Vector3};
-
 use crate::inv::Slot;
 use crate::math::{FreeCoordinate, GridAab, NotNan};
 use crate::universe::{RefVisitor, VisitRefs};
@@ -10,7 +9,7 @@ use crate::universe::{RefVisitor, VisitRefs};
 /// [`Character`]: super::Character
 /// [`Space`]: crate::space::Space
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Spawn {
+pub(crate) struct Spawn {
     /// Volume which is permitted to be occupied.
     pub(super) bounds: GridAab,
     /// Desired eye position, in cube coordinates.
@@ -30,7 +29,7 @@ impl Spawn {
     /// outside the space looking in or to be within it at some particular position.
     /// Come up with some kind of hint that we can use to configure this better without
     /// necessarily mandating a specification.
-    pub fn default_for_new_space(bounds: GridAab) -> Self {
+    pub(crate) fn default_for_new_space(bounds: GridAab) -> Self {
         loop {}
     }
     /// Constructs a [`Spawn`] point located outside the [`Space`] and with its bounds in
@@ -41,28 +40,34 @@ impl Spawn {
     ///
     /// TODO: This needs better-defined FOV/distance considerations before making it public
     #[doc(hidden)]
-    pub fn looking_at_space(
+    pub(crate) fn looking_at_space(
         space_bounds: GridAab,
         direction: impl Into<Vector3<FreeCoordinate>>,
     ) -> Self {
         loop {}
     }
     /// Sets the position at which the character will appear, in terms of its viewpoint.
-    pub fn set_eye_position(&mut self, position: impl Into<Point3<FreeCoordinate>>) {
+    pub(crate) fn set_eye_position(
+        &mut self,
+        position: impl Into<Point3<FreeCoordinate>>,
+    ) {
         loop {}
     }
     /// Sets the bounds within which the character may be placed is allowed.
-    pub fn set_bounds(&mut self, bounds: GridAab) {
+    pub(crate) fn set_bounds(&mut self, bounds: GridAab) {
         loop {}
     }
     /// Sets the direction the character should be facing, or looking at.
     ///
     /// The results are unspecified but harmless if the direction is zero or NaN.
-    pub fn set_look_direction(&mut self, direction: impl Into<Vector3<FreeCoordinate>>) {
+    pub(crate) fn set_look_direction(
+        &mut self,
+        direction: impl Into<Vector3<FreeCoordinate>>,
+    ) {
         loop {}
     }
     /// Sets the starting inventory items.
-    pub fn set_inventory(&mut self, inventory: Vec<Slot>) {
+    pub(crate) fn set_inventory(&mut self, inventory: Vec<Slot>) {
         loop {}
     }
 }

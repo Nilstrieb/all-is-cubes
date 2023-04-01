@@ -24,7 +24,7 @@ use crate::math::*;
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, serde::Serialize, serde::Deserialize)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(u8)]
-pub enum GridRotation {
+pub(crate) enum GridRotation {
     RXYZ,
     RXYz,
     RXyZ,
@@ -80,7 +80,7 @@ impl GridRotation {
     /// Warning: TODO: The ordering of these rotations is not yet stable.
     /// The current ordering is based on the six axis permutations followed by rotations.
     #[rustfmt::skip]
-    pub const ALL: [Self; 48] = {
+    pub(crate) const ALL: [Self; 48] = {
         use GridRotation::*;
         [
             RXYZ,
@@ -137,7 +137,7 @@ impl GridRotation {
     ///
     /// Warning: TODO: The ordering of these rotations is not yet stable.
     #[rustfmt::skip]
-    pub const ALL_BUT_REFLECTIONS: [Self; 24] = {
+    pub(crate) const ALL_BUT_REFLECTIONS: [Self; 24] = {
         use GridRotation::*;
         [
             RXYZ,
@@ -167,7 +167,7 @@ impl GridRotation {
         ]
     };
     /// The identity rotation, also known as [`RXYZ`](Self::RXYZ).
-    pub const IDENTITY: Self = Self::RXYZ;
+    pub(crate) const IDENTITY: Self = Self::RXYZ;
     /// The rotation that is clockwise in our Y-up right-handed coordinate system.
     ///
     /// ```
@@ -180,7 +180,7 @@ impl GridRotation {
     ///
     /// assert_eq!(GridRotation::CLOCKWISE.transform(PY), PY);
     /// ```
-    pub const CLOCKWISE: Self = Self::RZYx;
+    pub(crate) const CLOCKWISE: Self = Self::RZYx;
     /// The rotation that is counterclockwise in our Y-up right-handed coordinate system.
     ///
     /// ```
@@ -193,13 +193,13 @@ impl GridRotation {
     ///
     /// assert_eq!(GridRotation::COUNTERCLOCKWISE.transform(PY), PY);
     /// ```
-    pub const COUNTERCLOCKWISE: Self = Self::RzYX;
+    pub(crate) const COUNTERCLOCKWISE: Self = Self::RzYX;
     /// Constructs a rotation from a basis: that is, the returned rotation will
     /// rotate `PX` into `basis[0]`, `PY` into `basis[1]`, and `PZ` into `basis[2]`.
     ///
     /// Panics if the three provided axes are not mutually perpendicular.
     #[inline]
-    pub fn from_basis(basis: impl Into<Vector3<Face6>>) -> Self {
+    pub(crate) fn from_basis(basis: impl Into<Vector3<Face6>>) -> Self {
         loop {}
     }
     fn from_basis_impl(basis: Vector3<Face6>) -> Self {
@@ -210,7 +210,7 @@ impl GridRotation {
     ///
     /// If it is not possible to leave `up` unaffected, returns [`None`]. (Trying two
     /// perpendicular `up` directions will always succeed.)
-    pub fn from_to(source: Face6, destination: Face6, up: Face6) -> Option<Self> {
+    pub(crate) fn from_to(source: Face6, destination: Face6, up: Face6) -> Option<Self> {
         loop {}
     }
     #[inline]
@@ -245,16 +245,16 @@ impl GridRotation {
     /// assert_eq!(rotation.transform_cube(GridPoint::new(0, 0, 3)), GridPoint::new(0, 0, 0));
     /// ```
     ///
-    pub fn to_positive_octant_matrix(self, size: GridCoordinate) -> GridMatrix {
+    pub(crate) fn to_positive_octant_matrix(self, size: GridCoordinate) -> GridMatrix {
         loop {}
     }
     /// Expresses this rotation as a matrix without any translation.
-    pub fn to_rotation_matrix(self) -> GridMatrix {
+    pub(crate) fn to_rotation_matrix(self) -> GridMatrix {
         loop {}
     }
     /// Rotate the face by this rotation.
     #[inline]
-    pub fn transform(self, face: Face6) -> Face6 {
+    pub(crate) fn transform(self, face: Face6) -> Face6 {
         loop {}
     }
     /// Returns whether this is a reflection.
@@ -267,7 +267,7 @@ impl GridRotation {
     /// assert!(GridRotation::from_basis([PX, PZ, PY]).is_reflection());
     /// ```
     #[inline]
-    pub const fn is_reflection(self) -> bool {
+    pub(crate) const fn is_reflection(self) -> bool {
         loop {}
     }
     /// Returns the inverse of this rotation; the one which undoes this.
@@ -280,7 +280,7 @@ impl GridRotation {
     /// }
     /// ```
     #[must_use]
-    pub fn inverse(self) -> Self {
+    pub(crate) fn inverse(self) -> Self {
         loop {}
     }
     /// Generates the sequence of rotations that may be obtained by concatenating/multiplying
@@ -315,7 +315,7 @@ impl GridRotation {
     ///    ],
     /// );
     /// ```
-    pub fn iterate(self) -> impl Iterator<Item = Self> {
+    pub(crate) fn iterate(self) -> impl Iterator<Item = Self> {
         let mut item = Self::IDENTITY;
         std::iter::once(Self::IDENTITY)
             .chain(

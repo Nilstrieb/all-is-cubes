@@ -3,13 +3,13 @@ use crate::listen::Listener;
 use crate::math::GridRotation;
 use crate::universe::{RefVisitor, VisitRefs};
 mod composite;
-pub use composite::*;
+pub(crate) use composite::*;
 mod r#move;
-pub use r#move::*;
+pub(crate) use r#move::*;
 mod quote;
-pub use quote::*;
+pub(crate) use quote::*;
 mod zoom;
-pub use zoom::*;
+pub(crate) use zoom::*;
 /// Modifiers can be applied to a [`Block`] to change the result of
 /// [`evaluate()`](Block::evaluate)ing it, and thus create variations, such as rotations
 /// or combinations of multiple blocks.
@@ -49,7 +49,7 @@ pub use zoom::*;
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum Modifier {
+pub(crate) enum Modifier {
     /// Suppresses all behaviors of the [`Block`] that might affect the space around it,
     /// (or itself).
     Quote(Quote),

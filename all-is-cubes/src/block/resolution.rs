@@ -41,18 +41,18 @@ use crate::math::GridCoordinate;
 impl Resolution {
     /// Returns the [`Resolution`] that’s twice this one, or [`None`] at the limit.
     #[inline]
-    pub const fn double(self) -> Option<Self> {
+    pub(crate) const fn double(self) -> Option<Self> {
         loop {}
     }
     /// Returns the [`Resolution`] that’s half this one, or [`None`] if `self` is
     /// [`R1`](Self::R1).
     #[inline]
-    pub const fn halve(self) -> Option<Self> {
+    pub(crate) const fn halve(self) -> Option<Self> {
         loop {}
     }
     #[inline]
     #[doc(hidden)]
-    pub const fn to_grid(self) -> GridCoordinate {
+    pub(crate) const fn to_grid(self) -> GridCoordinate {
         loop {}
     }
 }

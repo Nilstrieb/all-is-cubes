@@ -25,18 +25,18 @@ use crate::util::{CustomFormat, StatusText};
 mod members;
 pub(crate) use members::*;
 mod universe_txn;
-pub use universe_txn::*;
+pub(crate) use universe_txn::*;
 mod uref;
-pub use uref::*;
+pub(crate) use uref::*;
 mod visit;
-pub use visit::*;
+pub(crate) use visit::*;
 /// Name/key of an object in a [`Universe`].
 ///
 /// Internally uses [`Arc`] to be cheap to clone. Might be interned in future versions.
 #[allow(clippy::exhaustive_enums)]
 #[derive(Clone, Debug, Hash, Eq, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub enum Name {
+pub(crate) enum Name {
     /// An explicitly set name.
     Specific(Arc<str>),
     /// An automatically assigned name.
@@ -58,7 +58,7 @@ impl fmt::Display for Name {
 ///
 /// Used to check whether [`URef`]s belong to particular [`Universe`]s.
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
-pub struct UniverseId(u64);
+pub(crate) struct UniverseId(u64);
 impl UniverseId {
     fn new() -> Self {
         loop {}
@@ -72,7 +72,7 @@ impl UniverseId {
 /// **Thread-safety caveat:** See the documentation on [avoiding deadlock].
 ///
 /// [avoiding deadlock]: crate::universe#thread-safety
-pub struct Universe {
+pub(crate) struct Universe {
     blocks: Storage<BlockDef>,
     characters: Storage<Character>,
     spaces: Storage<Space>,
@@ -87,14 +87,14 @@ pub struct Universe {
 }
 impl Universe {
     /// Constructs an empty [`Universe`].
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         loop {}
     }
     /// Returns a [`URef`] for the object in this universe with the given name,
     /// regardless of its type, or [`None`] if there is none.
     ///
     /// This is a dynamically-typed version of [`UniverseIndex::get`].
-    pub fn get_any(&self, name: &Name) -> Option<Box<dyn URefErased>> {
+    pub(crate) fn get_any(&self, name: &Name) -> Option<Box<dyn URefErased>> {
         loop {}
     }
     /// Returns the character named `"character"`.
@@ -103,22 +103,22 @@ impl Universe {
     /// TODO: this is a temporary shortcut to be replaced with something with more nuance
     /// (e.g. we might have temporary characters for editing purposes, which are 'current'
     /// but not 'primary').
-    pub fn get_default_character(&self) -> Option<URef<Character>> {
+    pub(crate) fn get_default_character(&self) -> Option<URef<Character>> {
         loop {}
     }
     /// Returns a unique identifier for this particular [`Universe`] (within this memory space).
     ///
     /// It may be used to determine whether a given [`URef`] belongs to this universe or not.
-    pub fn universe_id(&self) -> UniverseId {
+    pub(crate) fn universe_id(&self) -> UniverseId {
         loop {}
     }
     /// Advance time for all members.
-    pub fn step(&mut self, tick: Tick) -> UniverseStepInfo {
+    pub(crate) fn step(&mut self, tick: Tick) -> UniverseStepInfo {
         loop {}
     }
     /// Inserts a new object without giving it a specific name, and returns
     /// a reference to it.
-    pub fn insert_anonymous<T>(&mut self, value: T) -> URef<T>
+    pub(crate) fn insert_anonymous<T>(&mut self, value: T) -> URef<T>
     where
         Self: UniverseIndex<T>,
         T: UniverseMember,
@@ -148,7 +148,7 @@ impl Universe {
     ///
     /// This may happen at any time during operations of the universe; calling this method
     /// merely ensures that it happens now and not earlier.
-    pub fn gc(&mut self) {
+    pub(crate) fn gc(&mut self) {
         loop {}
     }
 }
@@ -165,7 +165,7 @@ where
 }
 /// Trait implemented once for each type of object that can be stored in a [`Universe`]
 /// that permits lookups of that type.
-pub trait UniverseIndex<T>
+pub(crate) trait UniverseIndex<T>
 where
     T: UniverseMember,
 {
@@ -206,7 +206,9 @@ where
 }
 /// Iterator type for [`UniverseIndex::iter_by_type`].
 #[derive(Clone, Debug)]
-pub struct UniverseIter<'u, T>(std::collections::btree_map::Iter<'u, Name, URootRef<T>>);
+pub(crate) struct UniverseIter<'u, T>(
+    std::collections::btree_map::Iter<'u, Name, URootRef<T>>,
+);
 impl Default for Universe {
     fn default() -> Self {
         loop {}
@@ -215,17 +217,17 @@ impl Default for Universe {
 /// Errors resulting from attempting to insert an object in a [`Universe`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub struct InsertError {
+pub(crate) struct InsertError {
     /// The name given for the insertion.
-    pub name: Name,
+    pub(crate) name: Name,
     /// The problem that was detected.
-    pub kind: InsertErrorKind,
+    pub(crate) kind: InsertErrorKind,
 }
 /// Specific problems with attempting to insert an object in a [`Universe`].
 /// A component of [`InsertError`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub enum InsertErrorKind {
+pub(crate) enum InsertErrorKind {
     /// An object already exists with the proposed name.
     AlreadyExists,
     /// The proposed name may not be used.
@@ -246,9 +248,9 @@ impl fmt::Display for InsertError {
 /// a specific need for one of the values.
 #[derive(Clone, Debug, Default, PartialEq)]
 #[non_exhaustive]
-pub struct UniverseStepInfo {
+pub(crate) struct UniverseStepInfo {
     #[doc(hidden)]
-    pub computation_time: Duration,
+    pub(crate) computation_time: Duration,
     space_step: SpaceStepInfo,
 }
 impl std::ops::AddAssign<UniverseStepInfo> for UniverseStepInfo {

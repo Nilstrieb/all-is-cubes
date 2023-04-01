@@ -23,9 +23,9 @@ use crate::transaction::{
 use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
 use crate::util::{CustomFormat, StatusText};
 mod cursor;
-pub use cursor::*;
+pub(crate) use cursor::*;
 mod spawn;
-pub use spawn::*;
+pub(crate) use spawn::*;
 /// A `Character`:
 ///
 /// * knows what [`Space`] it is looking at, by reference,
@@ -35,9 +35,9 @@ pub use spawn::*;
 ///   (controlling velocity, holding tools).
 pub struct Character {
     /// Position, collision, and look direction.
-    pub body: Body,
+    pub(crate) body: Body,
     /// Refers to the [`Space`] to be viewed and collided with.
-    pub space: URef<Space>,
+    pub(crate) space: URef<Space>,
     /// Velocity specified by user input, which the actual velocity is smoothly adjusted
     /// towards.
     velocity_input: Vector3<FreeCoordinate>,
@@ -48,7 +48,7 @@ pub struct Character {
     /// Velocity of the `eye_displacement_pos` point (relative to body).
     eye_displacement_vel: Vector3<FreeCoordinate>,
     #[doc(hidden)]
-    pub colliding_cubes: HashSet<Contact>,
+    pub(crate) colliding_cubes: HashSet<Contact>,
     /// Last [`Character::step`] info result, for debugging.
     pub(crate) last_step_info: Option<BodyStepInfo>,
     /// Incrementally updated samples of neighboring light levels, used for
@@ -80,12 +80,12 @@ impl CustomFormat<StatusText> for Character {
 impl Character {
     /// Constructs a [`Character`] within/looking at the given `space`
     /// with the initial state specified by `spawn`.
-    pub fn spawn(spawn: &Spawn, space: URef<Space>) -> Self {
+    pub(crate) fn spawn(spawn: &Spawn, space: URef<Space>) -> Self {
         loop {}
     }
     /// Constructs a [`Character`] within/looking at the given `space`
     /// with the initial state specified by [`Space::spawn`].
-    pub fn spawn_default(space: URef<Space>) -> Self {
+    pub(crate) fn spawn_default(space: URef<Space>) -> Self {
         loop {}
     }
     /// Computes the view transform for this character's eye; translation and rotation from
@@ -93,16 +93,16 @@ impl Character {
     /// coordinate system.
     ///
     /// See the documentation for [`ViewTransform`] for the interpretation of this transform.
-    pub fn view(&self) -> ViewTransform {
+    pub(crate) fn view(&self) -> ViewTransform {
         loop {}
     }
     /// Returns the character's current inventory.
-    pub fn inventory(&self) -> &Inventory {
+    pub(crate) fn inventory(&self) -> &Inventory {
         loop {}
     }
     #[allow(missing_docs)]
     #[doc(hidden)]
-    pub fn add_behavior<B>(&mut self, behavior: B)
+    pub(crate) fn add_behavior<B>(&mut self, behavior: B)
     where
         B: Behavior<Character> + 'static,
     {
@@ -112,17 +112,17 @@ impl Character {
     ///
     /// The indices of this array are buttons (e.g. mouse buttons), and the values are
     /// inventory slot indices.
-    pub fn selected_slots(&self) -> [usize; TOOL_SELECTIONS] {
+    pub(crate) fn selected_slots(&self) -> [usize; TOOL_SELECTIONS] {
         loop {}
     }
     /// Changes which inventory slot is currently selected.
-    pub fn set_selected_slot(&mut self, which_selection: usize, slot: usize) {
+    pub(crate) fn set_selected_slot(&mut self, which_selection: usize, slot: usize) {
         loop {}
     }
     /// Advances time.
     ///
     /// Normally, this is called from [`Universe::step`](crate::universe::Universe::step).
-    pub fn step(
+    pub(crate) fn step(
         &mut self,
         self_ref: Option<&URef<Character>>,
         tick: Tick,
@@ -131,7 +131,7 @@ impl Character {
     }
     /// Returns the character's current automatic-exposure calculation based on the light
     /// around it.
-    pub fn exposure(&self) -> f32 {
+    pub(crate) fn exposure(&self) -> f32 {
         loop {}
     }
     fn update_exposure(&mut self, space: &Space, dt: f64) {
@@ -139,7 +139,7 @@ impl Character {
         loop {}
     }
     /// Maximum range for normal keyboard input should be -1 to 1
-    pub fn set_velocity_input(&mut self, velocity: Vector3<FreeCoordinate>) {
+    pub(crate) fn set_velocity_input(&mut self, velocity: Vector3<FreeCoordinate>) {
         loop {}
     }
     /// Use this character's selected tool on the given cursor.
@@ -147,7 +147,7 @@ impl Character {
     /// Return an error if:
     /// * The tool is not usable.
     /// * The cursor does not refer to the same space as this character occupies.
-    pub fn click(
+    pub(crate) fn click(
         this: URef<Character>,
         cursor: Option<&Cursor>,
         button: usize,
@@ -159,7 +159,7 @@ impl Character {
     /// TODO: this code's location is driven by `colliding_cubes` being here, which is probably wrong.
     /// If nothing else, the jump height probably belongs elsewhere.
     /// Figure out what the correct overall thing is.
-    pub fn jump_if_able(&mut self) {
+    pub(crate) fn jump_if_able(&mut self) {
         loop {}
     }
     fn is_on_ground(&self) -> bool {
@@ -194,11 +194,11 @@ pub struct CharacterTransaction {
 }
 impl CharacterTransaction {
     /// Modify the character's [`Body`].
-    pub fn body(t: BodyTransaction) -> Self {
+    pub(crate) fn body(t: BodyTransaction) -> Self {
         loop {}
     }
     /// Modify the character's [`Inventory`].
-    pub fn inventory(t: InventoryTransaction) -> Self {
+    pub(crate) fn inventory(t: InventoryTransaction) -> Self {
         loop {}
     }
     /// Modify the character's [`BehaviorSet`].
@@ -254,7 +254,7 @@ impl Merge for CharacterTransaction {
 /// Description of a change to a [`Character`] for use in listeners.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[allow(clippy::exhaustive_enums)]
-pub enum CharacterChange {
+pub(crate) enum CharacterChange {
     /// Inventory contents.
     Inventory(InventoryChange),
     /// Which inventory slots are selected.

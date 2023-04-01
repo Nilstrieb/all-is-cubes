@@ -6,7 +6,7 @@ use crate::universe::{URef, Universe};
 /// Correct implementations of this trait are necessary for many functions of a
 /// [`Universe`] to work correctly; failing to report a reference may result in it
 /// breaking.
-pub trait VisitRefs {
+pub(crate) trait VisitRefs {
     /// For each [`URef`] contained within `self` that is reachable without traversing
     /// another [`URef`], call `visitor` with a reference to it.
     fn visit_refs(&self, visitor: &mut dyn RefVisitor);
@@ -14,7 +14,7 @@ pub trait VisitRefs {
 /// Callback used by [`VisitRefs::visit_refs`].
 ///
 /// Note that this is automatically implemented for functions.
-pub trait RefVisitor {
+pub(crate) trait RefVisitor {
     /// Called by a value which is responding to a [`VisitRefs::visit_refs()`] operation
     /// to report one of the refs it contains.
     fn visit(&mut self, r: &dyn URefErased);

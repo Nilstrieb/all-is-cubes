@@ -7,7 +7,7 @@ use std::time::Duration;
 use cgmath::{Matrix4, Point3, Vector2, Vector3, Vector4};
 use instant::Instant;
 mod yield_progress;
-pub use yield_progress::*;
+pub(crate) use yield_progress::*;
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).
 ///
 /// This can be thought of as a mechanism to easily create a new special-purpose
@@ -17,7 +17,7 @@ pub use yield_progress::*;
 /// and [`CustomFormat::custom_format`] provides a wrapper which may be used to cause
 /// a value implementing `CustomFormat<T>` to be formatted using
 /// [`CustomFormat<T>::fmt`](Self::fmt).
-pub trait CustomFormat<F: Copy> {
+pub(crate) trait CustomFormat<F: Copy> {
     /// Wrap this value so that when formatted with [`Debug`] or [`Display`] it uses
     /// the given custom format instead.
     fn custom_format(&self, format_type: F) -> CustomFormatWrapper<'_, F, Self> {
@@ -32,7 +32,10 @@ pub trait CustomFormat<F: Copy> {
 /// To enable using the wrapper inside [`assert_eq`], it implements [`PartialEq`]
 /// (comparing both value and format).
 #[derive(Eq, PartialEq)]
-pub struct CustomFormatWrapper<'a, F: Copy, T: CustomFormat<F> + ?Sized>(F, &'a T);
+pub(crate) struct CustomFormatWrapper<'a, F: Copy, T: CustomFormat<F> + ?Sized>(
+    F,
+    &'a T,
+);
 impl<'a, F: Copy, T: CustomFormat<F>> Debug for CustomFormatWrapper<'a, F, T> {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -50,14 +53,14 @@ impl<'a, F: Copy, T: CustomFormat<F>> Display for CustomFormatWrapper<'a, F, T> 
 /// precision or Rust syntax in favor of a short at-a-glance representation.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct ConciseDebug;
+pub(crate) struct ConciseDebug;
 /// Format type for [`CustomFormat`] which provides an highly condensed, ideally
 /// constant-size, user-facing format for live-updating textual status messages.
 /// This format does not follow Rust [`Debug`](fmt::Debug) syntax, and when implemented
 /// for standard Rust types may have quirks. Values may have multiple lines.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
-pub struct StatusText;
+pub(crate) struct StatusText;
 /// Makes the assumption that [`Duration`]s are per-frame timings and hence the
 /// interesting precision is in the millisecond-to-microsecond range.
 impl CustomFormat<StatusText> for Duration {
@@ -79,19 +82,19 @@ fn format_error_chain(
 #[non_exhaustive]
 pub struct TimeStats {
     /// The number of events aggregated into this [`TimeStats`].
-    pub count: usize,
+    pub(crate) count: usize,
     /// The sum of the durations of all events.
-    pub sum: Duration,
+    pub(crate) sum: Duration,
     /// The minimum duration of all events, or [`None`] if there were no events.
-    pub min: Option<Duration>,
+    pub(crate) min: Option<Duration>,
     /// The maximum duration of all events, or [`Duration::ZERO`] if there were no events.
-    pub max: Duration,
+    pub(crate) max: Duration,
 }
 impl TimeStats {
     /// Constructs a [`TimeStats`] for a single event.
     ///
     /// Multiple of these may then be aggregated using the `+=` operator.
-    pub const fn one(duration: Duration) -> Self {
+    pub(crate) const fn one(duration: Duration) -> Self {
         loop {}
     }
     /// Record an event based on the given previous time and current time, then update
@@ -117,4 +120,4 @@ impl Display for TimeStats {
     }
 }
 #[doc(hidden)]
-pub fn assert_send_sync<T: Send + Sync>() {}
+pub(crate) fn assert_send_sync<T: Send + Sync>() {}

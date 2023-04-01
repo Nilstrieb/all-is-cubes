@@ -6,16 +6,16 @@
 use crate::camera::{GraphicsOptions, TransparencyOption};
 use crate::math::FreeCoordinate;
 mod block_vertex;
-pub use block_vertex::*;
+pub(crate) use block_vertex::*;
 mod block_mesh;
-pub use block_mesh::*;
+pub(crate) use block_mesh::*;
 #[doc(hidden)]
-pub mod chunked_mesh;
+pub(crate) mod chunked_mesh;
 mod space_mesh;
 use cgmath::Point3;
-pub use space_mesh::*;
+pub(crate) use space_mesh::*;
 mod texalloc;
-pub use texalloc::*;
+pub(crate) use texalloc::*;
 /// Parameters for creating meshes that aren't the block/space data itself
 /// (or the texture allocator, since that may need to be mutable).
 ///
@@ -24,7 +24,7 @@ pub use texalloc::*;
 /// to make the API future-proof against additional configuration being needed.
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub struct MeshOptions {
+pub(crate) struct MeshOptions {
     /// Input to TransparencyOption::limit_alpha.
     transparency: TransparencyOption,
     /// Ignore blocks' [`voxels`] data and use only the overall color.
@@ -34,13 +34,13 @@ pub struct MeshOptions {
 }
 impl MeshOptions {
     /// Take the options relevant to mesh generation from the given [`GraphicsOptions`].
-    pub fn new(graphics_options: &GraphicsOptions) -> Self {
+    pub(crate) fn new(graphics_options: &GraphicsOptions) -> Self {
         loop {}
     }
     /// Placeholder for use in tests which do not care about any of the
     /// characteristics that are affected by options (yet).
     #[doc(hidden)]
-    pub fn dont_care_for_test() -> Self {
+    pub(crate) fn dont_care_for_test() -> Self {
         loop {}
     }
 }
@@ -55,14 +55,14 @@ impl MeshOptions {
 #[non_exhaustive]
 pub struct LineVertex {
     /// Position of the vertex.
-    pub position: Point3<FreeCoordinate>,
+    pub(crate) position: Point3<FreeCoordinate>,
     /// Color in which to draw the line.
     ///
     /// If [`None`], a color set by the context/parent should be used instead.
     ///
     /// If the ends of a line are different colors, color should be interpolated along
     /// the line.
-    pub color: Option<crate::math::Rgba>,
+    pub(crate) color: Option<crate::math::Rgba>,
 }
 impl From<Point3<FreeCoordinate>> for LineVertex {
     fn from(position: Point3<FreeCoordinate>) -> Self {

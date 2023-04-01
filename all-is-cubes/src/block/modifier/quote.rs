@@ -6,13 +6,13 @@ use crate::universe;
 #[derive(Clone, Debug, Default, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub struct Quote {
+pub(crate) struct Quote {
     /// If true, also suppress light and sound effects.
-    pub suppress_ambient: bool,
+    pub(crate) suppress_ambient: bool,
 }
 impl Quote {
     /// Construct an instance of [`Quote`], the same as [`Quote::default()`].
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         loop {}
     }
 }

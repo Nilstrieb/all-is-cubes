@@ -14,38 +14,38 @@ use crate::{
 /// blocks.
 #[derive(Clone, Eq, Hash, PartialEq)]
 #[allow(clippy::exhaustive_structs)]
-pub struct BlockAttributes {
+pub(crate) struct BlockAttributes {
     /// The name that should be displayed to players.
     ///
     /// The default value is the empty string. The empty string should be considered a
     /// reasonable choice for solid-color blocks with no special features.
-    pub display_name: Cow<'static, str>,
+    pub(crate) display_name: Cow<'static, str>,
     /// Whether players' [cursors](crate::character::Cursor) target it or pass through it.
     ///
     /// The default value is `true`.
-    pub selectable: bool,
+    pub(crate) selectable: bool,
     /// The effect on a [`Body`](crate::physics::Body) of colliding with this block.
     ///
     /// The default value is [`BlockCollision::Hard`].
-    pub collision: BlockCollision,
+    pub(crate) collision: BlockCollision,
     /// Rule about how this block should be rotated, or not, when placed in a [`Space`] by
     /// some agent not otherwise specifying rotation.
     ///
     /// The default value is [`RotationPlacementRule::Never`].
-    pub rotation_rule: RotationPlacementRule,
+    pub(crate) rotation_rule: RotationPlacementRule,
     /// Light emitted by the block.
     ///
     /// The default value is [`Rgb::ZERO`].
-    pub light_emission: Rgb,
+    pub(crate) light_emission: Rgb,
     /// Something this block does when time passes.
     ///
     /// Currently the only possibility is “turn into another block”.
     ///
     /// TODO: Very placeholder. This needs more possible effects and also time/probability options.
-    pub tick_action: Option<VoxelBrush<'static>>,
+    pub(crate) tick_action: Option<VoxelBrush<'static>>,
     /// Advice to the renderer about how to expect this block to change, and hence
     /// what rendering strategy to use.
-    pub animation_hint: AnimationHint,
+    pub(crate) animation_hint: AnimationHint,
 }
 impl fmt::Debug for BlockAttributes {
     /// Only attributes which differ from the default are shown.
@@ -58,7 +58,7 @@ impl BlockAttributes {
     ///
     /// This function differs from the [`Default::default`] trait implementation only
     /// in that it is a `const fn`.
-    pub const fn default() -> BlockAttributes {
+    pub(crate) const fn default() -> BlockAttributes {
         BlockAttributes {
             display_name: Cow::Borrowed(""),
             selectable: true,
@@ -91,7 +91,7 @@ impl<'a> arbitrary::Arbitrary<'a> for BlockAttributes {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum BlockCollision {
+pub(crate) enum BlockCollision {
     /// The block can be passed through; it is not an obstacle (though intersecting it
     /// might cause other effects not directly part of collision response).
     None,
@@ -114,7 +114,7 @@ pub enum BlockCollision {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum RotationPlacementRule {
+pub(crate) enum RotationPlacementRule {
     /// Never rotate the block.
     Never,
     /// Rotate the block so that the specified face meets the face it was placed against.
@@ -136,20 +136,20 @@ pub enum RotationPlacementRule {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub struct AnimationHint {
+pub(crate) struct AnimationHint {
     /// Ways in which the block's definition might change (via modification to a
     /// [`BlockDef`] or recursive [`Space`]) such that many instances of this block
     /// will become another simultaneously.
-    pub redefinition: AnimationChange,
+    pub(crate) redefinition: AnimationChange,
     /// If this block is likely to be replaced in a [`Space`] by another, this field
     /// specifies the replacement's relation to this.
-    pub replacement: AnimationChange,
+    pub(crate) replacement: AnimationChange,
 }
 impl AnimationHint {
     /// There are no expectations that the block is soon going to change.
     ///
     /// This is the default value of this type and within [`BlockAttributes`].
-    pub const UNCHANGING: Self = Self {
+    pub(crate) const UNCHANGING: Self = Self {
         redefinition: AnimationChange::None,
         replacement: AnimationChange::None,
     };
@@ -158,7 +158,7 @@ impl AnimationHint {
     /// This suggests using a rendering technique which is comparatively expensive
     /// per-block but allows it (and any successors that are also `TEMPORARY`) to be added
     /// and removed cheaply.
-    pub const TEMPORARY: Self = Self {
+    pub(crate) const TEMPORARY: Self = Self {
         redefinition: AnimationChange::None,
         replacement: AnimationChange::Shape,
     };
@@ -167,7 +167,7 @@ impl AnimationHint {
     ///
     /// This suggests using a rendering technique which optimizes for not needing to e.g.
     /// rebuild chunk meshes.
-    pub const CONTINUOUS: Self = Self {
+    pub(crate) const CONTINUOUS: Self = Self {
         redefinition: AnimationChange::Shape,
         replacement: AnimationChange::None,
         ..Self::UNCHANGING
@@ -187,7 +187,7 @@ impl Default for AnimationHint {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum AnimationChange {
+pub(crate) enum AnimationChange {
     /// Expect no changes.
     None,
     /// Expect that the block’s voxels’ colors will change, while remaining within the

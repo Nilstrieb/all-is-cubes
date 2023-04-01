@@ -217,7 +217,7 @@ impl<'a, T: arbitrary::Arbitrary<'a> + 'static> arbitrary::Arbitrary<'a> for URe
 /// Errors resulting from attempting to borrow/dereference a [`URef`].
 #[allow(clippy::exhaustive_enums)]
 #[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
-pub enum RefError {
+pub(crate) enum RefError {
     /// Target was deleted, or its entire universe was dropped.
     #[error("object was deleted: {0}")]
     Gone(Name),
@@ -264,7 +264,7 @@ pub(super) struct URootRef<T> {
 }
 /// Object-safe trait implemented for [`URef`], to allow code to operate on `URef<T>`
 /// regardless of `T`.
-pub trait URefErased: core::any::Any {
+pub(crate) trait URefErased: core::any::Any {
     /// Same as [`URef::name()`].
     fn name(&self) -> Name;
     /// Same as [`URef::universe_id()`].

@@ -10,13 +10,13 @@ use crate::chunking::OctantMask;
 use crate::math::{Aab, FreeCoordinate, GridAab, Rgba};
 use crate::raycast::Ray;
 mod flaws;
-pub use flaws::*;
+pub(crate) use flaws::*;
 mod graphics_options;
-pub use graphics_options::*;
+pub(crate) use graphics_options::*;
 mod renderer;
-pub use renderer::*;
+pub(crate) use renderer::*;
 mod stdcam;
-pub use stdcam::*;
+pub(crate) use stdcam::*;
 type M = Matrix4<FreeCoordinate>;
 /// Representation of a camera viewpoint and orientation, using [`cgmath`] types.
 ///
@@ -24,7 +24,10 @@ type M = Matrix4<FreeCoordinate>;
 /// direction **to** the camera position in the world. This is done so that the
 /// [`Decomposed::disp`] vector is equal to the world position, rather than needing to
 /// be rotated by the view direction.
-pub type ViewTransform = Decomposed<Vector3<FreeCoordinate>, Basis3<FreeCoordinate>>;
+pub(crate) type ViewTransform = Decomposed<
+    Vector3<FreeCoordinate>,
+    Basis3<FreeCoordinate>,
+>;
 /// Defines a viewpoint in/of the world: a viewport (aspect ratio), projection matrix,
 /// and view matrix.
 ///
@@ -65,36 +68,36 @@ impl Camera {
     /// * `options` and `viewport` as given,
     /// * a `view_transform` of [`ViewTransform::one()`], and
     /// * an `exposure` determined based on the graphics options.
-    pub fn new(options: GraphicsOptions, viewport: Viewport) -> Self {
+    pub(crate) fn new(options: GraphicsOptions, viewport: Viewport) -> Self {
         loop {}
     }
     /// Returns the viewport value last provided.
-    pub fn viewport(&self) -> Viewport {
+    pub(crate) fn viewport(&self) -> Viewport {
         loop {}
     }
     /// Returns the [`GraphicsOptions`] value last provided (possibly with adjusted values).
-    pub fn options(&self) -> &GraphicsOptions {
+    pub(crate) fn options(&self) -> &GraphicsOptions {
         loop {}
     }
     /// Replace the [`GraphicsOptions`] stored in this camera with
     /// [`options.repair()`](GraphicsOptions::repair).
-    pub fn set_options(&mut self, options: GraphicsOptions) {
+    pub(crate) fn set_options(&mut self, options: GraphicsOptions) {
         loop {}
     }
     /// Sets the contained viewport value, and recalculates matrices to be suitable for
     /// the new viewport's aspect ratio.
-    pub fn set_viewport(&mut self, viewport: Viewport) {
+    pub(crate) fn set_viewport(&mut self, viewport: Viewport) {
         loop {}
     }
     /// Returns the field of view, expressed in degrees on the vertical axis (that is, the
     /// horizontal field of view depends on the viewport's aspect ratio).
     /// This differs from the value in [`GraphicsOptions`] by being clamped to valid values.
-    pub fn fov_y(&self) -> Deg<FreeCoordinate> {
+    pub(crate) fn fov_y(&self) -> Deg<FreeCoordinate> {
         loop {}
     }
     /// Returns the view distance; the far plane of the projection matrix, or the distance
     /// at which rendering may be truncated.
-    pub fn view_distance(&self) -> FreeCoordinate {
+    pub(crate) fn view_distance(&self) -> FreeCoordinate {
         loop {}
     }
     /// Sets the view transform.
@@ -106,33 +109,33 @@ impl Camera {
     /// The scale currently must be 1.
     #[track_caller]
     #[allow(clippy::float_cmp)]
-    pub fn set_view_transform(&mut self, eye_to_world_transform: ViewTransform) {
+    pub(crate) fn set_view_transform(&mut self, eye_to_world_transform: ViewTransform) {
         loop {}
     }
     /// Gets the last eye-to-world transform set by [`Self::set_view_transform()`].
-    pub fn get_view_transform(&self) -> ViewTransform {
+    pub(crate) fn get_view_transform(&self) -> ViewTransform {
         loop {}
     }
     /// Returns a projection matrix suitable for OpenGL use.
-    pub fn projection(&self) -> M {
+    pub(crate) fn projection(&self) -> M {
         loop {}
     }
     /// Returns a view matrix suitable for OpenGL use.
-    pub fn view_matrix(&self) -> M {
+    pub(crate) fn view_matrix(&self) -> M {
         loop {}
     }
     /// Returns the eye position in world coordinates, as set by [`Camera::set_view_transform()`].
-    pub fn view_position(&self) -> Point3<FreeCoordinate> {
+    pub(crate) fn view_position(&self) -> Point3<FreeCoordinate> {
         loop {}
     }
     /// Returns an [`OctantMask`] including all directions this camera's field of view includes.
-    pub fn view_direction_mask(&self) -> OctantMask {
+    pub(crate) fn view_direction_mask(&self) -> OctantMask {
         loop {}
     }
     /// Converts a screen position in normalized device coordinates (as produced by
     /// [`Viewport::normalize_nominal_point`]) into a ray in world space.
     /// Uses the view transformation given by [`set_view_transform`](Self::set_view_transform).
-    pub fn project_ndc_into_world(&self, ndc: Point2<FreeCoordinate>) -> Ray {
+    pub(crate) fn project_ndc_into_world(&self, ndc: Point2<FreeCoordinate>) -> Ray {
         loop {}
     }
     fn project_point_into_world(
@@ -142,7 +145,7 @@ impl Camera {
         loop {}
     }
     /// Determine whether the given `Aab` is visible in this projection+view.
-    pub fn aab_in_view(&self, aab: Aab) -> bool {
+    pub(crate) fn aab_in_view(&self, aab: Aab) -> bool {
         loop {}
     }
     /// Helper for [`aab_in_view`]; finds if two sets of points' projections onto a line intersect.
@@ -160,19 +163,19 @@ impl Camera {
     ///
     /// 1. Multiply the input by this camera's exposure value.
     /// 2. Apply the tone mapping operator specified in [`Camera::options()`].
-    pub fn post_process_color(&self, color: Rgba) -> Rgba {
+    pub(crate) fn post_process_color(&self, color: Rgba) -> Rgba {
         loop {}
     }
     /// Returns the current exposure value for scaling luminance.
     ///
     /// Renderers should use this value.
-    pub fn exposure(&self) -> NotNan<f32> {
+    pub(crate) fn exposure(&self) -> NotNan<f32> {
         loop {}
     }
     /// Set the exposure value determined by average scene brightness.
     /// This may or may not affect [`Self::exposure()`] depending on the current
     /// graphics options.
-    pub fn set_measured_exposure(&mut self, value: f32) {
+    pub(crate) fn set_measured_exposure(&mut self, value: f32) {
         loop {}
     }
     fn compute_matrices(&mut self) {
@@ -183,13 +186,13 @@ impl Camera {
 /// aspect ratio.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Viewport {
+pub(crate) struct Viewport {
     /// Viewport dimensions to use for determining aspect ratio and interpreting
     /// pointer events.
-    pub nominal_size: Vector2<FreeCoordinate>,
+    pub(crate) nominal_size: Vector2<FreeCoordinate>,
     /// Viewport dimensions to use for framebuffer configuration.
     /// This aspect ratio may differ to represent non-square pixels.
-    pub framebuffer_size: Vector2<u32>,
+    pub(crate) framebuffer_size: Vector2<u32>,
 }
 impl Viewport {
     #![allow(clippy::cast_lossless)]
@@ -197,13 +200,13 @@ impl Viewport {
     ///
     /// The `nominal_size` will be the given `framebuffer_size` divided by the given
     /// `scale_factor`.
-    pub fn with_scale(scale_factor: f64, framebuffer_size: Vector2<u32>) -> Self {
+    pub(crate) fn with_scale(scale_factor: f64, framebuffer_size: Vector2<u32>) -> Self {
         loop {}
     }
     /// A meaningless but valid [`Viewport`] value for use in tests which require one
     /// but do not care about its effects.
     #[doc(hidden)]
-    pub const ARBITRARY: Viewport = Viewport {
+    pub(crate) const ARBITRARY: Viewport = Viewport {
         nominal_size: Vector2::new(2.0, 2.0),
         framebuffer_size: Vector2::new(2, 2),
     };
@@ -214,31 +217,31 @@ impl Viewport {
     /// instead. This is intended to aid in robust handling of degenerate viewports which
     /// contain no pixels.
     #[inline]
-    pub fn nominal_aspect_ratio(&self) -> FreeCoordinate {
+    pub(crate) fn nominal_aspect_ratio(&self) -> FreeCoordinate {
         loop {}
     }
     /// Convert an *x* coordinate from the range `0..self.framebuffer_size.x` (upper exclusive)
     /// to OpenGL normalized device coordinates, range -1 to 1 (at pixel centers).
     #[inline]
-    pub fn normalize_fb_x(&self, x: usize) -> FreeCoordinate {
+    pub(crate) fn normalize_fb_x(&self, x: usize) -> FreeCoordinate {
         loop {}
     }
     /// Convert a *y* coordinate from the range `0..self.framebuffer_size.y` (upper exclusive)
     /// to OpenGL normalized device coordinates, range -1 to 1 (at pixel centers) and flipped.
     #[inline]
-    pub fn normalize_fb_y(&self, y: usize) -> FreeCoordinate {
+    pub(crate) fn normalize_fb_y(&self, y: usize) -> FreeCoordinate {
         loop {}
     }
     /// Convert an *x* coordinate from the range `0..=self.framebuffer_size.x` (inclusive)
     /// to OpenGL normalized device coordinates, range -1 to 1 (at pixel *edges*).
     #[inline]
-    pub fn normalize_fb_x_edge(&self, x: usize) -> FreeCoordinate {
+    pub(crate) fn normalize_fb_x_edge(&self, x: usize) -> FreeCoordinate {
         loop {}
     }
     /// Convert a *y* coordinate from the range `0..=self.framebuffer_size.y` (inclusive)
     /// to OpenGL normalized device coordinates, range -1 to 1 (at pixel *edges*) and flipped.
     #[inline]
-    pub fn normalize_fb_y_edge(&self, y: usize) -> FreeCoordinate {
+    pub(crate) fn normalize_fb_y_edge(&self, y: usize) -> FreeCoordinate {
         loop {}
     }
     /// Convert a point in the [`Self::nominal_size`] coordinate system to
@@ -246,7 +249,7 @@ impl Viewport {
     ///
     /// TODO: Some windowing APIs providing float input might have different ideas of pixel centers.
     #[inline]
-    pub fn normalize_nominal_point(
+    pub(crate) fn normalize_nominal_point(
         &self,
         nominal_point: Point2<f64>,
     ) -> Vector2<FreeCoordinate> {
@@ -254,7 +257,7 @@ impl Viewport {
     }
     /// Computes the number of pixels in the framebuffer.
     /// Returns [`None`] if that number does not fit in a [`usize`].
-    pub fn pixel_count(&self) -> Option<usize> {
+    pub(crate) fn pixel_count(&self) -> Option<usize> {
         loop {}
     }
 }
@@ -274,7 +277,7 @@ impl<'a> arbitrary::Arbitrary<'a> for Viewport {
 ///
 /// TODO: This function does not yet consider the effects of field-of-view,
 /// and it will need additional parameters to do so.
-pub fn eye_for_look_at(
+pub(crate) fn eye_for_look_at(
     bounds: GridAab,
     direction: Vector3<FreeCoordinate>,
 ) -> Point3<FreeCoordinate> {

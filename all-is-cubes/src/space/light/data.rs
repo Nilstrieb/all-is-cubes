@@ -28,7 +28,7 @@ pub(crate) enum LightStatus {
 ///
 /// TODO: This now stores additional information. Rename to '`SpaceLight`' or some such.
 #[derive(Clone, Copy, PartialEq, Eq)]
-pub struct PackedLight {
+pub(crate) struct PackedLight {
     value: Vector3<PackedLightScalar>,
     status: LightStatus,
 }
@@ -54,7 +54,7 @@ impl PackedLight {
     }
     /// Returns the light level.
     #[inline]
-    pub fn value(&self) -> Rgb {
+    pub(crate) fn value(&self) -> Rgb {
         loop {}
     }
     #[cfg(test)]
@@ -76,7 +76,7 @@ impl PackedLight {
     }
     #[inline]
     #[doc(hidden)]
-    pub fn as_texel(self) -> [u8; 4] {
+    pub(crate) fn as_texel(self) -> [u8; 4] {
         loop {}
     }
     /// Computes a degree of difference between two [`PackedLight`] values, used to decide
@@ -145,31 +145,31 @@ pub(crate) struct LightUpdateQueue {
     table: HashMap<GridPoint, PackedLightScalar>,
 }
 impl LightUpdateQueue {
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         loop {}
     }
     /// Inserts a queue entry or increases the priority of an existing one.
     #[inline]
-    pub fn insert(&mut self, request: LightUpdateRequest) {
+    pub(crate) fn insert(&mut self, request: LightUpdateRequest) {
         loop {}
     }
     /// Removes the specified queue entry and returns whether it was present.
-    pub fn remove(&mut self, cube: GridPoint) -> bool {
+    pub(crate) fn remove(&mut self, cube: GridPoint) -> bool {
         loop {}
     }
     #[inline]
-    pub fn pop(&mut self) -> Option<LightUpdateRequest> {
+    pub(crate) fn pop(&mut self) -> Option<LightUpdateRequest> {
         loop {}
     }
     #[inline]
-    pub fn len(&self) -> usize {
+    pub(crate) fn len(&self) -> usize {
         loop {}
     }
     #[inline]
-    pub fn peek_priority(&self) -> PackedLightScalar {
+    pub(crate) fn peek_priority(&self) -> PackedLightScalar {
         loop {}
     }
-    pub fn clear(&mut self) {
+    pub(crate) fn clear(&mut self) {
         loop {}
     }
 }

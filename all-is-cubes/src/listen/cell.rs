@@ -3,13 +3,13 @@ use crate::listen::{Listen, Listener, Notifier};
 /// A interior-mutable container for a value which can notify that the value changed,
 /// and which has reference-counted read-only handles to read it.
 #[derive(Debug)]
-pub struct ListenableCell<T> {
+pub(crate) struct ListenableCell<T> {
     storage: Arc<ListenableCellStorage<T>>,
 }
 /// Access to a value that might change (provided by a [`ListenableCell`]) or be [a
 /// constant](ListenableSource::constant), and which can be listened to.
 #[derive(Clone, Debug)]
-pub struct ListenableSource<T> {
+pub(crate) struct ListenableSource<T> {
     storage: Arc<ListenableCellStorage<T>>,
 }
 #[derive(Debug)]

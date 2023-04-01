@@ -320,7 +320,7 @@ pub(crate) fn recursive_ray(ray: Ray, cube: GridPoint, resolution: Resolution) -
 /// Notification when an [`EvaluatedBlock`] result changes.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub struct BlockChange {
+pub(crate) struct BlockChange {
     /// I expect there _might_ be future uses for a set of flags of what changed;
     /// this helps preserve the option of adding them.
     _not_public: (),

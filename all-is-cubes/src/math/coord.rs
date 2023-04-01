@@ -1,21 +1,21 @@
 //! Numeric types used for coordinates and related quantities.
 use cgmath::{Point3, Vector3};
 /// Coordinates that are locked to the cube grid.
-pub type GridCoordinate = i32;
+pub(crate) type GridCoordinate = i32;
 /// Positions that are locked to the cube grid.
-pub type GridPoint = Point3<GridCoordinate>;
+pub(crate) type GridPoint = Point3<GridCoordinate>;
 /// Vectors that are locked to the cube grid.
-pub type GridVector = Vector3<GridCoordinate>;
+pub(crate) type GridVector = Vector3<GridCoordinate>;
 /// Coordinates that are not locked to the cube grid.
 ///
 /// Note: Because `GridCoordinate = i32` and `FreeCoordinate = f64`, which has
 /// more than 32 bits of mantissa, the infallible conversion
 /// `From<GridCoordinate> for FreeCoordinate` exists, which is often convenient.
-pub type FreeCoordinate = f64;
+pub(crate) type FreeCoordinate = f64;
 /// Convert a `GridPoint` used to identify a cube to the midpoint of that cube.
 /// That is, convert the number type and add 0.5.
 #[inline(always)]
-pub fn cube_to_midpoint(cube: GridPoint) -> Point3<FreeCoordinate> {
+pub(crate) fn cube_to_midpoint(cube: GridPoint) -> Point3<FreeCoordinate> {
     loop {}
 }
 /// Convert a point in space to the unit cube that encloses it.
@@ -34,7 +34,9 @@ pub fn cube_to_midpoint(cube: GridPoint) -> Point3<FreeCoordinate> {
 /// assert_eq!(point_to_enclosing_cube(Point3::new(1.0, 1.5, -2.5)), Some(Point3::new(1, 1, -3)));
 /// ```
 #[inline(always)]
-pub fn point_to_enclosing_cube(point: Point3<FreeCoordinate>) -> Option<GridPoint> {
+pub(crate) fn point_to_enclosing_cube(
+    point: Point3<FreeCoordinate>,
+) -> Option<GridPoint> {
     loop {}
 }
 /// Compute the squared magnitude of a [`GridVector`].

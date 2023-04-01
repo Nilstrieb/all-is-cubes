@@ -15,7 +15,7 @@ use crate::util::YieldProgress;
 /// these icons or accept them as configuration.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, Exhaust)]
 #[non_exhaustive]
-pub enum Icons {
+pub(crate) enum Icons {
     /// Icon for an empty toolbar slot.
     EmptySlot,
     /// Icon for [`Tool::Activate`],
@@ -48,7 +48,10 @@ impl Icons {
     /// Construct the standard icons, inserting block definitions into the given [`Universe`].
     ///
     /// TODO: Replace `&mut Universe` parameter with a transaction return value.
-    pub async fn new(universe: &mut Universe, p: YieldProgress) -> BlockProvider<Icons> {
+    pub(crate) async fn new(
+        universe: &mut Universe,
+        p: YieldProgress,
+    ) -> BlockProvider<Icons> {
         loop {}
     }
 }

@@ -8,21 +8,21 @@ use crate::mesh::LineVertex;
 /// Note that this has continuous coordinates, and a discrete analogue exists as
 /// [`GridAab`].
 #[derive(Copy, Clone, PartialEq)]
-pub struct Aab {
+pub(crate) struct Aab {
     lower_bounds: Point3<FreeCoordinate>,
     upper_bounds: Point3<FreeCoordinate>,
     sizes: Vector3<FreeCoordinate>,
 }
 impl Aab {
     /// The [`Aab`] of zero size at the origin.
-    pub const ZERO: Aab = Aab {
+    pub(crate) const ZERO: Aab = Aab {
         lower_bounds: Point3 { x: 0.0, y: 0.0, z: 0.0 },
         upper_bounds: Point3 { x: 0.0, y: 0.0, z: 0.0 },
         sizes: Vector3 { x: 0.0, y: 0.0, z: 0.0 },
     };
     /// Constructs an [`Aab`] from individual coordinates.
     #[track_caller]
-    pub fn new(
+    pub(crate) fn new(
         lx: FreeCoordinate,
         hx: FreeCoordinate,
         ly: FreeCoordinate,
@@ -36,7 +36,7 @@ impl Aab {
     ///
     /// Panics if the points are not in the proper order or if they are NaN.
     #[track_caller]
-    pub fn from_lower_upper(
+    pub(crate) fn from_lower_upper(
         lower_bounds: impl Into<Point3<FreeCoordinate>>,
         upper_bounds: impl Into<Point3<FreeCoordinate>>,
     ) -> Self {
@@ -63,23 +63,23 @@ impl Aab {
     ///     Aab::new(10.0, 11.0, 20.0, 21.0, -30.0, -29.0)
     /// );
     /// ```
-    pub fn from_cube(cube: GridPoint) -> Self {
+    pub(crate) fn from_cube(cube: GridPoint) -> Self {
         loop {}
     }
     /// The most negative corner of the box, as a [`Point3`].
-    pub const fn lower_bounds_p(&self) -> Point3<FreeCoordinate> {
+    pub(crate) const fn lower_bounds_p(&self) -> Point3<FreeCoordinate> {
         loop {}
     }
     /// The most positive corner of the box, as a [`Point3`].
-    pub const fn upper_bounds_p(&self) -> Point3<FreeCoordinate> {
+    pub(crate) const fn upper_bounds_p(&self) -> Point3<FreeCoordinate> {
         loop {}
     }
     /// The most negative corner of the box, as a [`Vector3`].
-    pub fn lower_bounds_v(&self) -> Vector3<FreeCoordinate> {
+    pub(crate) fn lower_bounds_v(&self) -> Vector3<FreeCoordinate> {
         loop {}
     }
     /// The most positive corner of the box, as a [`Vector3`].
-    pub fn upper_bounds_v(&self) -> Vector3<FreeCoordinate> {
+    pub(crate) fn upper_bounds_v(&self) -> Vector3<FreeCoordinate> {
         loop {}
     }
     /// Returns the position of the identified face of the box on the axis it is
@@ -87,12 +87,12 @@ impl Aab {
     ///
     /// Note that negative faces' coordinates _are_ inverted; that is, all results
     /// will be positive if the box contains its origin.
-    pub fn face_coordinate(&self, face: Face6) -> FreeCoordinate {
+    pub(crate) fn face_coordinate(&self, face: Face6) -> FreeCoordinate {
         loop {}
     }
     /// Size of the box in each axis; equivalent to
     /// `self.upper_bounds() - self.lower_bounds()`.
-    pub fn size(&self) -> Vector3<FreeCoordinate> {
+    pub(crate) fn size(&self) -> Vector3<FreeCoordinate> {
         loop {}
     }
     /// The center of the enclosed volume.
@@ -104,7 +104,7 @@ impl Aab {
     /// let aab = Aab::new(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
     /// assert_eq!(aab.center(), Point3::new(1.5, 3.5, 5.5));
     /// ```
-    pub fn center(&self) -> Point3<FreeCoordinate> {
+    pub(crate) fn center(&self) -> Point3<FreeCoordinate> {
         loop {}
     }
     /// Iterates over the eight corner points of the box.
@@ -128,23 +128,26 @@ impl Aab {
     /// Returns whether this AAB, including the boundary, contains the point.
     ///
     /// TODO: example + tests
-    pub fn contains(&self, point: Point3<FreeCoordinate>) -> bool {
+    pub(crate) fn contains(&self, point: Point3<FreeCoordinate>) -> bool {
         loop {}
     }
     /// Returns whether this AAB, including the boundary, intersects the other AAB.
     ///
     /// TODO: example + tests
-    pub fn intersects(&self, other: Aab) -> bool {
+    pub(crate) fn intersects(&self, other: Aab) -> bool {
         loop {}
     }
     /// Returns a random point within this box, using inclusive ranges
     /// (`lower_bounds[axis] ≤ random_point()[axis] ≤ upper_bounds[axis]`).
-    pub fn random_point(self, rng: &mut impl rand::Rng) -> Point3<FreeCoordinate> {
+    pub(crate) fn random_point(
+        self,
+        rng: &mut impl rand::Rng,
+    ) -> Point3<FreeCoordinate> {
         loop {}
     }
     /// Scale this AAB by the given amount (about the zero point, not its center).
     #[must_use]
-    pub fn scale(self, scalar: FreeCoordinate) -> Self {
+    pub(crate) fn scale(self, scalar: FreeCoordinate) -> Self {
         loop {}
     }
     /// Enlarges the AAB by moving each face outward by the specified distance (or inward
@@ -162,7 +165,7 @@ impl Aab {
     /// );
     /// ````
     #[must_use]
-    pub fn expand(self, distance: FreeCoordinate) -> Self {
+    pub(crate) fn expand(self, distance: FreeCoordinate) -> Self {
         loop {}
     }
     #[inline]
@@ -213,7 +216,7 @@ impl Aab {
     /// ```
     ///
     /// (There is no handling of NaN, because [`Aab`] does not allow NaN values.)
-    pub fn round_up_to_grid(self) -> GridAab {
+    pub(crate) fn round_up_to_grid(self) -> GridAab {
         loop {}
     }
 }

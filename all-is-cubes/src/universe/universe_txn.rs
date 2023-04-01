@@ -185,7 +185,7 @@ pub struct UniverseTransaction {
 pub struct UniverseMergeCheck(HashMap<Name, MemberMergeCheck>);
 #[doc(hidden)]
 #[derive(Debug)]
-pub struct UniverseCommitCheck {
+pub(crate) struct UniverseCommitCheck {
     members: HashMap<Name, MemberCommitCheck>,
     anonymous_insertions: Vec<MemberCommitCheck>,
 }

@@ -26,14 +26,14 @@ use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
 use crate::util::TimeStats;
 use crate::util::{CustomFormat, StatusText};
 mod builder;
-pub use builder::{SpaceBuilder, SpaceBuilderBounds};
+pub(crate) use builder::{SpaceBuilder, SpaceBuilderBounds};
 mod light;
 #[doc(hidden)]
-pub use light::LightUpdateCubeInfo;
+pub(crate) use light::LightUpdateCubeInfo;
 use light::{LightUpdateQueue, PackedLightScalar};
-pub use light::{LightUpdatesInfo, PackedLight};
+pub(crate) use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;
-pub use space_txn::*;
+pub(crate) use space_txn::*;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
 pub struct Space {
@@ -55,7 +55,7 @@ pub struct Space {
     /// Debug log of the updated cubes from last frame.
     /// Empty unless this debug function is enabled.
     #[doc(hidden)]
-    pub last_light_updates: Vec<GridPoint>,
+    pub(crate) last_light_updates: Vec<GridPoint>,
     /// Global characteristics such as the behavior of light and gravity.
     physics: SpacePhysics,
     /// A converted copy of `physics.sky_color`.
@@ -73,7 +73,7 @@ pub struct Space {
 /// Design note: This doubles as an internal data structure for [`Space`]. While we'll
 /// try to keep it available, this interface has a higher risk of needing to change
 /// incompatibility.
-pub struct SpaceBlockData {
+pub(crate) struct SpaceBlockData {
     /// The block itself.
     block: Block,
     /// Number of uses of this block in the space.
@@ -93,25 +93,25 @@ impl fmt::Debug for SpaceBlockData {
     }
 }
 /// Number used to identify distinct blocks within a [`Space`].
-pub type BlockIndex = u16;
+pub(crate) type BlockIndex = u16;
 impl Space {
     /// Returns a [`SpaceBuilder`] configured for a block,
     /// which may be used to construct a new [`Space`].
     ///
     /// This means that its bounds are as per [`GridAab::for_block()`], and its
     /// [`physics`](Self::physics) is [`SpacePhysics::DEFAULT_FOR_BLOCK`].
-    pub fn for_block(resolution: Resolution) -> SpaceBuilder<GridAab> {
+    pub(crate) fn for_block(resolution: Resolution) -> SpaceBuilder<GridAab> {
         loop {}
     }
     /// Returns a [`SpaceBuilder`] with the given bounds and all default values,
     /// which may be used to construct a new [`Space`].
-    pub fn builder(bounds: GridAab) -> SpaceBuilder<GridAab> {
+    pub(crate) fn builder(bounds: GridAab) -> SpaceBuilder<GridAab> {
         loop {}
     }
     /// Constructs a [`Space`] that is entirely filled with [`AIR`].
     ///
     /// Equivalent to `Space::builder(bounds).build()`
-    pub fn empty(bounds: GridAab) -> Space {
+    pub(crate) fn empty(bounds: GridAab) -> Space {
         loop {}
     }
     /// Implementation of [`SpaceBuilder`]'s terminal methods.
@@ -120,7 +120,7 @@ impl Space {
     }
     /// Constructs a `Space` that is entirely empty and whose coordinate system
     /// is in the +X+Y+Z octant. This is a shorthand intended mainly for tests.
-    pub fn empty_positive(
+    pub(crate) fn empty_positive(
         wx: GridCoordinate,
         wy: GridCoordinate,
         wz: GridCoordinate,
@@ -129,7 +129,7 @@ impl Space {
     }
     /// Returns the [`GridAab`] describing the bounds of this space; no blocks may exist
     /// outside it.
-    pub fn bounds(&self) -> GridAab {
+    pub(crate) fn bounds(&self) -> GridAab {
         loop {}
     }
     /// Returns the internal unstable numeric ID for the block at the given position,
@@ -140,7 +140,10 @@ impl Space {
     /// These IDs may be used to perform efficient processing of many blocks, but they
     /// may be renumbered after any mutation.
     #[inline(always)]
-    pub fn get_block_index(&self, position: impl Into<GridPoint>) -> Option<BlockIndex> {
+    pub(crate) fn get_block_index(
+        &self,
+        position: impl Into<GridPoint>,
+    ) -> Option<BlockIndex> {
         loop {}
     }
     /// Copy data out of a portion of the space in a caller-chosen format.
@@ -148,7 +151,7 @@ impl Space {
     /// If the provided [`GridAab`] contains portions outside of this space's bounds,
     /// those positions in the output will be treated as if they are filled with [`AIR`]
     /// and lit by [`SpacePhysics::sky_color`].
-    pub fn extract<V>(
+    pub(crate) fn extract<V>(
         &self,
         subgrid: GridAab,
         mut extractor: impl FnMut(Option<BlockIndex>, &SpaceBlockData, PackedLight) -> V,
@@ -157,7 +160,10 @@ impl Space {
     }
     /// Gets the [`EvaluatedBlock`] of the block in this space at the given position.
     #[inline(always)]
-    pub fn get_evaluated(&self, position: impl Into<GridPoint>) -> &EvaluatedBlock {
+    pub(crate) fn get_evaluated(
+        &self,
+        position: impl Into<GridPoint>,
+    ) -> &EvaluatedBlock {
         loop {}
     }
     /// Returns the light occupying the given cube.
@@ -171,7 +177,7 @@ impl Space {
     /// the meaning of this value are actually “will eventually be, if no more changes are
     /// made”.
     #[inline(always)]
-    pub fn get_lighting(&self, position: impl Into<GridPoint>) -> PackedLight {
+    pub(crate) fn get_lighting(&self, position: impl Into<GridPoint>) -> PackedLight {
         loop {}
     }
     /// Replace the block in this space at the given position.
@@ -187,7 +193,7 @@ impl Space {
     /// space.set((0, 0, 0), &a_block);
     /// assert_eq!(space[(0, 0, 0)], a_block);
     /// ```
-    pub fn set<'a>(
+    pub(crate) fn set<'a>(
         &mut self,
         position: impl Into<GridPoint>,
         block: impl Into<Cow<'a, Block>>,
@@ -241,7 +247,7 @@ impl Space {
     /// TODO: Support providing the previous block as a parameter (take cues from `extract`).
     ///
     /// See also [`Space::fill_uniform`] for filling a region with one block.
-    pub fn fill<F, B>(
+    pub(crate) fn fill<F, B>(
         &mut self,
         region: GridAab,
         mut function: F,
@@ -272,7 +278,7 @@ impl Space {
     /// ```
     ///
     /// See also [`Space::fill`] for non-uniform fill and bulk copies.
-    pub fn fill_uniform<'b>(
+    pub(crate) fn fill_uniform<'b>(
         &mut self,
         region: GridAab,
         block: impl Into<Cow<'b, Block>>,
@@ -284,7 +290,7 @@ impl Space {
     ///
     /// For more information on how to use this, see
     /// [`all_is_cubes::drawing`](crate::drawing).
-    pub fn draw_target<C>(
+    pub(crate) fn draw_target<C>(
         &mut self,
         transform: GridMatrix,
     ) -> DrawingPlane<'_, Space, C> {
@@ -294,18 +300,18 @@ impl Space {
     ///
     /// TODO: This was invented for testing the indexing of blocks and should
     /// be replaced with something else *if* it only gets used for testing.
-    pub fn distinct_blocks(&self) -> Vec<Block> {
+    pub(crate) fn distinct_blocks(&self) -> Vec<Block> {
         loop {}
     }
     /// Returns data about all the blocks assigned internal IDs (indices) in the space,
     /// as well as placeholder data for any deallocated indices.
     ///
     /// The indices of this slice correspond to the results of [`Space::get_block_index`].
-    pub fn block_data(&self) -> &[SpaceBlockData] {
+    pub(crate) fn block_data(&self) -> &[SpaceBlockData] {
         loop {}
     }
     /// Advance time in the space.
-    pub fn step(
+    pub(crate) fn step(
         &mut self,
         self_ref: Option<&URef<Space>>,
         tick: Tick,
@@ -321,7 +327,7 @@ impl Space {
     /// `epsilon` specifies a threshold at which to stop doing updates.
     /// Zero means to run to full completion; one is the smallest unit of light level
     /// difference; and so on.
-    pub fn evaluate_light(
+    pub(crate) fn evaluate_light(
         &mut self,
         epsilon: u8,
         mut progress_callback: impl FnMut(LightUpdatesInfo),
@@ -330,27 +336,27 @@ impl Space {
     }
     /// Returns the current [`SpacePhysics`] data, which determines global characteristics
     /// such as the behavior of light and gravity.
-    pub fn physics(&self) -> &SpacePhysics {
+    pub(crate) fn physics(&self) -> &SpacePhysics {
         loop {}
     }
     /// Sets the physics parameters, as per [`physics`](Self::physics).
     ///
     /// This may cause recomputation of lighting.
-    pub fn set_physics(&mut self, physics: SpacePhysics) {
+    pub(crate) fn set_physics(&mut self, physics: SpacePhysics) {
         loop {}
     }
     /// Returns the current default [`Spawn`], which determines where new [`Character`]s
     /// are placed in the space if no alternative applies.
-    pub fn spawn(&self) -> &Spawn {
+    pub(crate) fn spawn(&self) -> &Spawn {
         loop {}
     }
     /// Sets the default [`Spawn`], which determines where new [`Character`]s are placed
     /// in the space if no alternative applies.
-    pub fn set_spawn(&mut self, spawn: Spawn) {
+    pub(crate) fn set_spawn(&mut self, spawn: Spawn) {
         loop {}
     }
     /// Returns the [`BehaviorSet`] of behaviors attached to this space.
-    pub fn behaviors(&self) -> &BehaviorSet<Space> {
+    pub(crate) fn behaviors(&self) -> &BehaviorSet<Space> {
         loop {}
     }
     /// Finds or assigns an index to denote the block.
@@ -403,7 +409,7 @@ impl crate::behavior::BehaviorHost for Space {
 impl SpaceBlockData {
     /// A `SpaceBlockData` value used to represent out-of-bounds or placeholder
     /// situations. The block is [`AIR`] and the count is always zero.
-    pub const NOTHING: Self = Self {
+    pub(crate) const NOTHING: Self = Self {
         block: AIR,
         count: 0,
         evaluated: AIR_EVALUATED,
@@ -423,13 +429,13 @@ impl SpaceBlockData {
         loop {}
     }
     /// Returns the [`Block`] this data is about.
-    pub fn block(&self) -> &Block {
+    pub(crate) fn block(&self) -> &Block {
         loop {}
     }
     /// Returns the [`EvaluatedBlock`] representation of the block.
     ///
     /// TODO: Describe when this may be stale.
-    pub fn evaluated(&self) -> &EvaluatedBlock {
+    pub(crate) fn evaluated(&self) -> &EvaluatedBlock {
         loop {}
     }
 }
@@ -442,12 +448,12 @@ pub struct SpaceBehaviorAttachment {
 }
 impl SpaceBehaviorAttachment {
     /// Constructs a new [`SpaceBehaviorAttachment`] with no rotation.
-    pub fn new(bounds: GridAab) -> Self {
+    pub(crate) fn new(bounds: GridAab) -> Self {
         loop {}
     }
     /// Returns the bounds of this attachment, which specify (without mandating) what
     /// region the behavior should affect.
-    pub fn bounds(&self) -> GridAab {
+    pub(crate) fn bounds(&self) -> GridAab {
         loop {}
     }
     /// Returns the rotation of this attachment, which specifies, if applicable, which
@@ -455,7 +461,7 @@ impl SpaceBehaviorAttachment {
     /// The exact meaning of this is up to the behavior.
     ///
     /// TODO: explain with an example once we have a good one
-    pub fn rotation(&self) -> GridRotation {
+    pub(crate) fn rotation(&self) -> GridRotation {
         loop {}
     }
 }
@@ -467,19 +473,19 @@ impl SpaceBehaviorAttachment {
 /// [`DEFAULT_FOR_BLOCK`](Self::DEFAULT_FOR_BLOCK)).
 #[derive(Clone, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub struct SpacePhysics {
+pub(crate) struct SpacePhysics {
     /// Gravity vector for moving objects, in cubes/s².
     ///
     /// TODO: Expand this to an enum which allows non-uniform gravity patterns.
-    pub gravity: Vector3<NotNan<FreeCoordinate>>,
+    pub(crate) gravity: Vector3<NotNan<FreeCoordinate>>,
     /// Color of light arriving from outside the space, used for light calculation
     /// and rendering.
     ///
     /// TODO: Consider replacing this with some sort of cube map, spherical harmonics,
     /// or some such to allow for non-uniform illumination.
-    pub sky_color: Rgb,
+    pub(crate) sky_color: Rgb,
     /// Method used to compute the illumination of individual blocks.
-    pub light: LightPhysics,
+    pub(crate) light: LightPhysics,
 }
 impl SpacePhysics {
     pub(crate) const DEFAULT: Self = Self {
@@ -489,7 +495,7 @@ impl SpacePhysics {
     };
     /// Recommended defaults for spaces which are going to define a [`Block`]'s voxels.
     /// In particular, disables light since it will not be used.
-    pub const DEFAULT_FOR_BLOCK: Self = Self {
+    pub(crate) const DEFAULT_FOR_BLOCK: Self = Self {
         gravity: Vector3::new(notnan!(0.), notnan!(0.), notnan!(0.)),
         sky_color: rgb_const!(0.5, 0.5, 0.5),
         light: LightPhysics::None,
@@ -519,7 +525,7 @@ impl<'a> arbitrary::Arbitrary<'a> for SpacePhysics {
 #[non_exhaustive]
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub enum LightPhysics {
+pub(crate) enum LightPhysics {
     /// No light. All surface colors are taken exactly as displayed colors. The
     /// [`SpacePhysics::sky_color`] is used solely as a background color.
     None,
@@ -546,7 +552,7 @@ impl Default for LightPhysics {
 /// Note that "already contained the given block" is considered a success.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
 #[non_exhaustive]
-pub enum SetCubeError {
+pub(crate) enum SetCubeError {
     /// The given cube or region is not within the bounds of this Space.
     #[error("{:?} is outside of the bounds {:?}", .modification, .space_bounds)]
     OutOfBounds {
@@ -565,7 +571,7 @@ pub enum SetCubeError {
 /// Description of a change to a [`Space`] for use in listeners.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[allow(clippy::exhaustive_enums)]
-pub enum SpaceChange {
+pub(crate) enum SpaceChange {
     /// The block at the given location was replaced.
     Block(GridPoint),
     /// The light level value at the given location changed.
@@ -585,14 +591,14 @@ pub enum SpaceChange {
 /// a specific need for one of the values.
 #[derive(Clone, Debug, Default, PartialEq)]
 #[non_exhaustive]
-pub struct SpaceStepInfo {
+pub(crate) struct SpaceStepInfo {
     /// Number of spaces whose updates were aggregated into this value.
-    pub spaces: usize,
+    pub(crate) spaces: usize,
     /// Time and count of block re-evaluations.
     ///
     /// Note that this does not count evaluations resulting from modifications
     /// that add new blocks to the space.
-    pub evaluations: TimeStats,
+    pub(crate) evaluations: TimeStats,
     /// Number of individual cubes processed (`tick_action`).
     cube_ticks: usize,
     /// Time spent on processing individual cube updates
@@ -601,7 +607,7 @@ pub struct SpaceStepInfo {
     /// Time spent on processing behaviors.
     behaviors_time: Duration,
     /// Performance data about light updates within the space.
-    pub light: LightUpdatesInfo,
+    pub(crate) light: LightUpdatesInfo,
 }
 impl std::ops::AddAssign<SpaceStepInfo> for SpaceStepInfo {
     fn add_assign(&mut self, other: Self) {

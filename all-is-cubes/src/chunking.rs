@@ -21,17 +21,21 @@ impl<const CHUNK_SIZE: GridCoordinate> std::fmt::Debug for ChunkPos<CHUNK_SIZE> 
     }
 }
 impl<const CHUNK_SIZE: GridCoordinate> ChunkPos<CHUNK_SIZE> {
-    pub const ZERO: Self = Self(GridPoint::new(0, 0, 0));
+    pub(crate) const ZERO: Self = Self(GridPoint::new(0, 0, 0));
     /// Construct a [`ChunkPos`] from chunk coordinates
     /// (i.e. successive numbers indicate adjacent chunks).
-    pub const fn new(x: GridCoordinate, y: GridCoordinate, z: GridCoordinate) -> Self {
+    pub(crate) const fn new(
+        x: GridCoordinate,
+        y: GridCoordinate,
+        z: GridCoordinate,
+    ) -> Self {
         loop {}
     }
     /// Returns the bounds of this chunk as a [`GridAab`].
-    pub fn bounds(self) -> GridAab {
+    pub(crate) fn bounds(self) -> GridAab {
         loop {}
     }
-    pub fn distance(self, other: Self) -> Distance {
+    pub(crate) fn distance(self, other: Self) -> Distance {
         loop {}
     }
     /// Returns the squared distance along the shortest line from `origin_chunk`'s bounds
@@ -39,7 +43,7 @@ impl<const CHUNK_SIZE: GridCoordinate> ChunkPos<CHUNK_SIZE> {
     ///
     /// This is the same criterion that [`ChunkChart`] uses for
     /// deciding whether a chunk is included in the chart or not.
-    pub fn min_distance_squared_from(
+    pub(crate) fn min_distance_squared_from(
         self,
         origin_chunk: ChunkPos<CHUNK_SIZE>,
     ) -> GridCoordinate {
@@ -47,13 +51,13 @@ impl<const CHUNK_SIZE: GridCoordinate> ChunkPos<CHUNK_SIZE> {
     }
 }
 /// Scale a cube position to obtain the containing chunk.
-pub fn cube_to_chunk<const CHUNK_SIZE: GridCoordinate>(
+pub(crate) fn cube_to_chunk<const CHUNK_SIZE: GridCoordinate>(
     cube: GridPoint,
 ) -> ChunkPos<CHUNK_SIZE> {
     loop {}
 }
 /// Scale an arbitrary point to obtain the containing chunk.
-pub fn point_to_chunk<const CHUNK_SIZE: GridCoordinate>(
+pub(crate) fn point_to_chunk<const CHUNK_SIZE: GridCoordinate>(
     cube: Point3<FreeCoordinate>,
 ) -> ChunkPos<CHUNK_SIZE> {
     loop {}
@@ -69,7 +73,7 @@ pub fn point_to_chunk<const CHUNK_SIZE: GridCoordinate>(
 ///   [`ChunkPos`] coordinates `[0, 0, 0]` will be sorted in back-to-front or front-to-back
 ///   order.
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd)]
-pub struct Distance {
+pub(crate) struct Distance {
     /// The squared Euclidean distance between the nearest two chunk corners.
     ///
     /// As a concrete example, the distance value between any two chunks which touch on a
@@ -130,7 +134,7 @@ fn chunk_distance_squared_for_view(chunk: Vector3<i32>) -> Distance {
 }
 /// A specification of which octants to include in [`ChunkChart::chunks()`].
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub struct OctantMask {
+pub(crate) struct OctantMask {
     /// A bit-mask of octants, where the bit positions are, LSB first, [-X-Y-Z, -X-Y+Z, ..., +X+Y+Z]
     flags: u8,
 }
@@ -141,9 +145,9 @@ impl std::fmt::Debug for OctantMask {
 }
 impl OctantMask {
     /// The mask including all octants.
-    pub const ALL: Self = Self { flags: 0xFF };
+    pub(crate) const ALL: Self = Self { flags: 0xFF };
     /// The mask including no octants.
-    pub const NONE: Self = Self { flags: 0x00 };
+    pub(crate) const NONE: Self = Self { flags: 0x00 };
     /// Set the flag for the octant the given vector occupies.
     pub(crate) fn set_octant_of(&mut self, vector: Vector3<FreeCoordinate>) {
         loop {}

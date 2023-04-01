@@ -5,7 +5,7 @@ use std::sync::{Arc, RwLock, Weak};
 use crate::listen::{Listen, Listener};
 /// A [`Listener`] destination which only stores a single flag indicating if any messages
 /// were received.
-pub struct DirtyFlag {
+pub(crate) struct DirtyFlag {
     flag: Arc<AtomicBool>,
 }
 impl fmt::Debug for DirtyFlag {
@@ -15,35 +15,35 @@ impl fmt::Debug for DirtyFlag {
 }
 /// [`DirtyFlag::listener()`] implementation.
 #[derive(Clone, Debug)]
-pub struct DirtyFlagListener {
+pub(crate) struct DirtyFlagListener {
     weak_flag: Weak<AtomicBool>,
 }
 impl DirtyFlag {
     /// Constructs a new [`DirtyFlag`] with the given initial value.
-    pub fn new(value: bool) -> Self {
+    pub(crate) fn new(value: bool) -> Self {
         loop {}
     }
     /// Constructs a new [`DirtyFlag`] with the given initial value and call
     /// [`Listen::listen()`] with its listener.
     ///
     /// This is a convenience for calling `new()` followed by `listener()`.
-    pub fn listening(value: bool, source: impl Listen) -> Self {
+    pub(crate) fn listening(value: bool, source: impl Listen) -> Self {
         loop {}
     }
     /// Returns a [`Listener`] which will set this flag to [`true`] when it receives any
     /// message.
-    pub fn listener(&self) -> DirtyFlagListener {
+    pub(crate) fn listener(&self) -> DirtyFlagListener {
         loop {}
     }
     /// Returns the flag value, setting it to [`false`] at the same time.
-    pub fn get_and_clear(&self) -> bool {
+    pub(crate) fn get_and_clear(&self) -> bool {
         loop {}
     }
     /// Set the flag value to [`true`].
     ///
     /// Usually a [`DirtyFlagListener`] is used instead of this, but it may be useful
     /// in complex situations.
-    pub fn set(&self) {
+    pub(crate) fn set(&self) {
         loop {}
     }
 }

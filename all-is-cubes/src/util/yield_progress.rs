@@ -15,7 +15,7 @@ use instant::Instant;
 /// reporting the progress of, and yielding periodically within, a fully sequential
 /// operation. This might change in the future, but for now, it will just output
 /// inconsistent results if you try to use it otherwise.
-pub struct YieldProgress {
+pub(crate) struct YieldProgress {
     start: f32,
     end: f32,
     /// Name given to this specific portion of work. Inherited from the parent if not
@@ -54,7 +54,7 @@ impl YieldProgress {
     /// Note that it measures time intervals between yields starting from when this
     /// function is called, as if this is the first yield.
     #[track_caller]
-    pub fn new<Y, YFut, P>(yielder: Y, progressor: P) -> Self
+    pub(crate) fn new<Y, YFut, P>(yielder: Y, progressor: P) -> Self
     where
         Y: Fn() -> YFut + Send + Sync + 'static,
         YFut: Future<Output = ()> + Send + 'static,
@@ -63,13 +63,13 @@ impl YieldProgress {
         loop {}
     }
     /// Returns a [`YieldProgress`] that does no progress reporting and no yielding.
-    pub fn noop() -> Self {
+    pub(crate) fn noop() -> Self {
         loop {}
     }
     /// Add a name for the portion of work this [`YieldProgress`] covers.
     ///
     /// If there is already a label, it will be overwritten.
-    pub fn set_label(&mut self, label: impl fmt::Display) {
+    pub(crate) fn set_label(&mut self, label: impl fmt::Display) {
         loop {}
     }
     /// Map a `0..=1` value to `self.start..=self.end`.
@@ -79,7 +79,7 @@ impl YieldProgress {
     }
     /// Report the current amount of progress (a number from 0 to 1) and yield.
     #[track_caller]
-    pub fn progress(
+    pub(crate) fn progress(
         &self,
         progress_fraction: f32,
     ) -> impl Future<Output = ()> + Send + 'static {
@@ -96,13 +96,13 @@ impl YieldProgress {
     ///
     /// This is identical to `.progress(1.0)` but consumes the `YieldProgress` object.
     #[track_caller]
-    pub fn finish(self) -> impl Future<Output = ()> + Send + 'static {
+    pub(crate) fn finish(self) -> impl Future<Output = ()> + Send + 'static {
         self.progress(1.0)
     }
     /// Report that the given amount of progress has been made, then return
     /// a [`YieldProgress`] covering the remaining range.
     #[track_caller]
-    pub fn finish_and_cut(
+    pub(crate) fn finish_and_cut(
         self,
         progress_fraction: f32,
     ) -> impl Future<Output = Self> + Send + 'static {
@@ -120,11 +120,14 @@ impl YieldProgress {
     /// subranges.
     ///
     /// The returned instances should be used in sequence, but this is not enforced.
-    pub fn split(self, cut: f32) -> [Self; 2] {
+    pub(crate) fn split(self, cut: f32) -> [Self; 2] {
         loop {}
     }
     /// Split into even subdivisions.
-    pub fn split_evenly(self, count: usize) -> impl Iterator<Item = YieldProgress> {
+    pub(crate) fn split_evenly(
+        self,
+        count: usize,
+    ) -> impl Iterator<Item = YieldProgress> {
         assert!(count < usize::MAX);
         (0..count)
             .map(move |index| {

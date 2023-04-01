@@ -13,29 +13,29 @@ use crate::util::{ConciseDebug, CustomFormat, StatusText};
 #[non_exhaustive]
 pub struct Body {
     /// Position.
-    pub position: Point3<FreeCoordinate>,
+    pub(crate) position: Point3<FreeCoordinate>,
     /// Velocity, in position units per second.
-    pub velocity: Vector3<FreeCoordinate>,
+    pub(crate) velocity: Vector3<FreeCoordinate>,
     /// Collision volume, defined with `position` as the origin.
-    pub collision_box: Aab,
+    pub(crate) collision_box: Aab,
     /// Is this body not subject to gravity?
-    pub flying: bool,
+    pub(crate) flying: bool,
     /// Is this body not subject to collision?
-    pub noclip: bool,
+    pub(crate) noclip: bool,
     /// Yaw of the camera look direction, in degrees clockwise from looking towards -Z.
     ///
     /// The preferred range is 0 inclusive to 360 exclusive.
     ///
     /// This does not affect the behavior of the [`Body`] itself; it has nothing to do with
     /// the direction of the velocity.
-    pub yaw: FreeCoordinate,
+    pub(crate) yaw: FreeCoordinate,
     /// Pitch of the camera look direction, in degrees downward from looking horixontally.
     ///
     /// The preferred range is -90 to 90, inclusive.
     ///
     /// This does not affect the behavior of the [`Body`] itself; it has nothing to do with
     /// the direction of the velocity.
-    pub pitch: FreeCoordinate,
+    pub(crate) pitch: FreeCoordinate,
 }
 impl fmt::Debug for Body {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -50,7 +50,7 @@ impl CustomFormat<StatusText> for Body {
 }
 impl Body {
     /// Constructs a [`Body`] requiring only information that can't be reasonably defaulted.
-    pub fn new_minimal(
+    pub(crate) fn new_minimal(
         position: impl Into<Point3<FreeCoordinate>>,
         collision_box: impl Into<Aab>,
     ) -> Self {
@@ -62,7 +62,7 @@ impl Body {
     /// (constraining possible movement) and `collision_callback` will be called with all
     /// such blocks. It is not guaranteed that `collision_callback` will be called only once
     /// per block.
-    pub fn step<CC>(
+    pub(crate) fn step<CC>(
         &mut self,
         tick: Tick,
         mut colliding_space: Option<&Space>,
@@ -112,13 +112,13 @@ impl Body {
     /// );
     /// assert_eq!(body.collision_box_abs(), Aab::new(-1.0, 1.0, 18.0, 22.0, -3.0, 3.0));
     /// ```
-    pub fn collision_box_abs(&self) -> Aab {
+    pub(crate) fn collision_box_abs(&self) -> Aab {
         loop {}
     }
     /// Changes [`self.yaw`](Self::yaw) and [`self.pitch`](Self::pitch) to look directly
     /// towards the given point within the same coordinate system as
     /// [`self.position`](Self::position).
-    pub fn look_at(&mut self, point: impl Into<Point3<FreeCoordinate>>) {
+    pub(crate) fn look_at(&mut self, point: impl Into<Point3<FreeCoordinate>>) {
         loop {}
     }
 }
@@ -127,16 +127,16 @@ impl Body {
 /// a specific need for one of the values.
 #[derive(Clone, Copy, Debug)]
 #[non_exhaustive]
-pub struct BodyStepInfo {
+pub(crate) struct BodyStepInfo {
     /// Whether movement computation was skipped due to approximately zero velocity.
-    pub quiescent: bool,
+    pub(crate) quiescent: bool,
     #[allow(missing_docs)]
-    pub push_out: Option<Vector3<FreeCoordinate>>,
+    pub(crate) push_out: Option<Vector3<FreeCoordinate>>,
     #[allow(missing_docs)]
-    pub already_colliding: Option<Contact>,
+    pub(crate) already_colliding: Option<Contact>,
     /// Details on movement and collision. A single frame's movement may have up to three
     /// segments as differently oriented faces are collided with.
-    pub move_segments: [MoveSegment; 3],
+    pub(crate) move_segments: [MoveSegment; 3],
 }
 impl CustomFormat<ConciseDebug> for BodyStepInfo {
     fn fmt(
@@ -150,13 +150,13 @@ impl CustomFormat<ConciseDebug> for BodyStepInfo {
 /// One of the individual straight-line movement segments of a [`BodyStepInfo`].
 #[derive(Clone, Copy, Debug)]
 #[non_exhaustive]
-pub struct MoveSegment {
+pub(crate) struct MoveSegment {
     /// The change in position.
-    pub delta_position: Vector3<FreeCoordinate>,
+    pub(crate) delta_position: Vector3<FreeCoordinate>,
     /// What solid object stopped this segment from continuing further
     /// (there may be others, but this is one of them), or None if there
     /// was no obstacle.
-    pub stopped_by: Option<Contact>,
+    pub(crate) stopped_by: Option<Contact>,
 }
 impl CustomFormat<ConciseDebug> for MoveSegment {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
@@ -176,7 +176,7 @@ impl Default for MoveSegment {
 #[non_exhaustive]
 pub struct BodyTransaction {
     #[allow(missing_docs)]
-    pub delta_yaw: FreeCoordinate,
+    pub(crate) delta_yaw: FreeCoordinate,
 }
 impl transaction::Transactional for Body {
     type Transaction = BodyTransaction;

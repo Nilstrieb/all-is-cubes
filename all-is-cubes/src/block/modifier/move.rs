@@ -15,19 +15,19 @@ use crate::universe;
 #[non_exhaustive]
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub struct Move {
+pub(crate) struct Move {
     /// The direction in which the block is displaced.
-    pub direction: Face6,
+    pub(crate) direction: Face6,
     /// The distance, in 1/256ths, by which it is displaced.
-    pub distance: u16,
+    pub(crate) distance: u16,
     /// The velocity **per tick** with which the displacement is changing.
     ///
     /// TODO: "Per tick" is a bad unit.
-    pub velocity: i16,
+    pub(crate) velocity: i16,
 }
 impl Move {
     /// TODO: make a cleaner, less internals-ish constructor
-    pub fn new(direction: Face6, distance: u16, velocity: i16) -> Self {
+    pub(crate) fn new(direction: Face6, distance: u16, velocity: i16) -> Self {
         loop {}
     }
     /// Create a pair of [`Modifier::Move`]s to displace a block.
@@ -36,7 +36,11 @@ impl Move {
     ///
     /// TODO: This is going to need to change again in order to support
     /// moving one block in and another out at the same time.
-    pub fn paired_move(direction: Face6, distance: u16, velocity: i16) -> [Modifier; 2] {
+    pub(crate) fn paired_move(
+        direction: Face6,
+        distance: u16,
+        velocity: i16,
+    ) -> [Modifier; 2] {
         loop {}
     }
     /// Note that `Modifier::Move` does some preprocessing to keep this simpler.

@@ -15,7 +15,7 @@ use crate::universe::RefError;
 /// format and means by which the shadow is accomplished depends on the specific renderer,
 /// so this function makes no assumption about color.
 #[doc(hidden)]
-pub fn info_text_drawable<C: PixelColor + 'static>(
+pub(crate) fn info_text_drawable<C: PixelColor + 'static>(
     text: &str,
     color_value: C,
 ) -> impl Drawable<Color = C> + '_ {

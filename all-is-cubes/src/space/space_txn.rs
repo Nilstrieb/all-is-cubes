@@ -29,7 +29,7 @@ impl SpaceTransaction {
     /// If `new` is not [`None`], replaces the existing block with `new`.
     ///
     /// TODO: This name is a poor name now that [`Self::set`] exists.
-    pub fn set_cube(
+    pub(crate) fn set_cube(
         cube: impl Into<GridPoint>,
         old: Option<Block>,
         new: Option<Block>,
@@ -42,7 +42,7 @@ impl SpaceTransaction {
     /// If `old` is not [`None`], requires that the existing block is that block or the
     /// transaction will fail.
     /// If `new` is not [`None`], replaces the existing block with `new`.
-    pub fn set(
+    pub(crate) fn set(
         &mut self,
         cube: impl Into<GridPoint>,
         old: Option<Block>,
@@ -54,7 +54,7 @@ impl SpaceTransaction {
     /// existing modification instruction (but not an existing `old` block precondition).
     /// This is thus comparable to a direct [`Space::set()`] after the rest of the
     /// transaction.
-    pub fn set_overwrite(&mut self, cube: impl Into<GridPoint>, block: Block) {
+    pub(crate) fn set_overwrite(&mut self, cube: impl Into<GridPoint>, block: Block) {
         loop {}
     }
     /// Provides an [`DrawTarget`](embedded_graphics::prelude::DrawTarget)
@@ -62,7 +62,7 @@ impl SpaceTransaction {
     ///
     /// For more information on how to use this, see
     /// [`all_is_cubes::drawing`](crate::drawing).
-    pub fn draw_target<C>(
+    pub(crate) fn draw_target<C>(
         &mut self,
         transform: GridMatrix,
     ) -> DrawingPlane<'_, Self, C> {
@@ -79,19 +79,19 @@ impl SpaceTransaction {
     /// the [`Space`].
     ///
     /// [non-conservative]: https://en.wikipedia.org/wiki/Conserved_quantity
-    pub fn nonconserved(mut self) -> Self {
+    pub(crate) fn nonconserved(mut self) -> Self {
         loop {}
     }
     fn single(cube: impl Into<GridPoint>, transaction: CubeTransaction) -> Self {
         loop {}
     }
     /// Modify the space's [`BehaviorSet`].
-    pub fn behaviors(t: behavior::BehaviorSetTransaction<Space>) -> Self {
+    pub(crate) fn behaviors(t: behavior::BehaviorSetTransaction<Space>) -> Self {
         loop {}
     }
     /// Add a behavior to the [`Space`].
     /// This is a shortcut for creating a [`BehaviorSetTransaction`].
-    pub fn add_behavior<B>(bounds: GridAab, behavior: B) -> Self
+    pub(crate) fn add_behavior<B>(bounds: GridAab, behavior: B) -> Self
     where
         B: behavior::Behavior<Space> + 'static,
     {
@@ -107,13 +107,13 @@ impl SpaceTransaction {
     ///
     /// TODO: Handle the case where the total volume is too large.
     /// (Maybe `GridAab` should lose that restriction.)
-    pub fn bounds_only_cubes(&self) -> Option<GridAab> {
+    pub(crate) fn bounds_only_cubes(&self) -> Option<GridAab> {
         loop {}
     }
     /// Computes the region affected by this transaction.
     ///
     /// Returns [`None`] if no specific regions of the space are affected.
-    pub fn bounds(&self) -> Option<GridAab> {
+    pub(crate) fn bounds(&self) -> Option<GridAab> {
         loop {}
     }
 }

@@ -62,7 +62,7 @@ pub(crate) fn rectangle_to_aab(
 /// `'s` is the lifetime of the [`Space`].
 /// `C` is the “color” type to use, which should implement [`VoxelColor`].
 #[derive(Debug)]
-pub struct DrawingPlane<'s, T, C> {
+pub(crate) struct DrawingPlane<'s, T, C> {
     space: &'s mut T,
     /// Defines the coordinate transformation from 2D graphics to the [`Space`].
     transform: GridMatrix,
@@ -84,7 +84,7 @@ pub(crate) trait VoxelColor<'a>: PixelColor {
 /// Note that only `&VoxelBrush` implements [`PixelColor`]; this is because `PixelColor`
 /// requires a value implementing [`Copy`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub struct VoxelBrush<'a>(Vec<(GridPoint, Cow<'a, Block>)>);
+pub(crate) struct VoxelBrush<'a>(Vec<(GridPoint, Cow<'a, Block>)>);
 /// Converts the return value of [`Space::set`] to the return value of
 /// [`DrawTarget::draw_pixel`], by making out-of-bounds not an error.
 fn ignore_out_of_bounds(result: Result<bool, SetCubeError>) -> Result<(), SetCubeError> {

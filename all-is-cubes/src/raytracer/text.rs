@@ -12,7 +12,7 @@ use crate::space::{Space, SpaceBlockData};
 ///
 /// `direction` specifies the direction from which the camera will be looking towards
 /// the center of the space. The text output will be 80 columns wide.
-pub fn print_space(space: &Space, direction: impl Into<Vector3<FreeCoordinate>>) {
+pub(crate) fn print_space(space: &Space, direction: impl Into<Vector3<FreeCoordinate>>) {
     loop {}
 }
 /// Version of `print_space` that takes a destination, for testing.

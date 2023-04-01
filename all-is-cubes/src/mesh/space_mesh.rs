@@ -75,7 +75,7 @@ fn extend_giving_range<T>(
 ///
 /// TODO: This currently only has one implementation and should be discarded if it is not
 /// a useful abstraction.
-pub trait BlockMeshProvider<'a, V, T> {
+pub(crate) trait BlockMeshProvider<'a, V, T> {
     /// Obtain a mesh for the given block index, or `None` if the index is out of range.
     fn get(&mut self, index: BlockIndex) -> Option<&'a BlockMesh<V, T>>;
 }
@@ -83,7 +83,7 @@ pub trait BlockMeshProvider<'a, V, T> {
 /// based on the direction from which they are being viewed.
 #[allow(clippy::exhaustive_enums)]
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
-pub enum DepthOrdering {
+pub(crate) enum DepthOrdering {
     /// Any ordering is acceptable.
     Any,
     /// The viewpoint is within the volume; therefore dynamic rather than precomputed
@@ -117,7 +117,9 @@ impl DepthOrdering {
     /// If the vector is zero, [`DepthOrdering::Within`] will be returned. Thus, passing
     /// coordinates in units of chunks will result in returning `Within` exactly when the
     /// viewpoint is within the chunk (implying the need for finer-grained sorting).
-    pub fn from_view_direction(direction: Vector3<GridCoordinate>) -> DepthOrdering {
+    pub(crate) fn from_view_direction(
+        direction: Vector3<GridCoordinate>,
+    ) -> DepthOrdering {
         loop {}
     }
     fn rev(self) -> Self {

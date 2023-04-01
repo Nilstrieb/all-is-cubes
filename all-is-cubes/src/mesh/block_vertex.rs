@@ -6,7 +6,7 @@ use crate::util::{ConciseDebug, CustomFormat};
 /// Numeric type used to store texture coordinates in vertices.
 ///
 /// TODO: Delete this type alias now that we're generic over texture coordinates.
-pub type TextureCoordinate = f32;
+pub(crate) type TextureCoordinate = f32;
 /// Basic vertex data type for a [`BlockMesh`].
 /// Implement <code>[`From`]&lt;[`BlockVertex`]&gt;</code> (and usually [`GfxVertex`])
 /// to provide a specialized version fit for the target graphics API.
@@ -19,11 +19,11 @@ pub type TextureCoordinate = f32;
 #[derive(Clone, Copy, PartialEq)]
 pub struct BlockVertex<T> {
     /// Vertex position.
-    pub position: Point3<FreeCoordinate>,
+    pub(crate) position: Point3<FreeCoordinate>,
     /// Vertex normal, always axis-aligned.
-    pub face: Face6,
+    pub(crate) face: Face6,
     /// Surface color or texture coordinate.
-    pub coloring: Coloring<T>,
+    pub(crate) coloring: Coloring<T>,
 }
 /// Describes the two ways a [`BlockVertex`] may be colored; by a solid color or by a texture.
 ///
@@ -31,7 +31,7 @@ pub struct BlockVertex<T> {
 /// should identify one point in the block's 3D texture, such as `T = Point3<f32>`).
 #[allow(clippy::exhaustive_enums)]
 #[derive(Clone, Copy, Eq, PartialEq)]
-pub enum Coloring<T> {
+pub(crate) enum Coloring<T> {
     /// Solid color.
     Solid(Rgba),
     /// Texture coordinates provided by the [`TextureAllocator`](super::TextureAllocator)

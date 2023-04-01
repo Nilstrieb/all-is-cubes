@@ -11,24 +11,24 @@ use super::{Block, Primitive, URef, AIR};
 #[derive(Clone, Eq, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub struct EvaluatedBlock {
+pub(crate) struct EvaluatedBlock {
     /// The block's attributes.
-    pub attributes: BlockAttributes,
+    pub(crate) attributes: BlockAttributes,
     /// The voxels making up the block, and the [`resolution`](Resolution) (scale factor)
     /// of those voxels.
-    pub voxels: Evoxels,
+    pub(crate) voxels: Evoxels,
     /// The block's color; if made of multiple voxels, then an average or representative
     /// color.
-    pub color: Rgba,
+    pub(crate) color: Rgba,
     /// Whether the block is known to be completely opaque to light passing in or out of
     /// each face.
     ///
     /// Currently, this is calculated as whether each of the surfaces of the block are
     /// fully opaque, but in the future it might be refined to permit concave surfaces.
-    pub opaque: FaceMap<bool>,
+    pub(crate) opaque: FaceMap<bool>,
     /// Whether the block has any voxels/color at all that make it visible; that is, this
     /// is false if the block is completely transparent.
-    pub visible: bool,
+    pub(crate) visible: bool,
     /// The opacity of all voxels. This is redundant with the data  [`Self::voxels`],
     /// and is provided as a pre-computed convenience that can be cheaply compared with
     /// other values of the same type.
@@ -37,7 +37,7 @@ pub struct EvaluatedBlock {
     /// obligating [`AIR_EVALUATED`] to allocate at compile time, which is impossible.
     /// It doesn't harm normal operation because the point of having this is to compare
     /// block shapes, which is trivial if the block is invisible.)
-    pub voxel_opacity_mask: Option<GridArray<OpacityCategory>>,
+    pub(crate) voxel_opacity_mask: Option<GridArray<OpacityCategory>>,
 }
 impl fmt::Debug for EvaluatedBlock {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -57,7 +57,7 @@ impl EvaluatedBlock {
     /// Returns the resolution (scale factor) of this block's voxels.
     /// See [`Resolution`] for more information.
     #[inline]
-    pub fn resolution(&self) -> Resolution {
+    pub(crate) fn resolution(&self) -> Resolution {
         loop {}
     }
     /// Returns whether [`Self::visible`] is true (the block has some visible color/voxels)
@@ -74,19 +74,19 @@ impl EvaluatedBlock {
     /// detail of whether the bounds are tightly fitting or not, particularly for the purpose
     /// it is being used for (cursor drawing). Figure out what we want to do instead.
     #[doc(hidden)]
-    pub fn voxels_bounds(&self) -> GridAab {
+    pub(crate) fn voxels_bounds(&self) -> GridAab {
         loop {}
     }
     #[doc(hidden)]
     #[track_caller]
-    pub fn consistency_check(&self) {
+    pub(crate) fn consistency_check(&self) {
         loop {}
     }
 }
 /// Errors resulting from [`Block::evaluate`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
 #[non_exhaustive]
-pub enum EvalBlockError {
+pub(crate) enum EvalBlockError {
     /// The block definition contained recursion that exceeded the evaluation limit.
     #[error("block definition contains too much recursion")]
     StackOverflow,
@@ -101,7 +101,7 @@ impl EvalBlockError {
     /// occurred.
     ///
     /// This block is fully opaque and as inert to game mechanics as currently possible.
-    pub fn to_placeholder(&self) -> EvaluatedBlock {
+    pub(crate) fn to_placeholder(&self) -> EvaluatedBlock {
         loop {}
     }
 }
@@ -112,20 +112,20 @@ impl EvalBlockError {
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub struct Evoxel {
+pub(crate) struct Evoxel {
     /// Diffuse reflection color.
-    pub color: Rgba,
+    pub(crate) color: Rgba,
     /// Whether players' [cursors](crate::character::Cursor) target this voxel's containing
     /// block or pass through it.
-    pub selectable: bool,
+    pub(crate) selectable: bool,
     /// The effect on a [`Body`](crate::physics::Body) of colliding with this voxel.
-    pub collision: block::BlockCollision,
+    pub(crate) collision: block::BlockCollision,
 }
 impl Evoxel {
     /// The `Evoxel` value that would have resulted from using [`AIR`] in a recursive block.
     ///
     /// TODO: Write a test for that.
-    pub const AIR: Self = Self {
+    pub(crate) const AIR: Self = Self {
         color: Rgba::TRANSPARENT,
         selectable: false,
         collision: block::BlockCollision::None,
@@ -133,12 +133,12 @@ impl Evoxel {
     /// Construct an [`Evoxel`] which represents the given evaluated block.
     ///
     /// This is the same operation as is used for each block/voxel in a [`Primitive::Recur`].
-    pub fn from_block(block: &EvaluatedBlock) -> Self {
+    pub(crate) fn from_block(block: &EvaluatedBlock) -> Self {
         loop {}
     }
     /// Construct the [`Evoxel`] that would have resulted from evaluating a voxel block
     /// with the given color and default attributes.
-    pub const fn from_color(color: Rgba) -> Self {
+    pub(crate) const fn from_color(color: Rgba) -> Self {
         const DA: &BlockAttributes = &BlockAttributes::default();
         Self {
             color,
@@ -165,7 +165,7 @@ impl Evoxel {
 /// * ensure there is no inappropriate dependence on the representation
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub enum Evoxels {
+pub(crate) enum Evoxels {
     /// Compact representation of exactly one voxel. The resolution is implicitly 1.
     One(Evoxel),
     /// The [`GridArray`] should not have any data outside of the expected bounds
@@ -176,12 +176,12 @@ impl Evoxels {
     /// Returns the resolution (scale factor) of this set of voxels.
     /// See [`Resolution`] for more information.
     #[inline]
-    pub fn resolution(&self) -> Resolution {
+    pub(crate) fn resolution(&self) -> Resolution {
         loop {}
     }
     /// If this has a resolution of 1, then return that single voxel.
     #[inline]
-    pub fn single_voxel(&self) -> Option<Evoxel> {
+    pub(crate) fn single_voxel(&self) -> Option<Evoxel> {
         loop {}
     }
     /// Get the single voxel at the specified position, or [`None`] if the position is
@@ -192,12 +192,12 @@ impl Evoxels {
     ///
     /// TODO: Should we inherently return AIR instead of None?
     #[inline]
-    pub fn get(&self, position: GridPoint) -> Option<Evoxel> {
+    pub(crate) fn get(&self, position: GridPoint) -> Option<Evoxel> {
         loop {}
     }
     /// Returns the bounds of the voxel data.
     #[inline]
-    pub fn bounds(&self) -> GridAab {
+    pub(crate) fn bounds(&self) -> GridAab {
         loop {}
     }
 }
@@ -228,7 +228,7 @@ impl<'a> arbitrary::Arbitrary<'a> for Evoxels {
 ///
 /// assert_eq!(Ok(AIR_EVALUATED), AIR.evaluate());
 /// ```
-pub const AIR_EVALUATED: EvaluatedBlock = EvaluatedBlock {
+pub(crate) const AIR_EVALUATED: EvaluatedBlock = EvaluatedBlock {
     attributes: AIR_ATTRIBUTES,
     color: Rgba::TRANSPARENT,
     voxels: Evoxels::One(AIR_INNER_EVOXEL),
@@ -267,7 +267,7 @@ impl From<MinEval> for EvaluatedBlock {
     }
 }
 impl MinEval {
-    pub fn resolution(&self) -> Resolution {
+    pub(crate) fn resolution(&self) -> Resolution {
         loop {}
     }
 }

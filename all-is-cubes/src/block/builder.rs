@@ -31,7 +31,7 @@ use crate::universe::{Name, URef, Universe, UniverseIndex};
 /// ```
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[must_use]
-pub struct BlockBuilder<P> {
+pub(crate) struct BlockBuilder<P> {
     attributes: BlockAttributes,
     primitive_builder: P,
     modifiers: Vec<Modifier>,
@@ -40,4 +40,4 @@ pub struct BlockBuilder<P> {
 /// cannot create an actual block until this is replaced.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, PartialEq)]
-pub struct NeedsPrimitive;
+pub(crate) struct NeedsPrimitive;

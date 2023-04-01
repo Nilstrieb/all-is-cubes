@@ -19,16 +19,16 @@ fn directions_to_seek_light(
 /// Performance data for bulk light updates.
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub struct LightUpdatesInfo {
+pub(crate) struct LightUpdatesInfo {
     /// Number of blocks whose light data updates are aggregated in this data.
-    pub update_count: usize,
+    pub(crate) update_count: usize,
     /// The largest change in light value that occurred.
-    pub max_update_difference: u8,
+    pub(crate) max_update_difference: u8,
     /// Number of entries in the light update queue.
-    pub queue_count: usize,
+    pub(crate) queue_count: usize,
     /// The largest update priority in the queue (corresponds to the size of
     /// difference that caused the cube to be added).
-    pub max_queue_priority: u8,
+    pub(crate) max_queue_priority: u8,
 }
 impl std::ops::AddAssign<LightUpdatesInfo> for LightUpdatesInfo {
     fn add_assign(&mut self, other: Self) {

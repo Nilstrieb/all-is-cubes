@@ -154,28 +154,28 @@
 #![cfg_attr(test, allow(clippy::float_cmp), allow(clippy::redundant_clone))]
 #![warn(missing_docs)]
 #[macro_use]
-pub mod math;
-pub mod behavior;
-pub mod block;
-pub mod camera;
-pub mod character;
+pub(crate) mod math;
+pub(crate) mod behavior;
+pub(crate) mod block;
+pub(crate) mod camera;
+pub(crate) mod character;
 #[doc(hidden)]
-pub mod chunking;
+pub(crate) mod chunking;
 #[doc(hidden)]
-pub mod content;
-pub mod drawing;
-pub mod fluff;
-pub mod inv;
-pub mod linking;
-pub mod listen;
-pub mod mesh;
-pub mod physics;
-pub mod raycast;
+pub(crate) mod content;
+pub(crate) mod drawing;
+pub(crate) mod fluff;
+pub(crate) mod inv;
+pub(crate) mod linking;
+pub(crate) mod listen;
+pub(crate) mod mesh;
+pub(crate) mod physics;
+pub(crate) mod raycast;
 mod save;
-pub mod space;
-pub mod time;
-pub mod transaction;
-pub mod universe;
-pub mod util;
+pub(crate) mod space;
+pub(crate) mod time;
+pub(crate) mod transaction;
+pub(crate) mod universe;
+pub(crate) mod util;
 /// Re-export the version of the `cgmath` crate we're using.
-pub use cgmath;
+pub(crate) use cgmath;

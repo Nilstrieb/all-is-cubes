@@ -21,7 +21,7 @@ pub struct BlockDef {
 impl BlockDef {
     /// Constructs a new [`BlockDef`] that stores the given block (which may be replaced
     /// in the future).
-    pub fn new(block: Block) -> Self {
+    pub(crate) fn new(block: Block) -> Self {
         loop {}
     }
 }
@@ -73,16 +73,16 @@ pub struct BlockDefTransaction {
 impl BlockDefTransaction {
     /// Returns a transaction which fails if the current value of the [`BlockDef`] is not
     /// equal to `old`.
-    pub fn expect(old: Block) -> Self {
+    pub(crate) fn expect(old: Block) -> Self {
         loop {}
     }
     /// Returns a transaction which replaces the current value of the [`BlockDef`] with `new`.
-    pub fn overwrite(new: Block) -> Self {
+    pub(crate) fn overwrite(new: Block) -> Self {
         loop {}
     }
     /// Returns a transaction which replaces the value of the [`BlockDef`] with `new`,
     /// if it is equal to `old`, and otherwise fails.
-    pub fn replace(old: Block, new: Block) -> Self {
+    pub(crate) fn replace(old: Block, new: Block) -> Self {
         loop {}
     }
 }

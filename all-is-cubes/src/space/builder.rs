@@ -14,14 +14,14 @@ use crate::space::{GridAab, LightPhysics, Space, SpacePhysics};
 /// * `B` is either `()` or `GridAab` according to whether the bounds have been specified.
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[must_use]
-pub struct SpaceBuilder<B> {
+pub(crate) struct SpaceBuilder<B> {
     pub(super) bounds: B,
     pub(super) spawn: Option<Spawn>,
     pub(super) physics: SpacePhysics,
     pub(super) initial_fill: Block,
 }
 /// Helper for [`SpaceBuilder::bounds_if_not_set()`]. Do not call or implement this trait.
-pub trait SpaceBuilderBounds: sbb::SbbSealed + Sized {
+pub(crate) trait SpaceBuilderBounds: sbb::SbbSealed + Sized {
     /// Set the bounds unless they have already been set.
     ///
     /// This function is an implementation detail; call
@@ -36,7 +36,7 @@ pub trait SpaceBuilderBounds: sbb::SbbSealed + Sized {
 mod sbb {
     use super::*;
     #[doc(hidden)]
-    pub trait SbbSealed {}
+    pub(crate) trait SbbSealed {}
     impl SbbSealed for () {}
     impl SbbSealed for GridAab {}
 }

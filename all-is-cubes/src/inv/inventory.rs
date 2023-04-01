@@ -23,13 +23,13 @@ use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
 #[non_exhaustive]
 pub struct Inventory {
     /// TODO: This probably shouldn't be public forever.
-    pub slots: Vec<Slot>,
+    pub(crate) slots: Vec<Slot>,
 }
 impl Inventory {
     /// Construct an [`Inventory`] with the specified number of slots.
     ///
     /// Ordinary user actions cannot change the number of slots.
-    pub fn new(size: usize) -> Self {
+    pub(crate) fn new(size: usize) -> Self {
         loop {}
     }
     /// TODO: temporary interface, reevaluate design
@@ -39,7 +39,7 @@ impl Inventory {
     /// Use a tool stored in this inventory.
     ///
     /// `character` must be the character containing the inventory. TODO: Bad API
-    pub fn use_tool(
+    pub(crate) fn use_tool(
         &self,
         cursor: Option<&Cursor>,
         character: URef<Character>,
@@ -66,7 +66,7 @@ impl VisitRefs for Inventory {
 /// The direct child of [`Inventory`]; a container for any number of identical [`Tool`]s.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub enum Slot {
+pub(crate) enum Slot {
     /// Slot contains nothing.
     Empty,
     /// Slot contains one or more of the given [`Tool`].
@@ -77,22 +77,25 @@ impl Slot {
     /// Construct a [`Slot`] containing `count` copies of `tool`.
     ///
     /// If `count` is zero, the `tool` will be ignored.
-    pub fn stack(count: u16, tool: Tool) -> Self {
+    pub(crate) fn stack(count: u16, tool: Tool) -> Self {
         loop {}
     }
     /// Temporary const version of [`<Slot as From<Tool>>::from`].
     #[doc(hidden)]
-    pub const fn one(tool: Tool) -> Self {
+    pub(crate) const fn one(tool: Tool) -> Self {
         loop {}
     }
     /// Returns the icon to use for this tool in the user interface.
     ///
     /// Note that this is _not_ the same as the block that a [`Tool::Block`] places.
-    pub fn icon<'a>(&'a self, predefined: &'a BlockProvider<Icons>) -> Cow<'a, Block> {
+    pub(crate) fn icon<'a>(
+        &'a self,
+        predefined: &'a BlockProvider<Icons>,
+    ) -> Cow<'a, Block> {
         loop {}
     }
     /// Returns the count of items in this slot.
-    pub fn count(&self) -> u16 {
+    pub(crate) fn count(&self) -> u16 {
         loop {}
     }
     /// If the given tool is in this slot, return the count thereof.
@@ -160,7 +163,7 @@ pub struct InventoryTransaction {
 impl InventoryTransaction {
     /// Transaction to insert items/stacks into an inventory, which will fail if there is
     /// not sufficient space.
-    pub fn insert<S: Into<Slot>, I: IntoIterator<Item = S>>(stacks: I) -> Self {
+    pub(crate) fn insert<S: Into<Slot>, I: IntoIterator<Item = S>>(stacks: I) -> Self {
         loop {}
     }
     /// Transaction to replace the contents of an existing slot in an inventory, which
@@ -168,7 +171,7 @@ impl InventoryTransaction {
     ///
     /// TODO: Right now, this requires an exact match. In the future, we should be able
     /// to compose multiple modifications like "add 1 item to stack" ×2 into "add 2 items".
-    pub fn replace(slot: usize, old: Slot, new: Slot) -> Self {
+    pub(crate) fn replace(slot: usize, old: Slot, new: Slot) -> Self {
         loop {}
     }
 }
@@ -213,5 +216,5 @@ pub struct InventoryCheck {
 #[non_exhaustive]
 pub struct InventoryChange {
     /// Which slots of the inventory have been changed.
-    pub slots: Arc<[usize]>,
+    pub(crate) slots: Arc<[usize]>,
 }

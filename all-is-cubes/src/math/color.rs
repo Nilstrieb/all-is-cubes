@@ -3,7 +3,7 @@ use std::fmt;
 use std::iter::Sum;
 use std::ops::{Add, AddAssign, Mul, Sub};
 use cgmath::{ElementWise as _, Vector3, Vector4, Zero as _};
-pub use ordered_float::{FloatIsNan, NotNan};
+pub(crate) use ordered_float::{FloatIsNan, NotNan};
 use crate::notnan;
 /// Allows writing a constant [`Rgb`] color value, provided that its components are float
 /// literals.
@@ -53,7 +53,7 @@ impl Rgb {
     /// Constructs a color from components. Panics if any component is NaN.
     /// No other range checks are performed.
     #[inline]
-    pub fn new(r: f32, g: f32, b: f32) -> Self {
+    pub(crate) fn new(r: f32, g: f32, b: f32) -> Self {
         loop {}
     }
     /// Constructs a color from components that have already been checked for not being
@@ -62,38 +62,38 @@ impl Rgb {
     /// Note: This exists primarily to assist the [`rgb_const!`] macro and may be renamed
     /// or replaced in future versions.
     #[inline]
-    pub const fn new_nn(r: NotNan<f32>, g: NotNan<f32>, b: NotNan<f32>) -> Self {
+    pub(crate) const fn new_nn(r: NotNan<f32>, g: NotNan<f32>, b: NotNan<f32>) -> Self {
         Self(Vector3::new(r, g, b))
     }
     /// Constructs a shade of gray (components all equal). Panics if any component is NaN.
     /// No other range checks are performed.
     #[inline]
-    pub fn from_luminance(luminance: f32) -> Self {
+    pub(crate) fn from_luminance(luminance: f32) -> Self {
         loop {}
     }
     /// Adds an alpha component to produce an [Rgba] color.
     #[inline]
-    pub const fn with_alpha(self, alpha: NotNan<f32>) -> Rgba {
+    pub(crate) const fn with_alpha(self, alpha: NotNan<f32>) -> Rgba {
         loop {}
     }
     /// Adds an alpha component of `1.0` (fully opaque) to produce an [Rgba] color.
     #[inline]
-    pub const fn with_alpha_one(self) -> Rgba {
+    pub(crate) const fn with_alpha_one(self) -> Rgba {
         loop {}
     }
     /// Returns the red color component. Values are linear (gamma = 1).
     #[inline]
-    pub const fn red(self) -> NotNan<f32> {
+    pub(crate) const fn red(self) -> NotNan<f32> {
         loop {}
     }
     /// Returns the green color component. Values are linear (gamma = 1).
     #[inline]
-    pub const fn green(self) -> NotNan<f32> {
+    pub(crate) const fn green(self) -> NotNan<f32> {
         loop {}
     }
     /// Returns the blue color component. Values are linear (gamma = 1).
     #[inline]
-    pub const fn blue(self) -> NotNan<f32> {
+    pub(crate) const fn blue(self) -> NotNan<f32> {
         loop {}
     }
     /// Combines the red, green, and blue components to obtain a [relative luminance]
@@ -114,12 +114,12 @@ impl Rgb {
     ///
     /// [relative luminance]: https://en.wikipedia.org/wiki/Relative_luminance
     #[inline]
-    pub fn luminance(self) -> f32 {
+    pub(crate) fn luminance(self) -> f32 {
         loop {}
     }
     /// Converts sRGB 8-bits-per-component color to the corresponding linear [`Rgba`] value.
     #[inline]
-    pub const fn from_srgb8(rgb: [u8; 3]) -> Self {
+    pub(crate) const fn from_srgb8(rgb: [u8; 3]) -> Self {
         Self(
             Vector3::new(
                 component_from_srgb8_const(rgb[0]),
@@ -131,7 +131,7 @@ impl Rgb {
     /// Clamp each component to lie within the range 0 to 1, inclusive.
     #[inline]
     #[must_use]
-    pub fn clamp(self) -> Self {
+    pub(crate) fn clamp(self) -> Self {
         loop {}
     }
 }
@@ -146,7 +146,7 @@ impl Rgba {
     /// Constructs a color from components. Panics if any component is NaN.
     /// No other range checks are performed.
     #[inline]
-    pub fn new(r: f32, g: f32, b: f32, a: f32) -> Self {
+    pub(crate) fn new(r: f32, g: f32, b: f32, a: f32) -> Self {
         loop {}
     }
     /// Constructs a color from components that have already been checked for not being
@@ -155,7 +155,7 @@ impl Rgba {
     /// Note: This exists primarily to assist the [`rgb_const!`] macro and may be renamed
     /// or replaced in future versions.
     #[inline]
-    pub const fn new_nn(
+    pub(crate) const fn new_nn(
         r: NotNan<f32>,
         g: NotNan<f32>,
         b: NotNan<f32>,
@@ -166,22 +166,22 @@ impl Rgba {
     /// Constructs a shade of gray (components all equal). Panics if any component is NaN.
     /// No other range checks are performed.
     #[inline]
-    pub fn from_luminance(luminance: f32) -> Self {
+    pub(crate) fn from_luminance(luminance: f32) -> Self {
         loop {}
     }
     /// Returns the red color component. Values are linear (gamma = 1).
     #[inline]
-    pub const fn red(self) -> NotNan<f32> {
+    pub(crate) const fn red(self) -> NotNan<f32> {
         loop {}
     }
     /// Returns the green color component. Values are linear (gamma = 1).
     #[inline]
-    pub const fn green(self) -> NotNan<f32> {
+    pub(crate) const fn green(self) -> NotNan<f32> {
         loop {}
     }
     /// Returns the blue color component. Values are linear (gamma = 1).
     #[inline]
-    pub const fn blue(self) -> NotNan<f32> {
+    pub(crate) const fn blue(self) -> NotNan<f32> {
         loop {}
     }
     /// Returns the alpha component.
@@ -189,26 +189,26 @@ impl Rgba {
     /// Alpha is not premultiplied. Alpha values less than zero and greater than one are
     /// allowed and may be returned by this method, but alpha test methods will treat
     #[inline]
-    pub const fn alpha(self) -> NotNan<f32> {
+    pub(crate) const fn alpha(self) -> NotNan<f32> {
         loop {}
     }
     /// Returns whether this color is fully transparent, or has an alpha component of
     /// zero or less.
     #[inline]
-    pub fn fully_transparent(self) -> bool {
+    pub(crate) fn fully_transparent(self) -> bool {
         loop {}
     }
     /// Returns whether this color is fully opaque, or has an alpha component of
     /// one or greater.
     #[inline]
-    pub fn fully_opaque(self) -> bool {
+    pub(crate) fn fully_opaque(self) -> bool {
         loop {}
     }
     /// Returns the [`OpacityCategory`] which this color's alpha fits into.
     /// This returns the same information as [`Rgba::fully_transparent`] combined with
     /// [`Rgba::fully_opaque`].
     #[inline]
-    pub fn opacity_category(self) -> OpacityCategory {
+    pub(crate) fn opacity_category(self) -> OpacityCategory {
         loop {}
     }
     /// Discards the alpha component to produce an RGB color.
@@ -216,12 +216,12 @@ impl Rgba {
     /// Note that if alpha is 0 then the components could be any value and yet be “hidden”
     /// by the transparency.
     #[inline]
-    pub fn to_rgb(self) -> Rgb {
+    pub(crate) fn to_rgb(self) -> Rgb {
         loop {}
     }
     /// Applies a function to the RGB portion of this color.
     #[must_use]
-    pub fn map_rgb(self, f: impl FnOnce(Rgb) -> Rgb) -> Self {
+    pub(crate) fn map_rgb(self, f: impl FnOnce(Rgb) -> Rgb) -> Self {
         loop {}
     }
     /// Combines the red, green, and blue components to obtain a luminance (“grayscale”)
@@ -229,23 +229,23 @@ impl Rgba {
     ///
     /// This is identical to [`Rgb::luminance`], ignoring the alpha component.
     #[inline]
-    pub fn luminance(self) -> f32 {
+    pub(crate) fn luminance(self) -> f32 {
         loop {}
     }
     /// Converts this color to sRGB (nonlinear RGB components).
     #[inline]
     #[doc(hidden)]
-    pub fn to_srgb_float(self) -> [f32; 4] {
+    pub(crate) fn to_srgb_float(self) -> [f32; 4] {
         loop {}
     }
     /// Converts this color lossily to sRGB 8-bits-per-component color.
     #[inline]
-    pub fn to_srgb8(self) -> [u8; 4] {
+    pub(crate) fn to_srgb8(self) -> [u8; 4] {
         loop {}
     }
     /// Converts sRGB 8-bits-per-component color to the corresponding linear [`Rgba`] value.
     #[inline]
-    pub const fn from_srgb8(rgba: [u8; 4]) -> Self {
+    pub(crate) const fn from_srgb8(rgba: [u8; 4]) -> Self {
         Self(
             Vector4::new(
                 component_from_srgb8_const(rgba[0]),
@@ -258,7 +258,7 @@ impl Rgba {
     /// Clamp each component to lie within the range 0 to 1, inclusive.
     #[inline]
     #[must_use]
-    pub fn clamp(self) -> Self {
+    pub(crate) fn clamp(self) -> Self {
         loop {}
     }
 }
@@ -440,7 +440,7 @@ const fn component_from_srgb8_const(c: u8) -> NotNan<f32> {
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[allow(clippy::exhaustive_enums)]
 #[repr(u8)]
-pub enum OpacityCategory {
+pub(crate) enum OpacityCategory {
     /// Alpha of zero; completely transparent; completely invisible; need not be drawn.
     Invisible = 0,
     /// Alpha greater than zero and less than one; requires blending.

@@ -57,7 +57,7 @@ impl GridAab {
     /// Panics if the sizes are negative or the resulting range would cause
     /// numeric overflow. Use [`GridAab::checked_from_lower_size`] to avoid panics.
     #[track_caller]
-    pub fn from_lower_size(
+    pub(crate) fn from_lower_size(
         lower_bounds: impl Into<GridPoint>,
         sizes: impl Into<GridVector>,
     ) -> Self {
@@ -72,7 +72,7 @@ impl GridAab {
     ///
     /// Returns [`Err`] if the sizes are non-negative or the resulting range would cause
     /// numeric overflow.
-    pub fn checked_from_lower_size(
+    pub(crate) fn checked_from_lower_size(
         lower_bounds: impl Into<GridPoint>,
         sizes: impl Into<GridVector>,
     ) -> Result<Self, GridOverflowError> {
@@ -85,7 +85,7 @@ impl GridAab {
     /// (inclusive) and the occupied volume (from a perspective of continuous
     /// rather than discrete coordinates) spans 5 to 10.
     #[track_caller]
-    pub fn from_lower_upper(
+    pub(crate) fn from_lower_upper(
         lower_bounds: impl Into<GridPoint>,
         upper_bounds: impl Into<GridPoint>,
     ) -> GridAab {
@@ -96,7 +96,7 @@ impl GridAab {
     /// Returns [`Err`] if the bounds are reversed or the resulting range would cause
     /// numeric overflow.
     #[track_caller]
-    pub fn checked_from_lower_upper(
+    pub(crate) fn checked_from_lower_upper(
         lower_bounds: impl Into<GridPoint>,
         upper_bounds: impl Into<GridPoint>,
     ) -> Result<Self, GridOverflowError> {
@@ -107,7 +107,7 @@ impl GridAab {
     /// Panics if `cube` has any coordinates equal to [`GridCoordinate::MAX`](i32::MAX)
     /// since that is not valid, as per [`GridAab::from_lower_size`].
     #[inline]
-    pub fn single_cube(cube: GridPoint) -> GridAab {
+    pub(crate) fn single_cube(cube: GridPoint) -> GridAab {
         loop {}
     }
     /// Constructs a [`GridAab`] with a cubical volume in the positive octant, as is used
@@ -116,7 +116,7 @@ impl GridAab {
     /// If you need such a box at a position other than the origin, use
     /// [`GridAab::translate()`].
     #[inline]
-    pub const fn for_block(resolution: Resolution) -> GridAab {
+    pub(crate) const fn for_block(resolution: Resolution) -> GridAab {
         loop {}
     }
     /// Generate a [`GridAab`] whose volume is as specified or smaller.
@@ -145,12 +145,12 @@ impl GridAab {
     /// let b = GridAab::from_lower_size([0, 0, 0], [100, 200, 0]);
     /// assert_eq!(b.volume(), 0);
     /// ```
-    pub fn volume(&self) -> usize {
+    pub(crate) fn volume(&self) -> usize {
         loop {}
     }
     /// Returns whether the box contains no cubes (its volume is zero).
     #[inline]
-    pub fn is_empty(&self) -> bool {
+    pub(crate) fn is_empty(&self) -> bool {
         loop {}
     }
     /// Determines whether a unit cube lies within this box and, if it does, returns the
@@ -169,25 +169,25 @@ impl GridAab {
     /// assert_eq!(bounds.index((0, 0, 10)), None);
     /// ```
     #[inline(always)]
-    pub fn index(&self, point: impl Into<GridPoint>) -> Option<usize> {
+    pub(crate) fn index(&self, point: impl Into<GridPoint>) -> Option<usize> {
         loop {}
     }
     /// Inclusive upper bounds on cube coordinates, or the most negative corner of the
     /// box.
     #[inline]
-    pub fn lower_bounds(&self) -> GridPoint {
+    pub(crate) fn lower_bounds(&self) -> GridPoint {
         loop {}
     }
     /// Exclusive upper bounds on cube coordinates, or the most positive corner of the
     /// box.
     #[inline]
-    pub fn upper_bounds(&self) -> GridPoint {
+    pub(crate) fn upper_bounds(&self) -> GridPoint {
         loop {}
     }
     /// Size of the box in each axis; equivalent to
     /// `self.upper_bounds() - self.lower_bounds()`.
     #[inline]
-    pub fn size(&self) -> GridVector {
+    pub(crate) fn size(&self) -> GridVector {
         loop {}
     }
     /// Size of the box in each axis; equivalent to
@@ -197,29 +197,29 @@ impl GridAab {
     /// Compared to [`GridAab::size()`], this is a convenience so that callers needing
     /// unsigned integers do not need to write a fallible-looking conversion.
     #[inline]
-    pub fn unsigned_size(&self) -> Vector3<u32> {
+    pub(crate) fn unsigned_size(&self) -> Vector3<u32> {
         loop {}
     }
     /// The range of X coordinates for unit cubes within the box.
     #[inline]
-    pub fn x_range(&self) -> Range<GridCoordinate> {
+    pub(crate) fn x_range(&self) -> Range<GridCoordinate> {
         loop {}
     }
     /// The range of Y coordinates for unit cubes within the box.
     #[inline]
-    pub fn y_range(&self) -> Range<GridCoordinate> {
+    pub(crate) fn y_range(&self) -> Range<GridCoordinate> {
         loop {}
     }
     /// The range of Z coordinates for unit cubes within the box.
     #[inline]
-    pub fn z_range(&self) -> Range<GridCoordinate> {
+    pub(crate) fn z_range(&self) -> Range<GridCoordinate> {
         loop {}
     }
     /// The range of coordinates for cubes within the box along the given axis.
     ///
     /// Panics if `axis >= 3`.
     #[inline]
-    pub fn axis_range(&self, axis: usize) -> Range<GridCoordinate> {
+    pub(crate) fn axis_range(&self, axis: usize) -> Range<GridCoordinate> {
         loop {}
     }
     /// The center of the enclosed volume. Returns [`FreeCoordinate`] since the center
@@ -233,7 +233,7 @@ impl GridAab {
     /// assert_eq!(b.center(), Point3::new(5.0, 1.5, 0.0));
     /// ```
     #[inline]
-    pub fn center(&self) -> Point3<FreeCoordinate> {
+    pub(crate) fn center(&self) -> Point3<FreeCoordinate> {
         loop {}
     }
     /// Iterate over all cubes.
@@ -253,7 +253,7 @@ impl GridAab {
     ///         GridPoint::new(10, 21, 32),
     ///     ])
     /// ```
-    pub fn interior_iter(self) -> GridIter {
+    pub(crate) fn interior_iter(self) -> GridIter {
         loop {}
     }
     /// Returns whether the box includes the cube with the given coordinates in its
@@ -267,7 +267,7 @@ impl GridAab {
     /// assert!(!b.contains_cube([10, 5, 5]));
     /// ```
     #[inline]
-    pub fn contains_cube(&self, point: impl Into<GridPoint>) -> bool {
+    pub(crate) fn contains_cube(&self, point: impl Into<GridPoint>) -> bool {
         loop {}
     }
     /// Returns whether this box includes every cube in the other box.
@@ -281,7 +281,7 @@ impl GridAab {
     /// assert!(!b46.contains_box(GridAab::from_lower_size([4, 4, 4], [7, 6, 6])));
     /// assert!(!GridAab::from_lower_size((0, 0, 0), (6, 6, 6)).contains_box(b46));
     /// ```
-    pub fn contains_box(&self, other: GridAab) -> bool {
+    pub(crate) fn contains_box(&self, other: GridAab) -> bool {
         loop {}
     }
     /// Returns the intersection of two grids, or None if they have no cubes in common.
@@ -302,7 +302,7 @@ impl GridAab {
     ///         GridAab::from_lower_size([1, 0, 0], [2, 1, 2])),
     ///     Some(GridAab::from_lower_size([1, 0, 0], [1, 1, 2])));
     /// ```
-    pub fn intersection(self, other: GridAab) -> Option<GridAab> {
+    pub(crate) fn intersection(self, other: GridAab) -> Option<GridAab> {
         loop {}
     }
     /// Returns the smallest [`GridAab`] which fully encloses the two inputs,
@@ -322,7 +322,7 @@ impl GridAab {
     ///     .unwrap_err();
     /// ```
     #[inline]
-    pub fn union(self, other: GridAab) -> Result<GridAab, GridOverflowError> {
+    pub(crate) fn union(self, other: GridAab) -> Result<GridAab, GridOverflowError> {
         loop {}
     }
     pub(crate) fn minkowski_sum(
@@ -346,7 +346,7 @@ impl GridAab {
     /// let empty = GridAab::from_lower_size([1, 2, 3], [0, 9, 9]);
     /// assert_eq!(empty.random_cube(rng), None);
     /// ```
-    pub fn random_cube(&self, rng: &mut impl rand::Rng) -> Option<GridPoint> {
+    pub(crate) fn random_cube(&self, rng: &mut impl rand::Rng) -> Option<GridPoint> {
         loop {}
     }
     /// Displaces the box by the given `offset`, leaving its size unchanged
@@ -361,7 +361,7 @@ impl GridAab {
     /// );
     /// ```
     #[must_use]
-    pub fn translate(&self, offset: impl Into<GridVector>) -> Self {
+    pub(crate) fn translate(&self, offset: impl Into<GridVector>) -> Self {
         loop {}
     }
     /// Transforms the box.
@@ -374,7 +374,7 @@ impl GridAab {
     /// TODO: Fail nicely on numeric overflow.
     /// The `Option` return is not currently used.
     #[must_use]
-    pub fn transform(self, transform: GridMatrix) -> Option<Self> {
+    pub(crate) fn transform(self, transform: GridMatrix) -> Option<Self> {
         loop {}
     }
     /// Scales the box down by the given factor, rounding outward.
@@ -402,7 +402,7 @@ impl GridAab {
     #[inline]
     #[track_caller]
     #[must_use]
-    pub fn divide(self, divisor: GridCoordinate) -> Self {
+    pub(crate) fn divide(self, divisor: GridCoordinate) -> Self {
         loop {}
     }
     /// Scales the box up by the given factor.
@@ -419,7 +419,7 @@ impl GridAab {
     #[inline]
     #[track_caller]
     #[must_use]
-    pub fn multiply(self, scale: GridCoordinate) -> Self {
+    pub(crate) fn multiply(self, scale: GridCoordinate) -> Self {
         loop {}
     }
     /// Moves all bounds outward or inward by the specified distances.
@@ -443,7 +443,7 @@ impl GridAab {
     #[inline]
     #[track_caller]
     #[must_use]
-    pub fn expand(self, deltas: FaceMap<GridCoordinate>) -> Self {
+    pub(crate) fn expand(self, deltas: FaceMap<GridCoordinate>) -> Self {
         loop {}
     }
     /// Returns a [`GridAab`] which includes the volume between the given `face` rectangle
@@ -489,7 +489,7 @@ impl GridAab {
     /// # Ok::<(), all_is_cubes::math::GridOverflowError>(())
     /// ```
     #[inline]
-    pub fn abut(
+    pub(crate) fn abut(
         self,
         face: Face6,
         thickness: GridCoordinate,
@@ -514,7 +514,7 @@ impl<'a> arbitrary::Arbitrary<'a> for GridAab {
 }
 /// Iterator produced by [`GridAab::interior_iter()`].
 #[derive(Clone, Debug)]
-pub struct GridIter {
+pub(crate) struct GridIter {
     x_range: Range<GridCoordinate>,
     y_range: Range<GridCoordinate>,
     z_range: Range<GridCoordinate>,
@@ -541,13 +541,13 @@ impl FusedIterator for GridIter {}
 /// Error when a [`GridAab`] cannot be constructed from the given input.
 #[derive(Clone, Debug, thiserror::Error, Eq, PartialEq)]
 #[error("{0}")]
-pub struct GridOverflowError(String);
+pub(crate) struct GridOverflowError(String);
 /// A 3-dimensional array with arbitrary element type instead of [`Space`](crate::space::Space)'s
 /// fixed types.
 ///
 /// TODO: Should we rebuild Space on top of this?
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub struct GridArray<V> {
+pub(crate) struct GridArray<V> {
     bounds: GridAab,
     contents: Box<[V]>,
 }

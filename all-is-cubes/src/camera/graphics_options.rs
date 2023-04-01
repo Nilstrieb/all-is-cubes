@@ -9,31 +9,31 @@ use crate::math::{FreeCoordinate, Rgb, Rgba};
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[serde(default)]
 #[non_exhaustive]
-pub struct GraphicsOptions {
+pub(crate) struct GraphicsOptions {
     /// Whether and how to draw fog obscuring the view distance limit.
     ///
     /// TODO: Implement fog in raytracer.
-    pub fog: FogOption,
+    pub(crate) fog: FogOption,
     /// Field of view, in degrees from top to bottom edge of the viewport.
-    pub fov_y: NotNan<FreeCoordinate>,
+    pub(crate) fov_y: NotNan<FreeCoordinate>,
     /// Method to use to remap colors to fit within the displayable range.
-    pub tone_mapping: ToneMappingOperator,
+    pub(crate) tone_mapping: ToneMappingOperator,
     /// “Camera exposure” value: a scaling factor from scene luminance to displayed
     /// luminance. Note that the exact interpretation of this depends on the chosen
     /// [`tone_mapping`](ToneMappingOperator).
-    pub exposure: ExposureOption,
+    pub(crate) exposure: ExposureOption,
     /// Proportion of bloom (blurred image) to mix into the original image.
     /// 0.0 is no bloom and 1.0 is no original image.
-    pub bloom_intensity: NotNan<f32>,
+    pub(crate) bloom_intensity: NotNan<f32>,
     /// Distance, in unit cubes, from the camera to the farthest visible point.
     ///
     /// TODO: Implement view distance limit (and fog) in raytracer.
-    pub view_distance: NotNan<FreeCoordinate>,
+    pub(crate) view_distance: NotNan<FreeCoordinate>,
     /// Style in which to draw the lighting of [`Space`](crate::space::Space)s.
     /// This does not affect the *computation* of lighting.
-    pub lighting_display: LightingOption,
+    pub(crate) lighting_display: LightingOption,
     /// Method/fidelity to use for transparency.
-    pub transparency: TransparencyOption,
+    pub(crate) transparency: TransparencyOption,
     /// Whether to show the HUD or other UI elements.
     ///
     /// This does not affect UI state or clickability; it purely controls display.
@@ -45,28 +45,28 @@ pub struct GraphicsOptions {
     /// [`debug_info_text`](Self::debug_info_text).
     ///
     /// [renderer]: crate::camera::HeadlessRenderer
-    pub show_ui: bool,
+    pub(crate) show_ui: bool,
     /// Whether to apply antialiasing techniques.
-    pub antialiasing: AntialiasingOption,
+    pub(crate) antialiasing: AntialiasingOption,
     /// Whether to use frustum culling for drawing only in-view chunks and objects.
     ///
     /// This option is for debugging and performance testing and should not have any
     /// visible effects.
-    pub use_frustum_culling: bool,
+    pub(crate) use_frustum_culling: bool,
     /// Draw text overlay showing debug information.
-    pub debug_info_text: bool,
+    pub(crate) debug_info_text: bool,
     /// Draw boxes around [`Behavior`]s attached to parts of [`Space`]s.
     /// This may also eventually include further in-world diagnostic information.
     ///
     /// [`Behavior`]: crate::behavior::Behavior
     /// [`Space`]: crate::space::Space
-    pub debug_behaviors: bool,
+    pub(crate) debug_behaviors: bool,
     /// Draw boxes around chunk borders and some debug info.
-    pub debug_chunk_boxes: bool,
+    pub(crate) debug_chunk_boxes: bool,
     /// Draw collision boxes for some objects.
-    pub debug_collision_boxes: bool,
+    pub(crate) debug_collision_boxes: bool,
     /// Draw the light rays that contribute to the selected block.
-    pub debug_light_rays_at_cursor: bool,
+    pub(crate) debug_light_rays_at_cursor: bool,
 }
 impl GraphicsOptions {
     /// A set of graphics options which differs from [`GraphicsOptions::default()`] in
@@ -82,7 +82,7 @@ impl GraphicsOptions {
     ///
     /// Future versions may set other options as necessary to maintain the intended
     /// property.
-    pub const UNALTERED_COLORS: Self = Self {
+    pub(crate) const UNALTERED_COLORS: Self = Self {
         fog: FogOption::None,
         fov_y: notnan!(90.),
         tone_mapping: ToneMappingOperator::Clamp,
@@ -102,7 +102,7 @@ impl GraphicsOptions {
     };
     /// Constrain fields to valid/practical values.
     #[must_use]
-    pub fn repair(mut self) -> Self {
+    pub(crate) fn repair(mut self) -> Self {
         loop {}
     }
 }
@@ -118,7 +118,7 @@ impl Default for GraphicsOptions {
 /// Choices for [`GraphicsOptions::fog`].
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
-pub enum FogOption {
+pub(crate) enum FogOption {
     /// No fog: objects will maintain their color and disappear raggedly.
     None,
     /// Fog starts just before the view distance ends.
@@ -131,7 +131,7 @@ pub enum FogOption {
 /// Choices for [`GraphicsOptions::tone_mapping`].
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
-pub enum ToneMappingOperator {
+pub(crate) enum ToneMappingOperator {
     /// Limit values above the maximum (or below zero) to lie within that range.
     ///
     /// This is the trivial tone mapping operation, and most “correct” for
@@ -145,7 +145,7 @@ pub enum ToneMappingOperator {
 impl ToneMappingOperator {
     /// Apply this operator to the given high-dynamic-range color value.
     #[inline]
-    pub fn apply(&self, input: Rgb) -> Rgb {
+    pub(crate) fn apply(&self, input: Rgb) -> Rgb {
         loop {}
     }
 }
@@ -156,7 +156,7 @@ impl ToneMappingOperator {
 /// [`ToneMappingOperator`].
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
-pub enum ExposureOption {
+pub(crate) enum ExposureOption {
     /// Constant exposure; light values in the scene are multiplied by this value
     /// before the tone mapping operator is applied.
     Fixed(NotNan<f32>),
@@ -178,7 +178,7 @@ impl Default for ExposureOption {
 /// [`Space`]: crate::space::Space
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[non_exhaustive]
-pub enum LightingOption {
+pub(crate) enum LightingOption {
     /// No lighting: objects will be displayed with their original surface color.
     None,
     /// Light is taken from the volume immediately above a cube face.
@@ -195,7 +195,7 @@ pub enum LightingOption {
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum TransparencyOption {
+pub(crate) enum TransparencyOption {
     /// Conventional transparent surfaces.
     Surface,
     /// Accounts for the thickness of material passed through; colors' alpha values are
@@ -214,7 +214,7 @@ impl TransparencyOption {
     }
     #[inline]
     #[doc(hidden)]
-    pub fn will_output_alpha(&self) -> bool {
+    pub(crate) fn will_output_alpha(&self) -> bool {
         loop {}
     }
 }
@@ -222,7 +222,7 @@ impl TransparencyOption {
 #[derive(Clone, Debug, Default, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub enum AntialiasingOption {
+pub(crate) enum AntialiasingOption {
     /// Do not apply antialiasing. Every pixel of the rendered image will be the exact
     /// color of some part of the world, rather than a combination of adjacent parts.
     #[default]
@@ -237,7 +237,7 @@ pub enum AntialiasingOption {
 impl AntialiasingOption {
     /// True if GPU renderers should enable multisampling
     #[doc(hidden)]
-    pub fn is_msaa(&self) -> bool {
+    pub(crate) fn is_msaa(&self) -> bool {
         loop {}
     }
 }

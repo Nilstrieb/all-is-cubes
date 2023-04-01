@@ -4,7 +4,7 @@ use std::ops::Mul;
 use cgmath::{
     EuclideanSpace as _, InnerSpace, Matrix4, One, Transform, Vector3, Vector4, Zero as _,
 };
-pub use ordered_float::{FloatIsNan, NotNan};
+pub(crate) use ordered_float::{FloatIsNan, NotNan};
 use crate::math::{
     Face7, FreeCoordinate, GridCoordinate, GridPoint, GridRotation, GridVector,
 };
@@ -14,15 +14,15 @@ use crate::math::{
 /// TODO: The operators implemented for this are very incomplete.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct GridMatrix {
+pub(crate) struct GridMatrix {
     /// First column
-    pub x: Vector3<GridCoordinate>,
+    pub(crate) x: Vector3<GridCoordinate>,
     /// Second column
-    pub y: Vector3<GridCoordinate>,
+    pub(crate) y: Vector3<GridCoordinate>,
     /// Third column
-    pub z: Vector3<GridCoordinate>,
+    pub(crate) z: Vector3<GridCoordinate>,
     /// Fourth column (translation)
-    pub w: Vector3<GridCoordinate>,
+    pub(crate) w: Vector3<GridCoordinate>,
 }
 impl GridMatrix {
     pub(crate) const ZERO: Self = Self {
@@ -33,7 +33,7 @@ impl GridMatrix {
     };
     /// For Y-down drawing
     #[doc(hidden)]
-    pub const FLIP_Y: Self = Self {
+    pub(crate) const FLIP_Y: Self = Self {
         x: Vector3::new(1, 0, 0),
         y: Vector3::new(0, -1, 0),
         z: Vector3::new(0, 0, 1),
@@ -43,7 +43,7 @@ impl GridMatrix {
     /// is transposed relative to a conventional textual display of a matrix.
     #[allow(clippy::too_many_arguments)]
     #[inline]
-    pub const fn new(
+    pub(crate) const fn new(
         x0: GridCoordinate,
         x1: GridCoordinate,
         x2: GridCoordinate,
@@ -61,7 +61,7 @@ impl GridMatrix {
     }
     /// Construct a translation matrix.
     #[inline]
-    pub fn from_translation(offset: impl Into<GridVector>) -> Self {
+    pub(crate) fn from_translation(offset: impl Into<GridVector>) -> Self {
         loop {}
     }
     /// Construct a uniform scaling matrix.
@@ -69,7 +69,7 @@ impl GridMatrix {
     /// Note that since this is an integer matrix, there is no possibility  of scaling less
     /// than 1 other than 0!
     #[inline]
-    pub fn from_scale(scale: GridCoordinate) -> Self {
+    pub(crate) fn from_scale(scale: GridCoordinate) -> Self {
         loop {}
     }
     /// Construct a transformation to a translated and rotated coordinate system from
@@ -88,7 +88,7 @@ impl GridMatrix {
     /// );
     /// ```
     #[inline]
-    pub fn from_origin(
+    pub(crate) fn from_origin(
         origin: impl Into<GridPoint>,
         x: Face7,
         y: Face7,
@@ -98,14 +98,14 @@ impl GridMatrix {
     }
     /// Convert this integer-valued matrix to an equivalent float-valued matrix.
     #[inline]
-    pub fn to_free(self) -> Matrix4<FreeCoordinate> {
+    pub(crate) fn to_free(self) -> Matrix4<FreeCoordinate> {
         loop {}
     }
     /// Returns row `r` of the matrix.
     ///
     /// Panics if `r >= 3`.
     #[inline(always)]
-    pub fn row(&self, r: usize) -> Vector4<GridCoordinate> {
+    pub(crate) fn row(&self, r: usize) -> Vector4<GridCoordinate> {
         loop {}
     }
     /// Equivalent to temporarily applying an offset of `[0.5, 0.5, 0.5]` while
@@ -133,7 +133,7 @@ impl GridMatrix {
     ///
     /// [`GridAab::single_cube`]: crate::math::GridAab::single_cube
     #[inline]
-    pub fn transform_cube(&self, cube: GridPoint) -> GridPoint {
+    pub(crate) fn transform_cube(&self, cube: GridPoint) -> GridPoint {
         loop {}
     }
     /// Decomposes a matrix into its rotation and translation components.
@@ -155,7 +155,7 @@ impl GridMatrix {
     ///     )),
     /// );
     /// ```
-    pub fn decompose(self) -> Option<(GridRotation, GridVector)> {
+    pub(crate) fn decompose(self) -> Option<(GridRotation, GridVector)> {
         loop {}
     }
 }

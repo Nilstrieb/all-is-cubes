@@ -2,7 +2,7 @@
 //! This module is private but reexported by its parent.
 use std::ops::{Index, IndexMut};
 use cgmath::{BaseNum, Transform, Vector3};
-pub use ordered_float::{FloatIsNan, NotNan};
+pub(crate) use ordered_float::{FloatIsNan, NotNan};
 use crate::math::*;
 /// Identifies a face of a cube or an orthogonal unit vector.
 ///
@@ -23,7 +23,7 @@ use crate::math::*;
 )]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(u8)]
-pub enum Face6 {
+pub(crate) enum Face6 {
     /// Negative X; the face whose normal vector is `(-1, 0, 0)`.
     NX = 1,
     /// Negative Y; the face whose normal vector is `(0, -1, 0)`; downward.
@@ -57,7 +57,7 @@ pub enum Face6 {
 )]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(u8)]
-pub enum Face7 {
+pub(crate) enum Face7 {
     /// The interior volume of a cube, or an undefined direction. Corresponds to the vector `(0, 0, 0)`.
     Within = 0,
     /// Negative X; the face whose normal vector is `(-1, 0, 0)`.
@@ -75,7 +75,7 @@ pub enum Face7 {
 }
 impl Face6 {
     /// All the values of [`Face6`].
-    pub const ALL: [Face6; 6] = [
+    pub(crate) const ALL: [Face6; 6] = [
         Face6::NX,
         Face6::NY,
         Face6::NZ,
@@ -85,7 +85,7 @@ impl Face6 {
     ];
     /// Inverse function of `face as u8`, converting the number to [`Face6`].
     #[inline]
-    pub const fn from_discriminant(d: u8) -> Option<Self> {
+    pub(crate) const fn from_discriminant(d: u8) -> Option<Self> {
         loop {}
     }
     /// Returns which axis this face's normal vector is parallel to, with the numbering
@@ -94,7 +94,7 @@ impl Face6 {
     /// The numeric type is [`usize`] for convenient use in array indexing.
     #[inline]
     #[must_use]
-    pub const fn axis_number(self) -> usize {
+    pub(crate) const fn axis_number(self) -> usize {
         loop {}
     }
     /// Returns whether this face is a “positive” face: one whose unit vector's nonzero
@@ -107,7 +107,7 @@ impl Face6 {
     /// assert_eq!(Face6::NX.is_positive(), false);
     /// ```
     #[inline]
-    pub fn is_positive(self) -> bool {
+    pub(crate) fn is_positive(self) -> bool {
         loop {}
     }
     /// Returns whether this face is a negative face: one whose unit vector's nonzero
@@ -120,13 +120,13 @@ impl Face6 {
     /// assert_eq!(Face6::NX.is_negative(), true);
     /// ```
     #[inline]
-    pub fn is_negative(self) -> bool {
+    pub(crate) fn is_negative(self) -> bool {
         loop {}
     }
     /// Returns the opposite face (maps [`PX`](Self::PX) to [`NX`](Self::NX) and so on).
     #[inline]
     #[must_use]
-    pub const fn opposite(self) -> Face6 {
+    pub(crate) const fn opposite(self) -> Face6 {
         loop {}
     }
     /// Returns the face whose normal is the cross product of these faces' normals.
@@ -148,13 +148,13 @@ impl Face6 {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn cross(self, other: Self) -> Face7 {
+    pub(crate) const fn cross(self, other: Self) -> Face7 {
         loop {}
     }
     /// Returns the axis-aligned unit vector normal to this face.
     #[inline]
     #[must_use]
-    pub fn normal_vector<S>(self) -> Vector3<S>
+    pub(crate) fn normal_vector<S>(self) -> Vector3<S>
     where
         S: BaseNum + std::ops::Neg<Output = S>,
     {
@@ -174,7 +174,7 @@ impl Face6 {
     /// ```
     #[inline]
     #[must_use]
-    pub fn dot<S>(self, vector: Vector3<S>) -> S
+    pub(crate) fn dot<S>(self, vector: Vector3<S>) -> S
     where
         S: Zero + std::ops::Neg<Output = S>,
     {
@@ -190,7 +190,7 @@ impl Face6 {
     ///
     /// To work with floating-point coordinates, use `.matrix(1).to_free()`.
     #[must_use]
-    pub const fn matrix(self, scale: GridCoordinate) -> GridMatrix {
+    pub(crate) const fn matrix(self, scale: GridCoordinate) -> GridMatrix {
         loop {}
     }
     /// Helper to convert in const context; equivalent to `.into()`.
@@ -201,7 +201,7 @@ impl Face6 {
 }
 impl Face7 {
     /// All the values of [`Face7`], with [`Face7::Within`] listed first.
-    pub const ALL: [Face7; 7] = [
+    pub(crate) const ALL: [Face7; 7] = [
         Face7::Within,
         Face7::NX,
         Face7::NY,
@@ -212,7 +212,7 @@ impl Face7 {
     ];
     /// Inverse function of `face as u8`, converting the number to [`Face7`].
     #[inline]
-    pub const fn from_discriminant(d: u8) -> Option<Self> {
+    pub(crate) const fn from_discriminant(d: u8) -> Option<Self> {
         loop {}
     }
     /// Returns which axis this face's normal vector is parallel to, with the numbering
@@ -221,7 +221,7 @@ impl Face7 {
     /// The numeric type is [`usize`] for convenient use in array indexing.
     #[inline]
     #[must_use]
-    pub const fn axis_number(self) -> Option<usize> {
+    pub(crate) const fn axis_number(self) -> Option<usize> {
         loop {}
     }
     /// Returns whether this face is a “positive” face: one whose unit vector's nonzero
@@ -235,7 +235,7 @@ impl Face7 {
     /// assert_eq!(Face7::Within.is_positive(), false);
     /// ```
     #[inline]
-    pub fn is_positive(self) -> bool {
+    pub(crate) fn is_positive(self) -> bool {
         loop {}
     }
     /// Returns whether this face is a negative face: one whose unit vector's nonzero
@@ -249,13 +249,13 @@ impl Face7 {
     /// assert_eq!(Face7::Within.is_negative(), false);
     /// ```
     #[inline]
-    pub fn is_negative(self) -> bool {
+    pub(crate) fn is_negative(self) -> bool {
         loop {}
     }
     /// Returns the opposite face (maps [`PX`](Self::PX) to [`NX`](Self::NX) and so on).
     #[inline]
     #[must_use]
-    pub const fn opposite(self) -> Face7 {
+    pub(crate) const fn opposite(self) -> Face7 {
         loop {}
     }
     /// Returns the face whose normal is the cross product of these faces' normals.
@@ -276,14 +276,14 @@ impl Face7 {
     /// ```
     #[inline]
     #[must_use]
-    pub const fn cross(self, other: Self) -> Self {
+    pub(crate) const fn cross(self, other: Self) -> Self {
         loop {}
     }
     /// Returns the vector normal to this face. [`Within`](Self::Within) is assigned the
     /// zero vector.
     #[inline]
     #[must_use]
-    pub fn normal_vector<S>(self) -> Vector3<S>
+    pub(crate) fn normal_vector<S>(self) -> Vector3<S>
     where
         S: BaseNum + std::ops::Neg<Output = S>,
     {
@@ -303,7 +303,7 @@ impl Face7 {
     /// ```
     #[inline]
     #[must_use]
-    pub fn dot<S>(self, vector: Vector3<S>) -> S
+    pub(crate) fn dot<S>(self, vector: Vector3<S>) -> S
     where
         S: Zero + std::ops::Neg<Output = S>,
     {
@@ -320,7 +320,7 @@ impl Face7 {
     /// To work with floating-point coordinates, use `.matrix(1).to_free()`.
     #[rustfmt::skip]
     #[must_use]
-    pub const fn matrix(self, scale: GridCoordinate) -> GridMatrix {
+    pub(crate) const fn matrix(self, scale: GridCoordinate) -> GridMatrix {
         loop {}
     }
 }
@@ -389,61 +389,61 @@ impl TryFrom<GridVector> for Face7 {
 #[derive(Copy, Clone, Debug, Eq, PartialEq, thiserror::Error)]
 #[error("Face7::Within does not have a direction or axis")]
 #[allow(clippy::exhaustive_structs)]
-pub struct Faceless;
+pub(crate) struct Faceless;
 /// Container for values keyed by [`Face6`]s. Always holds exactly six elements.
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub struct FaceMap<V> {
+pub(crate) struct FaceMap<V> {
     /// The value whose key is [`Face6::NX`].
-    pub nx: V,
+    pub(crate) nx: V,
     /// The value whose key is [`Face6::NY`].
-    pub ny: V,
+    pub(crate) ny: V,
     /// The value whose key is [`Face6::NZ`].
-    pub nz: V,
+    pub(crate) nz: V,
     /// The value whose key is [`Face6::PX`].
-    pub px: V,
+    pub(crate) px: V,
     /// The value whose key is [`Face6::PY`].
-    pub py: V,
+    pub(crate) py: V,
     /// The value whose key is [`Face6::PZ`].
-    pub pz: V,
+    pub(crate) pz: V,
 }
 impl<V> FaceMap<V> {
     /// Constructs a [`FaceMap`] by using the provided function to compute
     /// a value for each [`Face6`] enum variant.
     #[inline]
-    pub fn from_fn(mut f: impl FnMut(Face6) -> V) -> Self {
+    pub(crate) fn from_fn(mut f: impl FnMut(Face6) -> V) -> Self {
         loop {}
     }
     /// Constructs a [`FaceMap`] whose negative and positive directions are equal.
     #[inline]
     #[doc(hidden)]
-    pub fn symmetric(values: impl Into<Vector3<V>>) -> Self
+    pub(crate) fn symmetric(values: impl Into<Vector3<V>>) -> Self
     where
         V: Default + Clone,
     {
         loop {}
     }
     /// Returns a vector containing the values for each negative face.
-    pub fn negatives(self) -> Vector3<V>
+    pub(crate) fn negatives(self) -> Vector3<V>
     where
         V: Copy,
     {
         loop {}
     }
     /// Returns a vector containing the values for each positive face.
-    pub fn positives(self) -> Vector3<V>
+    pub(crate) fn positives(self) -> Vector3<V>
     where
         V: Copy,
     {
         loop {}
     }
     /// Iterate over the map's key-value pairs by reference, in the same order as [`Face6::ALL`].
-    pub fn iter(&self) -> impl Iterator<Item = (Face6, &V)> {
+    pub(crate) fn iter(&self) -> impl Iterator<Item = (Face6, &V)> {
         Face6::ALL.iter().copied().map(move |f| (f, &self[f]))
     }
     /// Iterate over the map's key-value pairs by mutable reference, in the same order as [`Face6::ALL`].
-    pub fn iter_mut(&mut self) -> impl Iterator<Item = (Face6, &mut V)> {
+    pub(crate) fn iter_mut(&mut self) -> impl Iterator<Item = (Face6, &mut V)> {
         [
             (Face6::NX, &mut self.nx),
             (Face6::NY, &mut self.ny),
@@ -455,23 +455,23 @@ impl<V> FaceMap<V> {
             .into_iter()
     }
     /// Iterate over the map values by reference, in the same order as [`Face6::ALL`].
-    pub fn values(&self) -> impl Iterator<Item = &V> {
+    pub(crate) fn values(&self) -> impl Iterator<Item = &V> {
         Face6::ALL.iter().copied().map(move |f| &self[f])
     }
     /// Convert to an array, whose elements are arranged in the same order as [`Face6::ALL`].
-    pub fn into_values(self) -> [V; 6] {
+    pub(crate) fn into_values(self) -> [V; 6] {
         loop {}
     }
     /// Convert to an iterator, whose items are arranged in the same order as [`Face6::ALL`].
-    pub fn into_values_iter(self) -> impl Iterator<Item = V> {
+    pub(crate) fn into_values_iter(self) -> impl Iterator<Item = V> {
         self.into_values().into_iter()
     }
     /// Transform values.
-    pub fn map<U>(self, mut f: impl FnMut(Face6, V) -> U) -> FaceMap<U> {
+    pub(crate) fn map<U>(self, mut f: impl FnMut(Face6, V) -> U) -> FaceMap<U> {
         loop {}
     }
     /// Combine two [`FaceMap`]s using a function applied to each pair of corresponding values.
-    pub fn zip<U, R>(
+    pub(crate) fn zip<U, R>(
         self,
         other: FaceMap<U>,
         mut f: impl FnMut(Face6, V, U) -> R,
@@ -495,19 +495,19 @@ impl<V> FaceMap<V> {
     /// );
     /// ```
     #[must_use]
-    pub fn with(mut self, face: Face6, value: V) -> Self {
+    pub(crate) fn with(mut self, face: Face6, value: V) -> Self {
         loop {}
     }
     /// Shuffle the values in this map according to the given rotation.
     #[must_use]
-    pub fn rotate(self, rotation: GridRotation) -> Self {
+    pub(crate) fn rotate(self, rotation: GridRotation) -> Self {
         loop {}
     }
 }
 impl<V: Clone> FaceMap<V> {
     /// Constructs a [`FaceMap`] containing clones of the provided value.
     #[inline]
-    pub fn repeat(value: V) -> Self {
+    pub(crate) fn repeat(value: V) -> Self {
         loop {}
     }
 }
@@ -518,7 +518,7 @@ impl<V: Copy> FaceMap<V> {
     /// `const fn`. It may be removed from future major versions once Rust supports const
     /// trait function calls.
     #[inline]
-    pub const fn repeat_copy(value: V) -> Self {
+    pub(crate) const fn repeat_copy(value: V) -> Self {
         Self {
             nx: value,
             ny: value,
@@ -545,20 +545,20 @@ impl<V> IndexMut<Face6> for FaceMap<V> {
 #[derive(Clone, Copy, Hash, Eq, PartialEq)]
 #[allow(clippy::exhaustive_structs)]
 #[allow(missing_docs)]
-pub struct CubeFace {
-    pub cube: GridPoint,
-    pub face: Face7,
+pub(crate) struct CubeFace {
+    pub(crate) cube: GridPoint,
+    pub(crate) face: Face7,
 }
 impl CubeFace {
     #[allow(missing_docs)]
     #[inline]
-    pub fn new(cube: impl Into<GridPoint>, face: Face7) -> Self {
+    pub(crate) fn new(cube: impl Into<GridPoint>, face: Face7) -> Self {
         loop {}
     }
     /// Computes the cube that is adjacent in the direction of [`self.face`](Self::face).
     /// Equal to [`self.cube`](Self::cube) if the face is [`Face7::Within`].
     #[inline]
-    pub fn adjacent(self) -> GridPoint {
+    pub(crate) fn adjacent(self) -> GridPoint {
         loop {}
     }
 }

@@ -32,7 +32,7 @@ fn name_in_module<E: BlockModule>(key: &E) -> Name {
 /// [`BlockProvider`] to work with the described set of blocks.
 ///
 /// TODO: consider replacing Display with a separate method so as not to presume its meaning
-pub trait BlockModule: Exhaust + fmt::Debug + fmt::Display + Eq + Hash + Clone {
+pub(crate) trait BlockModule: Exhaust + fmt::Debug + fmt::Display + Eq + Hash + Clone {
     /// A namespace for the members of this module; currently, this should be a
     /// `/`-separated path with no trailing slash, but (TODO:) we should have a
     /// more rigorous namespace scheme for [`Name`]s in future versions.
@@ -40,7 +40,7 @@ pub trait BlockModule: Exhaust + fmt::Debug + fmt::Display + Eq + Hash + Clone {
 }
 /// TODO: document
 #[derive(Clone, Debug)]
-pub struct BlockProvider<E> {
+pub(crate) struct BlockProvider<E> {
     /// Guaranteed to contain an entry for every variant of `E` if `E`'s
     /// [`Exhaust`] implementation is accurate.
     map: HashMap<E, Block>,

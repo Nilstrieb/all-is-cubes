@@ -13,7 +13,7 @@ use crate::space::{PackedLight, Space};
 use crate::universe::URef;
 /// Find the first selectable block the ray strikes and express the result in a [`Cursor`]
 /// value, or [`None`] if nothing was struck within the distance limit.
-pub fn cursor_raycast(
+pub(crate) fn cursor_raycast(
     mut ray: Ray,
     space_ref: &URef<Space>,
     maximum_distance: FreeCoordinate,
@@ -25,7 +25,7 @@ pub fn cursor_raycast(
 ///
 /// TODO: Should carry information about both the struck and preceding cubes.
 #[derive(Clone, Debug, PartialEq)]
-pub struct Cursor {
+pub(crate) struct Cursor {
     /// The space the selected cube is in.
     space: URef<Space>,
     /// The face that the cursor ray entered the cube via.
@@ -49,26 +49,26 @@ pub struct Cursor {
 #[derive(Clone, Debug, PartialEq)]
 #[non_exhaustive]
 #[allow(missing_docs)]
-pub struct CubeSnapshot {
-    pub position: GridPoint,
-    pub block: Block,
-    pub evaluated: EvaluatedBlock,
-    pub light: PackedLight,
+pub(crate) struct CubeSnapshot {
+    pub(crate) position: GridPoint,
+    pub(crate) block: Block,
+    pub(crate) evaluated: EvaluatedBlock,
+    pub(crate) light: PackedLight,
 }
 impl Cursor {
     /// The space the selected cube is in.
     #[inline]
-    pub fn space(&self) -> &URef<Space> {
+    pub(crate) fn space(&self) -> &URef<Space> {
         loop {}
     }
     /// Which cube of the space that the cursor ray selected/hit.
-    pub fn cube(&self) -> GridPoint {
+    pub(crate) fn cube(&self) -> GridPoint {
         loop {}
     }
     /// The cube the ray passed through immediately before the selected cube.
     ///
     /// This may be the same cube if the ray started there.
-    pub fn preceding_cube(&self) -> GridPoint {
+    pub(crate) fn preceding_cube(&self) -> GridPoint {
         loop {}
     }
     /// Which face of the block the cursor ray selected/hit.
@@ -77,12 +77,12 @@ impl Cursor {
     /// that is planned to be revised to a more block-shape-sensitive definition.
     ///
     /// Will be [`Face7::Within`] if the ray started in the same cube.
-    pub fn face_selected(&self) -> Face7 {
+    pub(crate) fn face_selected(&self) -> Face7 {
         loop {}
     }
     /// Returns data about the cube the cursor selected/hit.
     #[inline]
-    pub fn hit(&self) -> &CubeSnapshot {
+    pub(crate) fn hit(&self) -> &CubeSnapshot {
         loop {}
     }
 }

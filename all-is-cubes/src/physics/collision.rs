@@ -16,7 +16,7 @@ use crate::space::Space;
 /// This type is designed to be comparable/hashable to deduplicate contacts.
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 #[allow(clippy::exhaustive_enums)]
-pub enum Contact {
+pub(crate) enum Contact {
     /// Contact with a fully solid block; the [`CubeFace`] specifies the block position
     /// and the side of it that was collided with (hence also the contact normal).
     Block(CubeFace),
@@ -35,7 +35,7 @@ pub enum Contact {
 }
 impl Contact {
     /// Returns the cube that was collided with or within.
-    pub fn cube(&self) -> GridPoint {
+    pub(crate) fn cube(&self) -> GridPoint {
         loop {}
     }
     /// Returns the contact normal: the direction in which the colliding box should be
@@ -43,11 +43,11 @@ impl Contact {
     ///
     /// Note that this may be equal to [`Face7::Within`] in case the box was already
     /// intersecting before any movement.
-    pub fn normal(&self) -> Face7 {
+    pub(crate) fn normal(&self) -> Face7 {
         loop {}
     }
     /// Returns the scale of the voxel collided with.
-    pub fn resolution(&self) -> Resolution {
+    pub(crate) fn resolution(&self) -> Resolution {
         loop {}
     }
     /// Return a copy where the contact normal is replaced with [`Face7::Within`].
@@ -76,8 +76,8 @@ impl Geometry for Contact {
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct CollisionRayEnd {
     /// Non-colliding length of the provided ray.
-    pub t_distance: FreeCoordinate,
-    pub contact: Contact,
+    pub(crate) t_distance: FreeCoordinate,
+    pub(crate) contact: Contact,
 }
 /// Specifies the ending condition for [`collide_along_ray()`]: what type of situation
 /// it should stop prior to the end of the ray for.

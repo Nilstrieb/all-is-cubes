@@ -12,14 +12,14 @@ use crate::math::{
 /// direction vector).
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Ray {
+pub(crate) struct Ray {
     /// The sole endpoint of the ray.
-    pub origin: Point3<FreeCoordinate>,
+    pub(crate) origin: Point3<FreeCoordinate>,
     /// The direction in which the ray extends infinitely.
     ///
     /// The meaning, if any, of the magnitude of this vector depends on context;
     /// considered as a geometric object it is a parameter.
-    pub direction: Vector3<FreeCoordinate>,
+    pub(crate) direction: Vector3<FreeCoordinate>,
 }
 impl Ray {
     /// Constructs a [`Ray`] from convertible types (e.g. tuples or 3-element arrays).
@@ -37,14 +37,14 @@ impl Ray {
     ///     }
     /// );
     /// ```
-    pub fn new(
+    pub(crate) fn new(
         origin: impl Into<Point3<FreeCoordinate>>,
         direction: impl Into<Vector3<FreeCoordinate>>,
     ) -> Self {
         loop {}
     }
     /// Prepares a [`Raycaster`] that will iterate over cubes intersected by this ray.
-    pub fn cast(&self) -> Raycaster {
+    pub(crate) fn cast(&self) -> Raycaster {
         loop {}
     }
     /// Scale the ray's coordinates by the given factor.
@@ -86,7 +86,7 @@ impl Geometry for Ray {
 ///
 /// [`Space`]: crate::space::Space
 #[derive(Clone, Debug, PartialEq)]
-pub struct Raycaster {
+pub(crate) struct Raycaster {
     ray: Ray,
     /// Have we not yet produced the origin cube itself?
     emit_current: bool,
@@ -136,7 +136,7 @@ impl Raycaster {
     /// assert_eq!(next().cube_ahead(), GridPoint::new(2, 1, 0));
     /// ```
     #[must_use]
-    pub fn new(
+    pub(crate) fn new(
         origin: impl Into<Point3<FreeCoordinate>>,
         direction: impl Into<Vector3<FreeCoordinate>>,
     ) -> Self {
@@ -154,7 +154,7 @@ impl Raycaster {
     /// forevermore once there are no more cubes intersecting the bounds to report.
     #[must_use]
     #[mutants::skip]
-    pub fn within(mut self, bounds: GridAab) -> Self {
+    pub(crate) fn within(mut self, bounds: GridAab) -> Self {
         loop {}
     }
     /// Like [`Self::within`] but not moving self.
@@ -212,7 +212,7 @@ impl Iterator for Raycaster {
 impl std::iter::FusedIterator for Raycaster {}
 /// Describes a ray crossing into a cube as defined by [`Raycaster`].
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct RaycastStep {
+pub(crate) struct RaycastStep {
     /// The specific face that was crossed. If the ray's origin was within a cube,
     /// the face will be [`Face7::Within`].
     cube_face: CubeFace,
@@ -226,13 +226,13 @@ impl RaycastStep {
     /// Note that the cube containing the origin of the ray, if any, will be included. In
     /// that case and only that case, `self.cube_ahead() == self.cube_behind()`.
     #[inline]
-    pub fn cube_ahead(&self) -> GridPoint {
+    pub(crate) fn cube_ahead(&self) -> GridPoint {
         loop {}
     }
     /// Returns the cube which the raycaster has just found the ray to intersect
     /// and the face of that cube crossed.
     #[inline]
-    pub fn cube_face(&self) -> CubeFace {
+    pub(crate) fn cube_face(&self) -> CubeFace {
         loop {}
     }
     /// Returns the face of [`Self::cube_ahead()`] which is being crossed. The face's normal
@@ -253,7 +253,7 @@ impl RaycastStep {
     /// assert_eq!(next().face(), Face7::NX);      // moved to (2, 0, 0)
     /// ```
     #[inline]
-    pub fn face(&self) -> Face7 {
+    pub(crate) fn face(&self) -> Face7 {
         loop {}
     }
     /// Returns the cube adjacent to `self.cube_ahead()` which the ray arrived from within.
@@ -274,12 +274,12 @@ impl RaycastStep {
     /// assert_eq!(next().cube_behind(), GridPoint::new(2, 0, 0));
     /// ```
     #[inline]
-    pub fn cube_behind(&self) -> GridPoint {
+    pub(crate) fn cube_behind(&self) -> GridPoint {
         loop {}
     }
     /// The distance traversed so far, as measured in multiples of the ray's direction vector.
     #[inline]
-    pub fn t_distance(&self) -> FreeCoordinate {
+    pub(crate) fn t_distance(&self) -> FreeCoordinate {
         loop {}
     }
     /// Returns the specific point at which the ray intersected the face.
@@ -307,7 +307,7 @@ impl RaycastStep {
     /// assert_eq!(next(), Point3::new(1.0, 0.5, 0.5));
     /// assert_eq!(next(), Point3::new(2.0, 0.5, 0.5));
     /// ```
-    pub fn intersection_point(&self, ray: Ray) -> Point3<FreeCoordinate> {
+    pub(crate) fn intersection_point(&self, ray: Ray) -> Point3<FreeCoordinate> {
         loop {}
     }
 }

@@ -10,7 +10,7 @@ use crate::raycast::Ray;
 use crate::space::PackedLight;
 /// Trait used to encourage the generation of with-debug-info and without-info versions
 /// of the lighting algorithm.
-pub trait LightComputeOutput {
+pub(crate) trait LightComputeOutput {
     type RayInfoBuffer: Default;
     fn new(cube: GridPoint, result: PackedLight, rays: Self::RayInfoBuffer) -> Self;
     fn push_ray(buffer: &mut Self::RayInfoBuffer, ray_info: LightUpdateRayInfo);
@@ -28,7 +28,7 @@ impl LightComputeOutput for LightUpdateCubeInfo {
 #[derive(Clone, Debug)]
 #[non_exhaustive]
 #[allow(dead_code)]
-pub struct LightUpdateCubeInfo {
+pub(crate) struct LightUpdateCubeInfo {
     pub(crate) cube: GridPoint,
     pub(crate) result: PackedLight,
     pub(crate) rays: Vec<LightUpdateRayInfo>,
@@ -46,7 +46,7 @@ impl Geometry for LightUpdateCubeInfo {
     }
 }
 #[derive(Clone, Copy, Debug)]
-pub struct LightUpdateRayInfo {
+pub(crate) struct LightUpdateRayInfo {
     pub(crate) ray: Ray,
     #[allow(dead_code)]
     pub(crate) trigger_cube: GridPoint,

@@ -11,7 +11,7 @@ pub(super) type Storage<T> = BTreeMap<Name, URootRef<T>>;
 /// Trait for every type which can be a named member of a universe.
 /// This trait is also public-in-private and serves to “seal” the [`UniverseIndex`]
 /// trait.
-pub trait UniverseMember: Sized + 'static {
+pub(crate) trait UniverseMember: Sized + 'static {
     /// Generic constructor for [`AnyURef`].
     fn into_any_ref(r: URef<Self>) -> AnyURef;
 }

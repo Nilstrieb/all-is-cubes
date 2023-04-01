@@ -18,7 +18,7 @@ use crate::space::{SetCubeError, Space};
 /// TODO: Allow `SpaceBuilder` controls somehow. Maybe this belongs as a method on SpaceBuilder.
 /// TODO: pixel_function should have a Result return
 #[doc(hidden)]
-pub fn space_from_image<'b, I, F>(
+pub(crate) fn space_from_image<'b, I, F>(
     image: &I,
     rotation: GridRotation,
     pixel_function: F,
@@ -36,15 +36,17 @@ where
 /// All pixels with 0 alpha (regardless of other channel values) are converted to
 /// [`AIR`], to meet normal expectations about collision, selection, and equality.
 #[doc(hidden)]
-pub fn default_srgb<P: image::Pixel<Subpixel = u8>>(pixel: P) -> VoxelBrush<'static> {
+pub(crate) fn default_srgb<P: image::Pixel<Subpixel = u8>>(
+    pixel: P,
+) -> VoxelBrush<'static> {
     loop {}
 }
 /// Helper for [`include_image`] macro.
 #[doc(hidden)]
-pub fn load_png_from_bytes(name: &str, bytes: &'static [u8]) -> DynamicImage {
+pub(crate) fn load_png_from_bytes(name: &str, bytes: &'static [u8]) -> DynamicImage {
     loop {}
 }
 #[doc(hidden)]
-pub use ::image::DynamicImage as DynamicImageForIncludeImage;
+pub(crate) use ::image::DynamicImage as DynamicImageForIncludeImage;
 #[doc(hidden)]
-pub use ::once_cell::sync::Lazy as LazyForIncludeImage;
+pub(crate) use ::once_cell::sync::Lazy as LazyForIncludeImage;

@@ -2,23 +2,23 @@
 use std::fmt;
 use cgmath::{EuclideanSpace as _, Vector3};
 use num_traits::identities::Zero;
-pub use ordered_float::{FloatIsNan, NotNan};
+pub(crate) use ordered_float::{FloatIsNan, NotNan};
 use crate::util::CustomFormat;
 mod aab;
-pub use aab::*;
+pub(crate) use aab::*;
 #[macro_use]
 mod color;
-pub use color::*;
+pub(crate) use color::*;
 mod coord;
-pub use coord::*;
+pub(crate) use coord::*;
 mod face;
-pub use face::*;
+pub(crate) use face::*;
 mod grid_aab;
-pub use grid_aab::*;
+pub(crate) use grid_aab::*;
 mod matrix;
-pub use matrix::*;
+pub(crate) use matrix::*;
 mod rotation;
-pub use rotation::*;
+pub(crate) use rotation::*;
 /// Allows writing a [`NotNan`] value as a constant expression (which is not currently
 /// a feature provided by the [`ordered_float`] crate itself).
 ///
@@ -79,7 +79,7 @@ pub(crate) fn sort_two<T: PartialOrd>(a: &mut T, b: &mut T) {
     loop {}
 }
 /// Common features of objects that have a location and shape in space.
-pub trait Geometry {
+pub(crate) trait Geometry {
     /// Type of coordinates; generally determines whether this object can be translated by a
     /// non-integer amount.
     type Coord;

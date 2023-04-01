@@ -8,7 +8,7 @@ use crate::mesh::TextureCoordinate;
 use crate::util::{ConciseDebug, CustomFormat};
 /// Color data accepted by [`TextureAllocator`].
 /// The components are sRGB `[R, G, B, A]`.
-pub type Texel = [u8; 4];
+pub(crate) type Texel = [u8; 4];
 /// Allocator of 3D regions ("tiles") in a texture atlas to paint block voxels into.
 /// Implement this trait using the target graphics API's 3D texture type.
 pub trait TextureAllocator {

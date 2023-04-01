@@ -48,7 +48,7 @@ pub(super) struct BlockFaceMesh<V> {
 ///
 /// [`Block`]: crate::block::Block
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct BlockMesh<V, T> {
+pub(crate) struct BlockMesh<V, T> {
     /// Vertices grouped by which face being obscured would obscure those vertices.
     pub(super) face_vertices: FaceMap<BlockFaceMesh<V>>,
     /// Vertices not fitting into [`Self::face_vertices`] because they may be visible
@@ -92,11 +92,11 @@ impl<V, T> BlockMesh<V, T> {
     }
     /// Reports any flaws in this mesh: reasons why using it to create a rendering would
     /// fail to accurately represent the scene.
-    pub fn flaws(&self) -> Flaws {
+    pub(crate) fn flaws(&self) -> Flaws {
         loop {}
     }
     /// Returns whether this mesh contains no vertices so it has no visual effect.
-    pub fn is_empty(&self) -> bool {
+    pub(crate) fn is_empty(&self) -> bool {
         loop {}
     }
     /// Update this mesh's textures in-place to the given new block data, if this is
@@ -118,7 +118,7 @@ where
     /// Generate the [`BlockMesh`] for a block's current appearance.
     ///
     /// This may then be may be used as input to [`SpaceMesh::new`](super::SpaceMesh::new).
-    pub fn new<A>(
+    pub(crate) fn new<A>(
         block: &EvaluatedBlock,
         texture_allocator: &A,
         options: &MeshOptions,
@@ -137,7 +137,7 @@ where
     ///
     /// TODO: This does not currently reuse the texture allocation.
     /// Add the capability to do so if the caller requests it.
-    pub fn compute<A>(
+    pub(crate) fn compute<A>(
         &mut self,
         block: &EvaluatedBlock,
         texture_allocator: &A,
@@ -161,7 +161,7 @@ impl<V, T> Default for BlockMesh<V, T> {
 ///
 /// The resulting array is indexed by the `Space`'s
 /// [`BlockIndex`](crate::space::BlockIndex) values.
-pub fn block_meshes_for_space<V, A>(
+pub(crate) fn block_meshes_for_space<V, A>(
     space: &Space,
     texture_allocator: &A,
     options: &MeshOptions,
@@ -175,4 +175,4 @@ where
 /// Array of [`BlockMesh`] indexed by a [`Space`]'s block indices; a convenience
 /// alias for the return type of [`block_meshes_for_space`].
 /// Pass it to [`SpaceMesh::new()`](super::SpaceMesh::new) to use it.
-pub type BlockMeshes<V, A> = Box<[BlockMesh<V, A>]>;
+pub(crate) type BlockMeshes<V, A> = Box<[BlockMesh<V, A>]>;

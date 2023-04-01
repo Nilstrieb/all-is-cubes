@@ -12,14 +12,14 @@
 use std::fmt;
 use std::sync::{Arc, RwLock, Weak};
 mod cell;
-pub use cell::*;
+pub(crate) use cell::*;
 mod listeners;
-pub use listeners::*;
+pub(crate) use listeners::*;
 mod util;
-pub use util::*;
+pub(crate) use util::*;
 /// Ability to subscribe to a source of messages, causing a [`Listener`] to receive them
 /// as long as it wishes to.
-pub trait Listen {
+pub(crate) trait Listen {
     /// The type of message which may be obtained from this source.
     type Msg: Clone + Send;
     /// Subscribe the given [`Listener`] to this source of messages.
@@ -38,12 +38,12 @@ pub trait Listen {
 /// make Notifier and Listener always take `&M`, but it's not clear how to use
 /// references *some* of the time — making `M` be a reference type can't have a
 /// satisfactory lifetime.
-pub struct Notifier<M> {
+pub(crate) struct Notifier<M> {
     listeners: RwLock<Vec<DynListener<M>>>,
 }
 impl<M: Clone + Send> Notifier<M> {
     /// Constructs a new empty [`Notifier`].
-    pub fn new() -> Self {
+    pub(crate) fn new() -> Self {
         loop {}
     }
     /// Returns a [`Listener`] which forwards messages to the listeners registered with
@@ -73,18 +73,18 @@ impl<M: Clone + Send> Notifier<M> {
     ///
     /// # assert_eq!(notifier_1.count(), 0);
     /// ```
-    pub fn forwarder(this: Weak<Self>) -> NotifierForwarder<M> {
+    pub(crate) fn forwarder(this: Weak<Self>) -> NotifierForwarder<M> {
         loop {}
     }
     /// Deliver a message to all [`Listener`]s.
-    pub fn notify(&self, message: M) {
+    pub(crate) fn notify(&self, message: M) {
         loop {}
     }
     /// Computes the exact count of listeners, including asking all current listeners
     /// if they are [`alive()`](Listener::alive).
     ///
     /// This operation is intended for testing and diagnostic purposes.
-    pub fn count(&self) -> usize {
+    pub(crate) fn count(&self) -> usize {
         loop {}
     }
     /// Discard all dead weak pointers in `listeners`.
@@ -120,7 +120,7 @@ impl<M> fmt::Debug for Notifier<M> {
 ///
 /// Implementors should also implement [`Send`] and [`Sync`], as most usage of listeners
 /// might cross threads. However, this is not strictly required.
-pub trait Listener<M> {
+pub(crate) trait Listener<M> {
     /// Process and store a message.
     ///
     /// Note that, since this method takes `&Self`, a `Listener` must use interior
@@ -195,4 +195,4 @@ pub trait Listener<M> {
     }
 }
 /// Type-erased form of a [`Listener`] which accepts messages of type `M`.
-pub type DynListener<M> = Arc<dyn Listener<M> + Send + Sync>;
+pub(crate) type DynListener<M> = Arc<dyn Listener<M> + Send + Sync>;
