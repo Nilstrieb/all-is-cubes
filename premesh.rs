@@ -9,7 +9,6 @@ use crate::math::GridCoordinate;
 use crate::space::{BlockIndex, SpaceChange};
 
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
-const LOG_CHUNK_UPDATES: bool = false;
 
 /// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
 /// data, and incidentals.
