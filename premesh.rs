@@ -13,8 +13,8 @@ use crate::space::{BlockIndex, SpaceChange};
 const LOG_CHUNK_UPDATES: bool = false;
 
 #[derive(Debug)]
-pub struct ChunkedSpaceMesh<D, const CHUNK_SIZE: GridCoordinate> {
-    chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D,  CHUNK_SIZE>>,
+pub struct ChunkedSpaceMesh<const CHUNK_SIZE: GridCoordinate> {
+    chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<CHUNK_SIZE>>,
 }
 
 #[derive(Debug)]
@@ -32,9 +32,8 @@ enum BlockMeshVersion {
 /// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
 /// data, and incidentals.
 #[derive(Debug, Eq, PartialEq)]
-pub struct ChunkMesh<D, const CHUNK_SIZE: GridCoordinate> {
+pub struct ChunkMesh<const CHUNK_SIZE: GridCoordinate> {
     position: ChunkPos<CHUNK_SIZE>,
-    pub render_data: D,
     block_dependencies: Vec<(BlockIndex, BlockMeshVersion)>,
 
     /// Toggled whenever the mesh is updated. Value is arbitrary (this is a looping
@@ -60,12 +59,7 @@ impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CH
 
 /////// MOVE START
 
-impl<D, const CHUNK_SIZE: GridCoordinate> ChunkMesh<D, CHUNK_SIZE>
-where
-    D: Default, // TODO: This is used for initializing `render_data`, but it might not be ideal.
-
-{
-}
+impl<const CHUNK_SIZE: GridCoordinate> ChunkMesh<CHUNK_SIZE> {}
 
 /// What might be dirty about a single chunk.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
