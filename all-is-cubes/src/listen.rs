@@ -14,9 +14,11 @@ mod util;
 pub(crate) use util::*;
 
 pub(crate) trait Listener<M> {
-    fn receive(&self, message: M);
+    fn receive(&self, message: M) {}
 
-    fn alive(&self) -> bool;
+    fn alive(&self) -> bool {
+        loop {}
+    }
 
     fn erased(self) -> DynListener<M>
     where
