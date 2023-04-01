@@ -12,13 +12,6 @@ use crate::space::{BlockIndex, SpaceChange};
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
 const LOG_CHUNK_UPDATES: bool = false;
 
-/// The large-scale analogue of [`SpaceMesh`]: subdivides a [`Space`] into
-/// [chunks](crate::chunking) which are individually recomputed as the space changes or
-/// its contained blocks do.
-///
-/// Each chunk, a [`ChunkMesh`], owns a data value of type `D`, which is
-/// initialized using `D::default()`. This value may be a reference to a corresponding
-/// GPU buffer, for example. It will usually need to be an [`Option`] of something.
 #[derive(Debug)]
 pub struct ChunkedSpaceMesh<D, const CHUNK_SIZE: GridCoordinate> {
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkMesh<D, (), (), CHUNK_SIZE>>,
