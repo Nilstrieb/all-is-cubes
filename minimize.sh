@@ -2,7 +2,7 @@
 
 #export RUSTFLAGS=-Zincremental-verify-ich
 
-cp premesh.rs all-is-cubes/src/mesh/chunked_mesh.rs
+cp all-is-cubes/src/mesh/chunked_mesh.rs premesh.rs
 cargo clean -p all-is-cubes
 cargo check -p all-is-cubes
 
