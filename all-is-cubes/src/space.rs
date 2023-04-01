@@ -1,30 +1,30 @@
 //! That which contains many blocks.
 use crate::behavior::BehaviorSet;
-use crate::block::{Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR};
+use crate::block::{Block, BlockChange, EvalBlockError, EvaluatedBlock};
 #[cfg(doc)]
 use crate::character::Character;
 use crate::character::Spawn;
-use crate::content::palette;
-use crate::drawing::DrawingPlane;
+
+
 use cgmath::Vector3;
 use instant::Duration;
-use std::borrow::Cow;
+
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex, Weak};
 
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{
-    FreeCoordinate, GridAab, GridArray, GridCoordinate, GridMatrix, GridPoint, GridRotation,
+    FreeCoordinate, GridAab, GridPoint, GridRotation,
     NotNan, Rgb,
 };
-use crate::time::Tick;
+
 use crate::transaction::{Merge, Transaction as _};
-use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
+use crate::universe::{RefVisitor, VisitRefs};
 use crate::util::TimeStats;
 use crate::util::{CustomFormat, StatusText};
 mod builder;
-pub(crate) use builder::{SpaceBuilder, SpaceBuilderBounds};
+pub(crate) use builder::{SpaceBuilderBounds};
 mod light;
 
 use light::LightUpdateQueue;

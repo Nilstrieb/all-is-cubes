@@ -1,11 +1,11 @@
 //! Tools that we could imagine being in the Rust standard library, but aren't.
-use std::error::Error;
+
 use std::fmt::{self, Debug, Display};
 
 use std::ops::AddAssign;
 use std::time::Duration;
 
-use instant::Instant;
+
 mod yield_progress;
 pub(crate) use yield_progress::*;
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).

@@ -1,5 +1,5 @@
-use crate::block::{self, Block, Evoxel, MinEval};
-use crate::math::Rgba;
+use crate::block::{Block};
+
 use crate::universe;
 /// Data for [`Modifier::Composite`], describing how to combine the voxels of another
 /// block with the original one.

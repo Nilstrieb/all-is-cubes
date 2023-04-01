@@ -1,6 +1,6 @@
 use cgmath::{Point3};
-use crate::block::{self, MinEval, Resolution::{self}};
-use crate::math::{GridPoint};
+use crate::block::{self, Resolution::{self}};
+
 use crate::universe;
 /// Data for [`Modifier::Zoom`], describing a portion of the original block that is scaled
 /// up to become the whole block.
