@@ -1,10 +1,6 @@
 //! Projection and view matrices, viewport and aspect ratio, visibility,
 //! raycasting into the scene, etc.
-use cgmath::{
-    Basis3, Decomposed, Deg, Matrix4,
-    Point2, Point3, Vector2, Vector3,
-};
-
+use cgmath::{Basis3, Decomposed, Deg, Matrix4, Point2, Point3, Vector2, Vector3};
 use ordered_float::NotNan;
 use crate::chunking::OctantMask;
 use crate::math::{Aab, FreeCoordinate, GridAab, Rgba};
@@ -13,10 +9,6 @@ mod flaws;
 pub(crate) use flaws::*;
 mod graphics_options;
 pub(crate) use graphics_options::*;
-mod renderer;
-
-mod stdcam;
-
 type M = Matrix4<FreeCoordinate>;
 /// Representation of a camera viewpoint and orientation, using [`cgmath`] types.
 ///

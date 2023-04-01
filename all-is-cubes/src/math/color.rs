@@ -5,17 +5,6 @@ use std::ops::{Add, AddAssign, Mul, Sub};
 use cgmath::{Vector3, Vector4};
 pub(crate) use ordered_float::{FloatIsNan, NotNan};
 use crate::notnan;
-/// Allows writing a constant [`Rgb`] color value, provided that its components are float
-/// literals.
-///
-/// TODO: examples
-#[macro_export]
-macro_rules! rgb_const {
-    ($r:literal, $g:literal, $b:literal) => {
-        $crate ::math::Rgb::new_nn($crate ::notnan!($r), $crate ::notnan!($g), $crate
-        ::notnan!($b),)
-    };
-}
 /// A floating-point RGB color value.
 ///
 /// * Each component may be considered to have a nominal range of 0 to 1, but larger
@@ -412,7 +401,6 @@ fn component_to_srgb(c: NotNan<f32>) -> f32 {
 fn component_to_srgb8(c: NotNan<f32>) -> u8 {
     loop {}
 }
-
 #[inline]
 const fn component_from_linear8_const(c: u8) -> NotNan<f32> {
     unsafe { NotNan::new_unchecked(CONST_LINEAR_LOOKUP_TABLE[c as usize]) }

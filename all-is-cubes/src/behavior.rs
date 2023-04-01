@@ -1,5 +1,4 @@
 //! Dynamic add-ons to game objects; we might also have called them “components”.
-
 use std::collections::BTreeMap;
 use std::fmt::{self, Debug};
 use std::sync::Arc;
@@ -168,16 +167,4 @@ impl<H: BehaviorHost> PartialEq for BehaviorSetTransaction<H> {
         loop {}
     }
 }
-impl<H: BehaviorHost> PartialEq for Replace<H> {
-    #[allow(clippy::vtable_address_comparisons)]
-    fn eq(&self, other: &Self) -> bool {
-        loop {}
-    }
-}
 impl<H: BehaviorHost> Eq for BehaviorSetTransaction<H> {}
-impl<H: BehaviorHost> Eq for Replace<H> {}
-impl<H: BehaviorHost> Clone for Replace<H> {
-    fn clone(&self) -> Self {
-        loop {}
-    }
-}

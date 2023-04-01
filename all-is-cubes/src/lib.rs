@@ -161,8 +161,6 @@ pub(crate) mod camera;
 pub(crate) mod character;
 #[doc(hidden)]
 pub(crate) mod chunking;
-#[doc(hidden)]
-pub(crate) mod content;
 pub(crate) mod drawing;
 pub(crate) mod fluff;
 pub(crate) mod inv;
@@ -171,10 +169,8 @@ pub(crate) mod listen;
 pub(crate) mod mesh;
 pub(crate) mod physics;
 pub(crate) mod raycast;
-mod save;
 pub(crate) mod space;
 pub(crate) mod time;
 pub(crate) mod transaction;
 pub(crate) mod universe;
 pub(crate) mod util;
-

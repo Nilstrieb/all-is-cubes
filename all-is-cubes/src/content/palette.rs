@@ -5,33 +5,6 @@
 //! hardcoded colors if possible.
 //!
 //! TODO: Split "system UI" colors and "demo content" colors.
-
-/// Define a color constant and preview it in the documentation.
-macro_rules! palette_entry {
-    ($(#[doc = $doc:literal])* $name:ident = srgb[$r:literal $g:literal $b:literal]) => {
-        #[doc =
-        concat!("<svg width='3.2em' height='3em' style='vertical-align: top; float: left; clear: left; padding-right: .2em;'>",
-        "<rect width='100%' height='100%' fill='rgb(", $r, ",", $g, ",", $b,
-        ")' /></svg>")] $(#[doc = $doc])* pub const $name : $crate ::math::Rgb = $crate
-        ::math::Rgb::from_srgb8([$r, $g, $b]);
-    };
-    (
-        $(#[doc = $doc:literal])* $name:ident = srgb[$r:literal $g:literal $b:literal
-        $a:literal]
-    ) => {
-        #[doc =
-        concat!("<svg width='3.2em' height='3em' style='vertical-align: top; float: left; clear: left; padding-right: .2em;'>",
-        "<rect width='100%' height='100%' fill='rgb(", $r, ",", $g, ",", $b,
-        ")' /></svg>")] $(#[doc = $doc])* pub const $name : $crate ::math::Rgba = $crate
-        ::math::Rgba::from_srgb8([$r, $g, $b, $a]);
-    };
-}
-/// Define many color constants. In the future, this might start defining an enum; I haven't decided.
-macro_rules! palette {
-    ($($(#[doc = $doc:literal])* $name:ident = srgb $data:tt;)*) => {
-        $(palette_entry! { $(#[doc = $doc])* $name = srgb $data })*
-    };
-}
 palette! {
     #[doc = " Default sky color for new [`Space`](crate::space::Space)s."] DAY_SKY_COLOR
     = srgb[243 243 255]; #[doc =

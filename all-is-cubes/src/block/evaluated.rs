@@ -1,6 +1,5 @@
 //! [`EvaluatedBlock`] and [`Evoxel`].
 use std::fmt;
-
 use crate::block::{self, BlockAttributes, Resolution};
 use crate::math::{FaceMap, GridAab, GridArray, GridPoint, OpacityCategory, Rgb, Rgba};
 use crate::universe::RefError;
@@ -57,7 +56,6 @@ pub(crate) enum EvalBlockError {
     #[error("block data inaccessible: {0}")]
     DataRefIs(#[from] RefError),
 }
-
 /// Properties of an individual voxel within [`EvaluatedBlock`].
 ///
 /// This is essentially a subset of the information in a full [`EvaluatedBlock`] and
@@ -74,7 +72,6 @@ pub(crate) struct Evoxel {
     /// The effect on a [`Body`](crate::physics::Body) of colliding with this voxel.
     pub(crate) collision: block::BlockCollision,
 }
-
 /// Storage of an [`EvaluatedBlock`]'s shape — its _evaluated voxels._
 ///
 /// This voxel data may be smaller than the dimensions implied by [`Self::resolution`],
@@ -147,27 +144,6 @@ impl<'a> arbitrary::Arbitrary<'a> for Evoxels {
         loop {}
     }
 }
-/// The result of <code>[AIR].[evaluate()](Block::evaluate)</code>, as a constant.
-/// This may be used when an [`EvaluatedBlock`] value is needed but there is no block
-/// value.
-///
-/// ```
-/// use all_is_cubes::block::{AIR, AIR_EVALUATED};
-///
-/// assert_eq!(Ok(AIR_EVALUATED), AIR.evaluate());
-/// ```
-/// Note that this voxel is *not* no-collision and unselectable; the block attributes
-/// override it. For now, all atom blocks work this way. TODO: Perhaps we should change that.
-/// Used only by [`AIR_EVALUATED`].
-const AIR_ATTRIBUTES: BlockAttributes = BlockAttributes {
-    display_name: std::borrow::Cow::Borrowed("<air>"),
-    selectable: false,
-    collision: block::BlockCollision::None,
-    rotation_rule: block::RotationPlacementRule::Never,
-    light_emission: Rgb::ZERO,
-    tick_action: None,
-    animation_hint: block::AnimationHint::UNCHANGING,
-};
 /// A minimal version of [`EvaluatedBlock`] which contains all the fundamental data, but
 /// none of the computed data.
 ///

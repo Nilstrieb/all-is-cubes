@@ -1,11 +1,7 @@
 //! Tools that we could imagine being in the Rust standard library, but aren't.
-
 use std::fmt::{self, Debug, Display};
-
 use std::ops::AddAssign;
 use std::time::Duration;
-
-
 mod yield_progress;
 pub(crate) use yield_progress::*;
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).
@@ -36,16 +32,6 @@ pub(crate) struct CustomFormatWrapper<'a, F: Copy, T: CustomFormat<F> + ?Sized>(
     F,
     &'a T,
 );
-impl<'a, F: Copy, T: CustomFormat<F>> Debug for CustomFormatWrapper<'a, F, T> {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-impl<'a, F: Copy, T: CustomFormat<F>> Display for CustomFormatWrapper<'a, F, T> {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
 /// Format type for [`CustomFormat`] which is similar to [`Debug`], but uses an
 /// alternate concise format.
 ///
@@ -61,14 +47,6 @@ pub(crate) struct ConciseDebug;
 #[allow(clippy::exhaustive_structs)]
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct StatusText;
-/// Makes the assumption that [`Duration`]s are per-frame timings and hence the
-/// interesting precision is in the millisecond-to-microsecond range.
-impl CustomFormat<StatusText> for Duration {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: StatusText) -> fmt::Result {
-        loop {}
-    }
-}
-
 /// Aggregation of the time taken by a set of events.
 ///
 /// TODO: Consider including an identifier for the longest.
@@ -85,7 +63,6 @@ pub struct TimeStats {
     /// The maximum duration of all events, or [`Duration::ZERO`] if there were no events.
     pub(crate) max: Duration,
 }
-
 impl AddAssign for TimeStats {
     fn add_assign(&mut self, rhs: Self) {
         loop {}

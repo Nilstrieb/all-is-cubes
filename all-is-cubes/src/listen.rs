@@ -11,10 +11,6 @@
 //! messages, which will then be read and cleared by a later task.
 use std::fmt;
 use std::sync::{Arc, RwLock, Weak};
-mod cell;
-
-mod listeners;
-
 mod util;
 pub(crate) use util::*;
 /// Ability to subscribe to a source of messages, causing a [`Listener`] to receive them

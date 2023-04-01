@@ -4,33 +4,23 @@ use crate::block::{Block, BlockChange, EvalBlockError, EvaluatedBlock};
 #[cfg(doc)]
 use crate::character::Character;
 use crate::character::Spawn;
-
-
 use cgmath::Vector3;
 use instant::Duration;
-
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex, Weak};
-
 use crate::listen::{Gate, Listen, Listener, Notifier};
-use crate::math::{
-    FreeCoordinate, GridAab, GridPoint, GridRotation,
-    NotNan, Rgb,
-};
-
+use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
 use crate::transaction::{Merge, Transaction as _};
 use crate::universe::{RefVisitor, VisitRefs};
 use crate::util::TimeStats;
 use crate::util::{CustomFormat, StatusText};
 mod builder;
-pub(crate) use builder::{SpaceBuilderBounds};
+pub(crate) use builder::SpaceBuilderBounds;
 mod light;
-
 use light::LightUpdateQueue;
 pub(crate) use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;
-
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
 pub struct Space {
@@ -187,9 +177,7 @@ pub(crate) enum LightPhysics {
     },
 }
 impl LightPhysics {
-    pub(crate) const DEFAULT: Self = Self::Rays {
-        maximum_distance: 30,
-    };
+    pub(crate) const DEFAULT: Self = Self::Rays { maximum_distance: 30 };
 }
 impl Default for LightPhysics {
     fn default() -> Self {
@@ -276,17 +264,4 @@ impl CustomFormat<StatusText> for SpaceStepInfo {
 #[derive(Debug, Default)]
 struct SpaceTodo {
     blocks: HashSet<BlockIndex>,
-}
-#[derive(Clone, Debug)]
-struct SpaceBlockChangeListener {
-    todo: Weak<Mutex<SpaceTodo>>,
-    index: BlockIndex,
-}
-impl Listener<BlockChange> for SpaceBlockChangeListener {
-    fn receive(&self, _: BlockChange) {
-        loop {}
-    }
-    fn alive(&self) -> bool {
-        loop {}
-    }
 }
