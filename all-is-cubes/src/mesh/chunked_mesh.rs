@@ -48,12 +48,11 @@ impl CustomFormat<StatusText> for CsmUpdateInfo {
 }
 
 #[derive(Debug)]
-struct VersionedBlockMeshes<Vert, Tile> {
-    /// Indices of this vector are block IDs in the Space.
-    meshes: (Vert, Tile),
+struct VersionedBlockMeshes {
+
 }
 
-impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes<Vert, Tile> {
+impl<'a, Vert, Tile> BlockMeshProvider<'a, Vert, Tile> for &'a VersionedBlockMeshes {
     fn get(&mut self, index: BlockIndex) -> Option<&'a BlockMesh<Vert, Tile>> {
         loop {}
     }
