@@ -1,7 +1,5 @@
-
 use crate::block::Block;
 use crate::character::Spawn;
-
 use crate::space::{GridAab, SpacePhysics};
 /// Tool for constructing new [`Space`]s.
 ///
@@ -16,9 +14,6 @@ use crate::space::{GridAab, SpacePhysics};
 #[must_use]
 pub(crate) struct SpaceBuilder<B> {
     pub(super) bounds: B,
-    pub(super) spawn: Option<Spawn>,
-    pub(super) physics: SpacePhysics,
-    pub(super) initial_fill: Block,
 }
 /// Helper for [`SpaceBuilder::bounds_if_not_set()`]. Do not call or implement this trait.
 pub(crate) trait SpaceBuilderBounds: sbb::SbbSealed + Sized {

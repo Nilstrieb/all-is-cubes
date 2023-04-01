@@ -10,17 +10,13 @@ use crate::transaction::{
     CommitError, Merge, NoOutput, PreconditionFailed, Transaction, TransactionConflict,
     Transactional,
 };
-
 impl Transactional for Space {
     type Transaction = SpaceTransaction;
 }
 /// A [`Transaction`] that modifies a [`Space`].
 #[derive(Clone, Default, Eq, PartialEq)]
 #[must_use]
-pub struct SpaceTransaction {
-    cubes: BTreeMap<[GridCoordinate; 3], CubeTransaction>,
-    behaviors: BehaviorSetTransaction<Space>,
-}
+pub struct SpaceTransaction {}
 impl SpaceTransaction {
     /// Construct a [`SpaceTransaction`] for a single cube.
     ///

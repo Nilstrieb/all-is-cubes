@@ -1,4 +1,3 @@
-
 use crate::math::Face6;
 use crate::universe;
 /// Data for [`Modifier::Move`]; displaces the block out of the grid, cropping it.
@@ -15,17 +14,7 @@ use crate::universe;
 #[non_exhaustive]
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub(crate) struct Move {
-    /// The direction in which the block is displaced.
-    pub(crate) direction: Face6,
-    /// The distance, in 1/256ths, by which it is displaced.
-    pub(crate) distance: u16,
-    /// The velocity **per tick** with which the displacement is changing.
-    ///
-    /// TODO: "Per tick" is a bad unit.
-    pub(crate) velocity: i16,
-}
-
+pub(crate) struct Move {}
 impl universe::VisitRefs for Move {
     fn visit_refs(&self, _visitor: &mut dyn universe::RefVisitor) {
         loop {}

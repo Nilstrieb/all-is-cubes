@@ -5,14 +5,12 @@ use crate::block::{Block, EvalBlockError, EvaluatedBlock};
 use crate::character::Character;
 use crate::character::Spawn;
 use cgmath::Vector3;
-
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
 use crate::universe::{RefVisitor, VisitRefs};
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::sync::{Arc, Mutex};
-
 mod builder;
 mod light;
 use light::LightUpdateQueue;
@@ -20,52 +18,13 @@ pub(crate) use light::PackedLight;
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
-pub struct Space {
-    bounds: GridAab,
-    /// Lookup from `Block` value to the index by which it is represented in
-    /// the array.
-    block_to_index: HashMap<Block, BlockIndex>,
-    /// Lookup from arbitrarily assigned indices (used in `contents`) to data for them.
-    block_data: Vec<SpaceBlockData>,
-    /// The blocks in the space, stored compactly:
-    ///
-    /// * Coordinates are transformed to indices by [`GridAab::index`].
-    /// * Each element is an index into [`Self::block_data`].
-    contents: Box<[BlockIndex]>,
-    /// Parallel array to `contents` for lighting data.
-    pub(crate) lighting: Box<[PackedLight]>,
-    /// Queue of cubes whose light values should be updated.
-    light_update_queue: LightUpdateQueue,
-    /// Debug log of the updated cubes from last frame.
-    /// Empty unless this debug function is enabled.
-    #[doc(hidden)]
-    pub(crate) last_light_updates: Vec<GridPoint>,
-    /// Global characteristics such as the behavior of light and gravity.
-    physics: SpacePhysics,
-    /// A converted copy of `physics.sky_color`.
-    packed_sky_color: PackedLight,
-    behaviors: BehaviorSet<Space>,
-    spawn: Spawn,
-    /// Cubes that should be checked on the next call to step()
-    cubes_wanting_ticks: HashSet<GridPoint>,
-    notifier: Notifier<SpaceChange>,
-    /// Storage for incoming change notifications from blocks.
-    todo: Arc<Mutex<SpaceTodo>>,
-}
+pub struct Space {}
 /// Information about the interpretation of a block index.
 ///
 /// Design note: This doubles as an internal data structure for [`Space`]. While we'll
 /// try to keep it available, this interface has a higher risk of needing to change
 /// incompatibility.
-pub(crate) struct SpaceBlockData {
-    /// The block itself.
-    block: Block,
-    /// Number of uses of this block in the space.
-    count: usize,
-    evaluated: EvaluatedBlock,
-    #[allow(dead_code)]
-    block_listen_gate: Option<Gate>,
-}
+pub(crate) struct SpaceBlockData {}
 impl fmt::Debug for Space {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -109,10 +68,7 @@ impl crate::behavior::BehaviorHost for Space {
 /// Description of where in a [`Space`] a [`Behavior<Space>`](crate::behavior::Behavior)
 /// exists.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub struct SpaceBehaviorAttachment {
-    bounds: GridAab,
-    rotation: GridRotation,
-}
+pub struct SpaceBehaviorAttachment {}
 /// The global characteristics of a [`Space`], more or less independent of location within
 /// the block grid.
 ///
@@ -121,20 +77,7 @@ pub struct SpaceBehaviorAttachment {
 /// [`DEFAULT_FOR_BLOCK`](Self::DEFAULT_FOR_BLOCK)).
 #[derive(Clone, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub(crate) struct SpacePhysics {
-    /// Gravity vector for moving objects, in cubes/s².
-    ///
-    /// TODO: Expand this to an enum which allows non-uniform gravity patterns.
-    pub(crate) gravity: Vector3<NotNan<FreeCoordinate>>,
-    /// Color of light arriving from outside the space, used for light calculation
-    /// and rendering.
-    ///
-    /// TODO: Consider replacing this with some sort of cube map, spherical harmonics,
-    /// or some such to allow for non-uniform illumination.
-    pub(crate) sky_color: Rgb,
-    /// Method used to compute the illumination of individual blocks.
-    pub(crate) light: LightPhysics,
-}
+pub(crate) struct SpacePhysics {}
 impl fmt::Debug for SpacePhysics {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -174,9 +117,7 @@ pub(crate) enum LightPhysics {
     },
 }
 impl LightPhysics {
-    pub(crate) const DEFAULT: Self = Self::Rays {
-        maximum_distance: 30,
-    };
+    pub(crate) const DEFAULT: Self = Self::Rays { maximum_distance: 30 };
 }
 impl Default for LightPhysics {
     fn default() -> Self {
@@ -228,6 +169,4 @@ pub(crate) enum SpaceChange {
 /// In the future it might be used for side effects in the world, or we might
 /// want to handle that differently.
 #[derive(Debug, Default)]
-struct SpaceTodo {
-    blocks: HashSet<BlockIndex>,
-}
+struct SpaceTodo {}

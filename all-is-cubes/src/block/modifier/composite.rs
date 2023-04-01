@@ -1,5 +1,4 @@
-use crate::block::{Block};
-
+use crate::block::Block;
 use crate::universe;
 /// Data for [`Modifier::Composite`], describing how to combine the voxels of another
 /// block with the original one.
@@ -10,17 +9,7 @@ use crate::universe;
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub(crate) struct Composite {
-    /// The “source” input to the compositing operator.
-    /// (The “destination” input is the block this modifier is attached to.)
-    pub(crate) source: Block,
-    /// The compositing operator used to combine the source and destination blocks.
-    pub(crate) operator: CompositeOperator,
-    /// Swap the roles of “source” and “destination” for the [`operator`](Self::operator).
-    pub(crate) reverse: bool,
-    /// Whether the block should come apart into its components when removed from its place.
-    pub(crate) disassemblable: bool,
-}
+pub(crate) struct Composite {}
 impl universe::VisitRefs for Composite {
     fn visit_refs(&self, visitor: &mut dyn universe::RefVisitor) {
         loop {}

@@ -1,6 +1,5 @@
 use super::collision::Contact;
 use crate::math::FreeCoordinate;
-
 use crate::transaction::{self, Transaction};
 use crate::util::{ConciseDebug, CustomFormat, StatusText};
 use cgmath::Vector3;
@@ -26,33 +25,20 @@ impl CustomFormat<StatusText> for Body {
 /// a specific need for one of the values.
 #[derive(Clone, Copy, Debug)]
 #[non_exhaustive]
-pub(crate) struct BodyStepInfo {
-    /// Whether movement computation was skipped due to approximately zero velocity.
-    pub(crate) quiescent: bool,
-    #[allow(missing_docs)]
-    pub(crate) push_out: Option<Vector3<FreeCoordinate>>,
-    #[allow(missing_docs)]
-    pub(crate) already_colliding: Option<Contact>,
-    /// Details on movement and collision. A single frame's movement may have up to three
-    /// segments as differently oriented faces are collided with.
-    pub(crate) move_segments: [MoveSegment; 3],
-}
+pub(crate) struct BodyStepInfo {}
 impl CustomFormat<ConciseDebug> for BodyStepInfo {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>, format_type: ConciseDebug) -> fmt::Result {
+    fn fmt(
+        &self,
+        fmt: &mut fmt::Formatter<'_>,
+        format_type: ConciseDebug,
+    ) -> fmt::Result {
         loop {}
     }
 }
 /// One of the individual straight-line movement segments of a [`BodyStepInfo`].
 #[derive(Clone, Copy, Debug)]
 #[non_exhaustive]
-pub(crate) struct MoveSegment {
-    /// The change in position.
-    pub(crate) delta_position: Vector3<FreeCoordinate>,
-    /// What solid object stopped this segment from continuing further
-    /// (there may be others, but this is one of them), or None if there
-    /// was no obstacle.
-    pub(crate) stopped_by: Option<Contact>,
-}
+pub(crate) struct MoveSegment {}
 impl CustomFormat<ConciseDebug> for MoveSegment {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>, _: ConciseDebug) -> fmt::Result {
         loop {}
@@ -69,17 +55,17 @@ impl Default for MoveSegment {
 #[derive(Clone, Debug, Default, PartialEq)]
 #[must_use]
 #[non_exhaustive]
-pub struct BodyTransaction {
-    #[allow(missing_docs)]
-    pub(crate) delta_yaw: FreeCoordinate,
-}
+pub struct BodyTransaction {}
 impl transaction::Transactional for Body {
     type Transaction = BodyTransaction;
 }
 impl Transaction<Body> for BodyTransaction {
     type CommitCheck = ();
     type Output = transaction::NoOutput;
-    fn check(&self, _body: &Body) -> Result<Self::CommitCheck, transaction::PreconditionFailed> {
+    fn check(
+        &self,
+        _body: &Body,
+    ) -> Result<Self::CommitCheck, transaction::PreconditionFailed> {
         loop {}
     }
     fn commit(

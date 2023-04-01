@@ -53,16 +53,7 @@ pub(crate) struct StatusText;
 /// TODO: Consider generalizing this to quantities other than time? Probably not.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 #[non_exhaustive]
-pub struct TimeStats {
-    /// The number of events aggregated into this [`TimeStats`].
-    pub(crate) count: usize,
-    /// The sum of the durations of all events.
-    pub(crate) sum: Duration,
-    /// The minimum duration of all events, or [`None`] if there were no events.
-    pub(crate) min: Option<Duration>,
-    /// The maximum duration of all events, or [`Duration::ZERO`] if there were no events.
-    pub(crate) max: Duration,
-}
+pub struct TimeStats {}
 impl AddAssign for TimeStats {
     fn add_assign(&mut self, rhs: Self) {
         loop {}

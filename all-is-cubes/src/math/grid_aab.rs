@@ -6,8 +6,7 @@ use std::ops::Range;
 use cgmath::{Point3, Vector3};
 use crate::block::Resolution;
 use crate::math::{
-    Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint,
-    GridVector,
+    Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint, GridVector,
 };
 /// An axis-aligned box with integer coordinates, whose volume is no larger than [`usize::MAX`].
 /// [`GridAab`]s are used to specify the coordinate extent of [`Space`](crate::space::Space)s, and
@@ -22,12 +21,7 @@ use crate::math::{
 /// The different possibilities are not considered equal; thus, points, lines, and planes may be
 /// represented, which may be useful for procedural-generation purposes.
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub struct GridAab {
-    lower_bounds: GridPoint,
-    /// Constructor checks ensure this is non-negative and that adding it
-    /// to lower_bounds will not overflow.
-    sizes: GridVector,
-}
+pub struct GridAab {}
 impl GridAab {
     /// Box containing the unit cube from `[0, 0, 0]` to `[1, 1, 1]`.
     ///
@@ -514,12 +508,7 @@ impl<'a> arbitrary::Arbitrary<'a> for GridAab {
 }
 /// Iterator produced by [`GridAab::interior_iter()`].
 #[derive(Clone, Debug)]
-pub(crate) struct GridIter {
-    x_range: Range<GridCoordinate>,
-    y_range: Range<GridCoordinate>,
-    z_range: Range<GridCoordinate>,
-    cube: GridPoint,
-}
+pub(crate) struct GridIter {}
 impl GridIter {
     #[inline]
     fn new(bounds: GridAab) -> Self {
@@ -548,6 +537,5 @@ pub(crate) struct GridOverflowError(String);
 /// TODO: Should we rebuild Space on top of this?
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct GridArray<V> {
-    bounds: GridAab,
     contents: Box<[V]>,
 }

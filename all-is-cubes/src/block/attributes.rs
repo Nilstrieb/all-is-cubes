@@ -14,39 +14,7 @@ use crate::{
 /// blocks.
 #[derive(Clone, Eq, Hash, PartialEq)]
 #[allow(clippy::exhaustive_structs)]
-pub(crate) struct BlockAttributes {
-    /// The name that should be displayed to players.
-    ///
-    /// The default value is the empty string. The empty string should be considered a
-    /// reasonable choice for solid-color blocks with no special features.
-    pub(crate) display_name: Cow<'static, str>,
-    /// Whether players' [cursors](crate::character::Cursor) target it or pass through it.
-    ///
-    /// The default value is `true`.
-    pub(crate) selectable: bool,
-    /// The effect on a [`Body`](crate::physics::Body) of colliding with this block.
-    ///
-    /// The default value is [`BlockCollision::Hard`].
-    pub(crate) collision: BlockCollision,
-    /// Rule about how this block should be rotated, or not, when placed in a [`Space`] by
-    /// some agent not otherwise specifying rotation.
-    ///
-    /// The default value is [`RotationPlacementRule::Never`].
-    pub(crate) rotation_rule: RotationPlacementRule,
-    /// Light emitted by the block.
-    ///
-    /// The default value is [`Rgb::ZERO`].
-    pub(crate) light_emission: Rgb,
-    /// Something this block does when time passes.
-    ///
-    /// Currently the only possibility is “turn into another block”.
-    ///
-    /// TODO: Very placeholder. This needs more possible effects and also time/probability options.
-    pub(crate) tick_action: Option<VoxelBrush<'static>>,
-    /// Advice to the renderer about how to expect this block to change, and hence
-    /// what rendering strategy to use.
-    pub(crate) animation_hint: AnimationHint,
-}
+pub(crate) struct BlockAttributes {}
 impl fmt::Debug for BlockAttributes {
     /// Only attributes which differ from the default are shown.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -110,13 +78,7 @@ pub(crate) enum RotationPlacementRule {
     /// Never rotate the block.
     Never,
     /// Rotate the block so that the specified face meets the face it was placed against.
-    Attach {
-        /// This face of the placed block will meet the face it was placed against.
-        ///
-        /// If the block was somehow placed without such an adjacent block, it will not be
-        /// rotated.
-        by: Face6,
-    },
+    Attach {},
 }
 /// Specifies how a [`Block`] might change in the very near future, for the benefit
 /// of rendering algorithms. Does not currently describe non-visual aspects of a block.

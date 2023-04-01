@@ -2,7 +2,6 @@
 //!
 //! This module is internal and reexported by its parent.
 use std::fmt::Debug;
-
 use crate::camera::Flaws;
 use crate::math::{FaceMap, GridArray, OpacityCategory};
 use crate::mesh::{BlockVertex, MeshOptions, TextureAllocator, TextureTile};
@@ -23,15 +22,6 @@ use crate::space::Space;
 pub(super) struct BlockFaceMesh<V> {
     /// Vertices, as used by the indices vectors.
     pub(super) vertices: Vec<V>,
-    /// Indices into `self.vertices` that form triangles (i.e. length is a multiple of 3)
-    /// in counterclockwise order, for vertices whose coloring is fully opaque (or
-    /// textured with binary opacity).
-    pub(super) indices_opaque: Vec<u32>,
-    /// Indices for partially transparent (alpha neither 0 nor 1) vertices.
-    pub(super) indices_transparent: Vec<u32>,
-    /// Whether the graphic entirely fills its cube face, such that nothing can be seen
-    /// through it and faces of adjacent blocks may be removed.
-    pub(super) fully_opaque: bool,
 }
 /// A triangle mesh for a single [`Block`].
 ///
@@ -48,8 +38,6 @@ pub(super) struct BlockFaceMesh<V> {
 /// [`Block`]: crate::block::Block
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct BlockMesh<V, T> {
-    /// Vertices grouped by which face being obscured would obscure those vertices.
-    pub(super) face_vertices: FaceMap<BlockFaceMesh<V>>,
     /// Vertices not fitting into [`Self::face_vertices`] because they may be visible
     /// from multiple directions or when the eye position is inside the block.
     pub(super) interior_vertices: BlockFaceMesh<V>,
@@ -60,17 +48,6 @@ pub(crate) struct BlockMesh<V, T> {
     /// do. Convert this to an Option, unless we decide that e.g. we want the triangulator
     /// to be responsible for optimizing opaque blocks into 6 face textures.
     pub(super) textures_used: Vec<T>,
-    /// The [`EvaluatedBlock::voxel_opacity_mask`] that the mesh was constructed from;
-    /// if new block data has the same mask, then it is safe to replace the texture
-    /// without recalculating the mesh, via [`BlockMesh::try_update_texture_only`].
-    ///
-    /// If this is [`None`], then either there is no texture to update or some of the
-    /// colors have been embedded in the mesh vertices, making a mesh update required.
-    /// (TODO: We could be more precise about which voxels are so frozen -- revisit
-    /// whether that's worthwhile.)
-    pub(super) voxel_opacity_mask: Option<GridArray<OpacityCategory>>,
-    /// Flaws in this mesh, that should be reported as flaws in any rendering containing it.
-    flaws: Flaws,
 }
 /// Computes [`BlockMeshes`] for blocks currently present in a [`Space`].
 /// Pass the result to [`SpaceMesh::new()`](super::SpaceMesh::new) to use it.

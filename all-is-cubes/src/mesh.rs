@@ -24,14 +24,7 @@ pub(crate) use texalloc::*;
 /// to make the API future-proof against additional configuration being needed.
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub(crate) struct MeshOptions {
-    /// Input to TransparencyOption::limit_alpha.
-    transparency: TransparencyOption,
-    /// Ignore blocks' [`voxels`] data and use only the overall color.
-    ///
-    /// [`voxels`]: crate::block::EvaluatedBlock::voxels
-    ignore_voxels: bool,
-}
+pub(crate) struct MeshOptions {}
 impl MeshOptions {
     /// Take the options relevant to mesh generation from the given [`GraphicsOptions`].
     pub(crate) fn new(graphics_options: &GraphicsOptions) -> Self {
@@ -53,17 +46,7 @@ impl MeshOptions {
 /// [`Geometry::wireframe_points()`](crate::math::Geometry::wireframe_points).
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[non_exhaustive]
-pub struct LineVertex {
-    /// Position of the vertex.
-    pub(crate) position: Point3<FreeCoordinate>,
-    /// Color in which to draw the line.
-    ///
-    /// If [`None`], a color set by the context/parent should be used instead.
-    ///
-    /// If the ends of a line are different colors, color should be interpolated along
-    /// the line.
-    pub(crate) color: Option<crate::math::Rgba>,
-}
+pub struct LineVertex {}
 impl From<Point3<FreeCoordinate>> for LineVertex {
     fn from(position: Point3<FreeCoordinate>) -> Self {
         loop {}

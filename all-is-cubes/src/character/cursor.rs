@@ -25,36 +25,14 @@ pub(crate) fn cursor_raycast(
 ///
 /// TODO: Should carry information about both the struck and preceding cubes.
 #[derive(Clone, Debug, PartialEq)]
-pub(crate) struct Cursor {
-    /// The space the selected cube is in.
-    space: URef<Space>,
-    /// The face that the cursor ray entered the cube via.
-    ///
-    /// Note that this is not necessarily the same as “the face of the block” in the case
-    /// where the block occupies less than the full volume.
-    face_entered: Face7,
-    /// Intersection point where the ray entered the cube.
-    point_entered: Point3<FreeCoordinate>,
-    /// Distance from ray origin (viewpoint) to `point_entered`.
-    distance_to_point: FreeCoordinate,
-    /// Data about the cube the cursor selected/hit.
-    hit: CubeSnapshot,
-    /// Data about the cube the cursor ray was in before it hit [`Self::hit`],
-    /// if there was one, or `None` if the cursor ray started in the cube it hit.
-    preceding: Option<CubeSnapshot>,
-}
+pub(crate) struct Cursor {}
 /// Snapshot of the contents of one cube of a [`Space`], independent of the [`Space`].
 ///
 /// TODO: Can we find a cleaner name for this class?
 #[derive(Clone, Debug, PartialEq)]
 #[non_exhaustive]
 #[allow(missing_docs)]
-pub(crate) struct CubeSnapshot {
-    pub(crate) position: GridPoint,
-    pub(crate) block: Block,
-    pub(crate) evaluated: EvaluatedBlock,
-    pub(crate) light: PackedLight,
-}
+pub(crate) struct CubeSnapshot {}
 impl Cursor {
     /// The space the selected cube is in.
     #[inline]

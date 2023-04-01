@@ -60,13 +60,7 @@ impl<'a> arbitrary::Arbitrary<'a> for BlockDef {
 /// A [`Transaction`] which replaces (or checks) the [`Block`] stored in a [`BlockDef`].
 #[derive(Clone, Debug, Default, Eq, Hash, PartialEq)]
 #[must_use]
-pub struct BlockDefTransaction {
-    /// If `None`, no precondition.
-    old: Option<Block>,
-    /// If `None`, no change is made and this transaction is only a precondition.
-    new: Option<Block>,
-}
-
+pub struct BlockDefTransaction {}
 impl Transaction<BlockDef> for BlockDefTransaction {
     type CommitCheck = ();
     type Output = transaction::NoOutput;

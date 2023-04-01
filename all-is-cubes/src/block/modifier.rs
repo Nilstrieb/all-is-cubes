@@ -52,18 +52,18 @@ pub(crate) use zoom::*;
 pub(crate) enum Modifier {
     /// Suppresses all behaviors of the [`Block`] that might affect the space around it,
     /// (or itself).
-    Quote(Quote),
+    Quote(),
     /// Rotate the block about its cube center by the given rotation.
     ///
     /// This modifier should normally be used by means of [`Block::rotate()`].
-    Rotate(GridRotation),
+    Rotate(),
     /// Combine the voxels of multiple blocks using some per-voxel rule.
-    Composite(Composite),
+    Composite(),
     /// Zoom in on a portion of the block; become part of a multi-block structure whose
     /// parts are parts of the original block.
-    Zoom(Zoom),
+    Zoom(),
     /// Displace the block out of the grid, cropping it.
-    Move(Move),
+    Move(),
 }
 impl Modifier {
     /// Compute the effect of this modifier.
@@ -115,5 +115,5 @@ pub(crate) enum ModifierUnspecialize {
     Pop,
     /// Replace with a different set of blocks.
     /// `unspecialize()` will be called on each of those automatically.
-    Replace(Vec<Block>),
+    Replace(),
 }

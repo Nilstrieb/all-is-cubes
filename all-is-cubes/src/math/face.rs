@@ -1,6 +1,5 @@
 //! Axis-aligned unit vectors: the [`Face6`] and [`Face7`] types.
 //! This module is private but reexported by its parent.
-
 use cgmath::{BaseNum, Vector3};
 use crate::math::*;
 /// Identifies a face of a cube or an orthogonal unit vector.
@@ -394,28 +393,15 @@ pub(crate) struct Faceless;
 #[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub(crate) struct FaceMap<V> {
-    /// The value whose key is [`Face6::NX`].
-    pub(crate) nx: V,
-    /// The value whose key is [`Face6::NY`].
-    pub(crate) ny: V,
-    /// The value whose key is [`Face6::NZ`].
-    pub(crate) nz: V,
-    /// The value whose key is [`Face6::PX`].
-    pub(crate) px: V,
     /// The value whose key is [`Face6::PY`].
     pub(crate) py: V,
-    /// The value whose key is [`Face6::PZ`].
-    pub(crate) pz: V,
 }
 /// The combination of a [`GridPoint`] identifying a unit cube and a [`Face7`] identifying
 /// one face of it. This pattern recurs in selection and collision detection.
 #[derive(Clone, Copy, Hash, Eq, PartialEq)]
 #[allow(clippy::exhaustive_structs)]
 #[allow(missing_docs)]
-pub(crate) struct CubeFace {
-    pub(crate) cube: GridPoint,
-    pub(crate) face: Face7,
-}
+pub(crate) struct CubeFace {}
 impl CubeFace {
     #[allow(missing_docs)]
     #[inline]

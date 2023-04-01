@@ -1,8 +1,6 @@
 //! Mesh vertices.
-
-use cgmath::{Point3};
+use cgmath::Point3;
 use crate::math::{Face6, FreeCoordinate, GridPoint, Rgba};
-
 /// Numeric type used to store texture coordinates in vertices.
 ///
 /// TODO: Delete this type alias now that we're generic over texture coordinates.
@@ -18,10 +16,6 @@ pub(crate) type TextureCoordinate = f32;
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, PartialEq)]
 pub struct BlockVertex<T> {
-    /// Vertex position.
-    pub(crate) position: Point3<FreeCoordinate>,
-    /// Vertex normal, always axis-aligned.
-    pub(crate) face: Face6,
     /// Surface color or texture coordinate.
     pub(crate) coloring: Coloring<T>,
 }
@@ -33,15 +27,10 @@ pub struct BlockVertex<T> {
 #[derive(Clone, Copy, Eq, PartialEq)]
 pub(crate) enum Coloring<T> {
     /// Solid color.
-    Solid(Rgba),
+    Solid(),
     /// Texture coordinates provided by the [`TextureAllocator`](super::TextureAllocator)
     /// for this vertex.
     Texture {
-        /// Texture coordinates for this vertex.
-        pos: T,
-        /// Lower bounds for clamping the entire surface's texture coordinates.
-        /// Used to avoid texture bleed.
-        clamp_min: T,
         /// Upper bounds for clamping the entire surface's texture coordinates.
         /// Used to avoid texture bleed.
         clamp_max: T,

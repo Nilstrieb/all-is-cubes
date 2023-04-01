@@ -9,19 +9,7 @@ use crate::universe::{RefVisitor, VisitRefs};
 /// [`Character`]: super::Character
 /// [`Space`]: crate::space::Space
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) struct Spawn {
-    /// Volume which is permitted to be occupied.
-    pub(super) bounds: GridAab,
-    /// Desired eye position, in cube coordinates.
-    pub(super) eye_position: Option<Point3<NotNan<FreeCoordinate>>>,
-    /// Direction the character should be facing, or looking at.
-    ///
-    /// TODO: Should we represent a full rotation (quaternion) instead?
-    /// Or something that can't be zero? Nonzero integers, perhaps?
-    pub(super) look_direction: Vector3<NotNan<FreeCoordinate>>,
-    /// Initial inventory contents, created from nothing.
-    pub(super) inventory: Vec<Slot>,
-}
+pub(crate) struct Spawn {}
 impl Spawn {
     /// Create the default Spawn configuration for a Space.
     ///

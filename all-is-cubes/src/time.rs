@@ -7,9 +7,4 @@ pub(crate) use instant::Duration;
 ///
 /// [`Universe`]: crate::universe::Universe
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
-pub(crate) struct Tick {
-    pub(crate) delta_t: Duration,
-    /// Whether game time is paused, and `delta_t` should not be considered
-    /// as an amount of game time passing. See [`Self::paused()`] for details.
-    paused: bool,
-}
+pub(crate) struct Tick {}

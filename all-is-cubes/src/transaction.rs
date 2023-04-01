@@ -3,7 +3,6 @@ use std::error::Error;
 use std::fmt::Debug;
 use std::sync::Arc;
 use crate::universe::{URef, UTransactional, UniverseTransaction};
-
 /// A `Transaction` is a description of a mutation to an object or collection thereof that
 /// should occur in a logically atomic fashion (all or nothing), with a set of
 /// preconditions for it to happen at all.
@@ -172,22 +171,17 @@ pub struct PreconditionFailed {
 /// fix the underlying bug.
 #[derive(Clone, Debug, thiserror::Error)]
 #[error("Unexpected error while committing a transaction")]
-pub struct CommitError(CommitErrorKind);
+pub struct CommitError();
 #[derive(Clone, Debug, thiserror::Error)]
 enum CommitErrorKind {
     #[error("{transaction_type}::commit() failed")]
-    Leaf {
-        transaction_type: &'static str,
-        #[source]
-        error: Arc<dyn Error + Send + Sync>,
-    },
+    Leaf { transaction_type: &'static str },
     #[error("{transaction_type}::commit() failed: {message}")]
     LeafMessage { transaction_type: &'static str, message: String },
     /// A transaction forwarded an error to one of its parts and that failed.
     #[error("in transaction part '{component}'")]
-    Context { component: String, #[source] error: Arc<CommitError> },
+    Context { component: String },
 }
-
 /// Error type returned by [`Merge::check_merge`].
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
 #[allow(clippy::derive_partial_eq_without_eq)]

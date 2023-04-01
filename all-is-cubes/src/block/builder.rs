@@ -23,7 +23,5 @@ use crate::block::{BlockAttributes, Modifier};
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[must_use]
 pub(crate) struct BlockBuilder<P> {
-    attributes: BlockAttributes,
     primitive_builder: P,
-    modifiers: Vec<Modifier>,
 }

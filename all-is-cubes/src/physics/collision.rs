@@ -4,12 +4,10 @@ use cgmath::Vector3;
 use crate::block::Evoxels;
 use crate::block::{BlockCollision, Resolution};
 use crate::math::{
-    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridCoordinate,
-    GridPoint,
+    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridCoordinate, GridPoint,
 };
 use crate::mesh::LineVertex;
 use crate::raycast::{Ray, Raycaster};
-
 /// An individual collision contact; something in a [`Space`] that a moving [`Aab`]
 /// collided with.
 ///
@@ -19,19 +17,9 @@ use crate::raycast::{Ray, Raycaster};
 pub(crate) enum Contact {
     /// Contact with a fully solid block; the [`CubeFace`] specifies the block position
     /// and the side of it that was collided with (hence also the contact normal).
-    Block(CubeFace),
+    Block(),
     /// Contact with one voxel of a block with a potentially complex shape.
-    Voxel {
-        /// The “outer” cube in the [`Space`].
-        cube: GridPoint,
-        /// The voxel resolution of the block; that is, the factor by which voxel
-        /// coordinates are smaller than `cube` coordinates.
-        resolution: Resolution,
-        /// The voxel position in the block (each coordinate lies between `0` and
-        /// `resolution - 1`) and the face of that voxel collided with, which is also
-        /// the contact normal.
-        voxel: CubeFace,
-    },
+    Voxel {},
 }
 impl Contact {
     /// Returns the cube that was collided with or within.
@@ -74,11 +62,7 @@ impl Geometry for Contact {
 }
 /// Result of [`collide_along_ray`] which specifies a collision point possibly inside the cube.
 #[derive(Clone, Debug, PartialEq)]
-pub(crate) struct CollisionRayEnd {
-    /// Non-colliding length of the provided ray.
-    pub(crate) t_distance: FreeCoordinate,
-    pub(crate) contact: Contact,
-}
+pub(crate) struct CollisionRayEnd {}
 /// Specifies the ending condition for [`collide_along_ray()`]: what type of situation
 /// it should stop prior to the end of the ray for.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]

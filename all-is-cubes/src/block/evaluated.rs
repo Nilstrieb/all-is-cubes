@@ -10,34 +10,7 @@ use super::{Block, Primitive, URef, AIR};
 #[derive(Clone, Eq, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub(crate) struct EvaluatedBlock {
-    /// The block's attributes.
-    pub(crate) attributes: BlockAttributes,
-    /// The voxels making up the block, and the [`resolution`](Resolution) (scale factor)
-    /// of those voxels.
-    pub(crate) voxels: Evoxels,
-    /// The block's color; if made of multiple voxels, then an average or representative
-    /// color.
-    pub(crate) color: Rgba,
-    /// Whether the block is known to be completely opaque to light passing in or out of
-    /// each face.
-    ///
-    /// Currently, this is calculated as whether each of the surfaces of the block are
-    /// fully opaque, but in the future it might be refined to permit concave surfaces.
-    pub(crate) opaque: FaceMap<bool>,
-    /// Whether the block has any voxels/color at all that make it visible; that is, this
-    /// is false if the block is completely transparent.
-    pub(crate) visible: bool,
-    /// The opacity of all voxels. This is redundant with the data  [`Self::voxels`],
-    /// and is provided as a pre-computed convenience that can be cheaply compared with
-    /// other values of the same type.
-    ///
-    /// May be [`None`] if the block is fully invisible. (TODO: This is a kludge to avoid
-    /// obligating [`AIR_EVALUATED`] to allocate at compile time, which is impossible.
-    /// It doesn't harm normal operation because the point of having this is to compare
-    /// block shapes, which is trivial if the block is invisible.)
-    pub(crate) voxel_opacity_mask: Option<GridArray<OpacityCategory>>,
-}
+pub(crate) struct EvaluatedBlock {}
 impl fmt::Debug for EvaluatedBlock {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}
@@ -63,15 +36,7 @@ pub(crate) enum EvalBlockError {
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[non_exhaustive]
-pub(crate) struct Evoxel {
-    /// Diffuse reflection color.
-    pub(crate) color: Rgba,
-    /// Whether players' [cursors](crate::character::Cursor) target this voxel's containing
-    /// block or pass through it.
-    pub(crate) selectable: bool,
-    /// The effect on a [`Body`](crate::physics::Body) of colliding with this voxel.
-    pub(crate) collision: block::BlockCollision,
-}
+pub(crate) struct Evoxel {}
 /// Storage of an [`EvaluatedBlock`]'s shape — its _evaluated voxels._
 ///
 /// This voxel data may be smaller than the dimensions implied by [`Self::resolution`],
@@ -95,7 +60,7 @@ pub(crate) enum Evoxels {
     One(Evoxel),
     /// The [`GridArray`] should not have any data outside of the expected bounds
     /// `GridAab::for_block(resolution)`.
-    Many(Resolution, GridArray<Evoxel>),
+    Many(Resolution),
 }
 impl Evoxels {
     /// Returns the resolution (scale factor) of this set of voxels.
@@ -152,10 +117,7 @@ impl<'a> arbitrary::Arbitrary<'a> for Evoxels {
 /// mis-computing some of the derived data as an attempted optimization.
 /// This type is never exposed as part of the public API; only [`EvaluatedBlock`] is.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub(crate) struct MinEval {
-    pub(crate) attributes: BlockAttributes,
-    pub(crate) voxels: Evoxels,
-}
+pub(crate) struct MinEval {}
 impl From<MinEval> for EvaluatedBlock {
     fn from(value: MinEval) -> Self {
         loop {}

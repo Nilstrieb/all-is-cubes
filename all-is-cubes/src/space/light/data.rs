@@ -57,7 +57,6 @@ impl PackedLight {
     pub(crate) fn value(&self) -> Rgb {
         loop {}
     }
-
     /// Returns true if the light value is meaningful, or false if it is
     /// inside an opaque block or in empty unlit air (in which case [`Self::value`]
     /// always returns zero).
@@ -108,10 +107,7 @@ impl From<Rgb> for PackedLight {
 }
 /// An entry in the queue of cubes that need their light updated.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct LightUpdateRequest {
-    pub(crate) priority: PackedLightScalar,
-    pub(crate) cube: GridPoint,
-}
+pub(crate) struct LightUpdateRequest {}
 impl LightUpdateRequest {
     /// A priority comparison for entries with equal specified priority:
     /// prefer cubes closer to the origin. (This is for prettier initial startup:
@@ -133,14 +129,7 @@ impl PartialOrd for LightUpdateRequest {
 }
 /// A priority queue for [`LightUpdateRequest`]s which contains cubes
 /// at most once, even when added with different priorities.
-pub(crate) struct LightUpdateQueue {
-    /// Sorted storage of queue elements.
-    /// This is a BTreeSet rather than a BinaryHeap so that items can be removed.
-    queue: BTreeSet<LightUpdateRequest>,
-    /// Maps GridPoint to priority value. This allows deduplicating entries, including
-    /// removing low-priority entries in favor of high-priority ones
-    table: HashMap<GridPoint, PackedLightScalar>,
-}
+pub(crate) struct LightUpdateQueue {}
 impl LightUpdateQueue {
     pub(crate) fn new() -> Self {
         loop {}

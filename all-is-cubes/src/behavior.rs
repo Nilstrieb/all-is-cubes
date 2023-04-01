@@ -8,10 +8,9 @@ use std::sync::Arc;
 /// Dynamic add-ons to game objects; we might also have called them “components”.
 /// Each behavior is owned by a “host” of type `H` which determines when the behavior
 /// is invoked.
-pub(crate) trait Behavior<H: BehaviorHost>:
-    Debug + Send + Sync + Downcast + VisitRefs + 'static
-{
-}
+pub(crate) trait Behavior<
+    H: BehaviorHost,
+>: Debug + Send + Sync + Downcast + VisitRefs + 'static {}
 impl_downcast!(Behavior < H > where H : BehaviorHost);
 /// A type that can have attached behaviors.
 pub trait BehaviorHost: transaction::Transactional + 'static {
@@ -20,7 +19,6 @@ pub trait BehaviorHost: transaction::Transactional + 'static {
     type Attachment: Debug + Clone + Eq + 'static;
 }
 /// Items available to a [`Behavior`] during [`Behavior::step()`].
-
 /// Collects [`Behavior`]s and invokes them.
 ///
 /// Note: This type is public out of necessity because it is revealed elsewhere, but its details
@@ -34,7 +32,6 @@ pub struct BehaviorSet<H: BehaviorHost> {
 }
 struct BehaviorSetEntry<H: BehaviorHost> {
     attachment: H::Attachment,
-    behavior: Arc<dyn Behavior<H>>,
 }
 impl<H: BehaviorHost> Clone for BehaviorSetEntry<H> {
     fn clone(&self) -> Self {
@@ -55,17 +52,13 @@ impl<H: BehaviorHost> PartialEq for BehaviorSetEntry<H> {
 /// A [`Transaction`] that adds or modifies [`Behavior`]s in a [`BehaviorSet`].
 #[derive(Debug)]
 pub struct BehaviorSetTransaction<H: BehaviorHost> {
-    /// Replacement of existing behaviors or their attachments.
-    replace: BTreeMap<usize, Replace<H>>,
     /// Newly inserted behaviors.
     insert: Vec<BehaviorSetEntry<H>>,
 }
 #[derive(Debug)]
 struct Replace<H: BehaviorHost> {
-    old: BehaviorSetEntry<H>,
     new: BehaviorSetEntry<H>,
 }
-
 impl<H: BehaviorHost> Transaction<BehaviorSet<H>> for BehaviorSetTransaction<H> {
     type CommitCheck = ();
     type Output = transaction::NoOutput;

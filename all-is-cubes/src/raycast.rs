@@ -12,15 +12,7 @@ use crate::math::{
 /// direction vector).
 #[allow(clippy::exhaustive_structs)]
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub(crate) struct Ray {
-    /// The sole endpoint of the ray.
-    pub(crate) origin: Point3<FreeCoordinate>,
-    /// The direction in which the ray extends infinitely.
-    ///
-    /// The meaning, if any, of the magnitude of this vector depends on context;
-    /// considered as a geometric object it is a parameter.
-    pub(crate) direction: Vector3<FreeCoordinate>,
-}
+pub(crate) struct Ray {}
 impl Ray {
     /// Constructs a [`Ray`] from convertible types (e.g. tuples or 3-element arrays).
     /// Other than the use of [`Into`], this is equivalent to a struct literal.
@@ -86,32 +78,7 @@ impl Geometry for Ray {
 ///
 /// [`Space`]: crate::space::Space
 #[derive(Clone, Debug, PartialEq)]
-pub(crate) struct Raycaster {
-    ray: Ray,
-    /// Have we not yet produced the origin cube itself?
-    emit_current: bool,
-    /// Cube we're in; always the next cube to return from the iterator.
-    cube: GridPoint,
-    /// Which way to increment `cube` when stepping; signum of `direction`.
-    step: Vector3<GridCoordinate>,
-    /// t_max stores the t-value at which we would next cross a cube boundary,
-    /// for each axis in which we could move. Thus, the least element of t_max
-    /// is the next intersection between the grid and the ray.
-    t_max: Vector3<FreeCoordinate>,
-    /// The change in t when taking a full grid step along a given axis.
-    /// Always positive; partially infinite if axis-aligned.
-    t_delta: Vector3<FreeCoordinate>,
-    /// Last face we passed through.
-    last_face: Face7,
-    /// The t_max value used in the previous step; thus, the position along the
-    /// ray where we passed through last_face.
-    last_t_distance: FreeCoordinate,
-    /// Bounds to filter our outputs to within. This makes the iteration finite.
-    ///
-    /// Stored as ranges rather than [`GridAab`] because we need to work with only the
-    /// upper bound and not the size. (TODO: Maybe `GridAab` should do that too?)
-    bounds: Option<Vector3<std::ops::Range<GridCoordinate>>>,
-}
+pub(crate) struct Raycaster {}
 impl Raycaster {
     /// Construct a [`Raycaster`] for a ray with the given `origin` and `direction` vector.
     ///
@@ -212,14 +179,7 @@ impl Iterator for Raycaster {
 impl std::iter::FusedIterator for Raycaster {}
 /// Describes a ray crossing into a cube as defined by [`Raycaster`].
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub(crate) struct RaycastStep {
-    /// The specific face that was crossed. If the ray's origin was within a cube,
-    /// the face will be [`Face7::Within`].
-    cube_face: CubeFace,
-    /// The distance traversed, as measured in multiples of the supplied direction vector.
-    t_distance: FreeCoordinate,
-    t_max: Vector3<FreeCoordinate>,
-}
+pub(crate) struct RaycastStep {}
 impl RaycastStep {
     /// Returns the cube which the raycaster has just found the ray to intersect.
     ///

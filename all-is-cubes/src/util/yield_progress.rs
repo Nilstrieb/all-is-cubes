@@ -16,8 +16,6 @@ use instant::Instant;
 /// operation. This might change in the future, but for now, it will just output
 /// inconsistent results if you try to use it otherwise.
 pub(crate) struct YieldProgress {
-    start: f32,
-    end: f32,
     /// Name given to this specific portion of work. Inherited from the parent if not
     /// overridden.
     ///
@@ -31,17 +29,10 @@ pub(crate) struct YieldProgress {
 }
 /// Piggyback on the `Arc` we need to store the `dyn Fn` anyway to also store some state.
 struct Yielding<F: ?Sized> {
-    state: Mutex<YieldState>,
     yielder: F,
 }
 #[derive(Clone)]
-struct YieldState {
-    /// The most recent instant at which `yielder`'s future completed.
-    /// Used to detect overlong time periods between yields.
-    last_finished_yielding: Instant,
-    last_yield_location: &'static Location<'static>,
-    last_yield_label: Option<Arc<str>>,
-}
+struct YieldState {}
 impl fmt::Debug for YieldProgress {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         loop {}

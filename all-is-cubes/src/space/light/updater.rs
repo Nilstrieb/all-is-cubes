@@ -1,12 +1,8 @@
 //! Lighting algorithms for `Space`. This module is closely tied to `Space`
 //! and separated out for readability, not modularity.
 use std::fmt;
-
-
 use crate::block::EvaluatedBlock;
-use crate::math::{FaceMap};
-
-
+use crate::math::FaceMap;
 use crate::util::{CustomFormat, StatusText};
 /// Given a block and its neighbors, which directions should we cast rays to find light
 /// falling on it?
@@ -19,17 +15,7 @@ fn directions_to_seek_light(
 /// Performance data for bulk light updates.
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
 #[non_exhaustive]
-pub(crate) struct LightUpdatesInfo {
-    /// Number of blocks whose light data updates are aggregated in this data.
-    pub(crate) update_count: usize,
-    /// The largest change in light value that occurred.
-    pub(crate) max_update_difference: u8,
-    /// Number of entries in the light update queue.
-    pub(crate) queue_count: usize,
-    /// The largest update priority in the queue (corresponds to the size of
-    /// difference that caused the cube to be added).
-    pub(crate) max_queue_priority: u8,
-}
+pub(crate) struct LightUpdatesInfo {}
 impl std::ops::AddAssign<LightUpdatesInfo> for LightUpdatesInfo {
     fn add_assign(&mut self, other: Self) {
         loop {}
