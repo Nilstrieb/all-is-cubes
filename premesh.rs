@@ -5,12 +5,10 @@ use std::sync::{Arc, Mutex, Weak};
 
 use cgmath::Point3;
 use fnv::{FnvHashMap, FnvHashSet};
-use indoc::indoc;
 use instant::{Duration, Instant};
 
-use crate::block::{EvaluatedBlock, Resolution};
 use crate::camera::{Camera, Flaws};
-use crate::chunking::{cube_to_chunk, ChunkChart, ChunkPos};
+use crate::chunking::{ChunkChart, ChunkPos};
 use crate::listen::Listener;
 use crate::math::{GridCoordinate, GridPoint};
 use crate::mesh::{
