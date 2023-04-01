@@ -19,7 +19,3 @@ pub(crate) trait RefVisitor {
     /// to report one of the refs it contains.
     fn visit(&mut self, r: &dyn URefErased);
 }
-#[cfg(test)]
-pub(crate) fn list_refs<T: VisitRefs + 'static>(target: &T) -> Vec<super::Name> {
-    loop {}
-}

@@ -371,11 +371,6 @@ impl Space {
     fn listener_for_block(&self, index: BlockIndex) -> SpaceBlockChangeListener {
         loop {}
     }
-    #[cfg(test)]
-    #[track_caller]
-    pub(crate) fn consistency_check(&self) {
-        loop {}
-    }
 }
 impl<T: Into<GridPoint>> std::ops::Index<T> for Space {
     type Output = Block;

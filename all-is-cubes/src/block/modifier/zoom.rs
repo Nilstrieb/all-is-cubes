@@ -56,30 +56,3 @@ impl<'a> arbitrary::Arbitrary<'a> for Zoom {
         loop {}
     }
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::block::{EvaluatedBlock, Resolution::R2};
-    use crate::content::{make_some_blocks, make_some_voxel_blocks};
-    use crate::math::{GridAab, GridVector, Rgba};
-    use crate::universe::Universe;
-    use pretty_assertions::assert_eq;
-    #[test]
-    #[should_panic(expected = "Zoom offset Point3 [2, 1, 1] out of bounds for 2")]
-    fn construction_out_of_range_high() {
-        loop {}
-    }
-    #[test]
-    #[should_panic(expected = "Zoom offset Point3 [-1, 1, 1] out of bounds for 2")]
-    fn construction_out_of_range_low() {
-        loop {}
-    }
-    #[test]
-    fn evaluation() {
-        loop {}
-    }
-    #[test]
-    fn atom_in_bounds() {
-        loop {}
-    }
-}

@@ -47,16 +47,6 @@ impl Inventory {
     ) -> Result<UniverseTransaction, ToolError> {
         loop {}
     }
-    /// Returns the total count of the given item in this inventory.
-    ///
-    /// Note on numeric range: this can overflow if the inventory has over 65537 slots.
-    /// Let's not do that.
-    ///
-    /// TODO: Added for tests; is this generally useful?
-    #[cfg(test)]
-    pub(crate) fn count_of(&self, item: &Tool) -> u32 {
-        loop {}
-    }
 }
 impl VisitRefs for Inventory {
     fn visit_refs(&self, visitor: &mut dyn RefVisitor) {
@@ -96,13 +86,6 @@ impl Slot {
     }
     /// Returns the count of items in this slot.
     pub(crate) fn count(&self) -> u16 {
-        loop {}
-    }
-    /// If the given tool is in this slot, return the count thereof.
-    ///
-    /// TODO: Added for tests; is this generally useful?
-    #[cfg(test)]
-    pub(crate) fn count_of(&self, item: &Tool) -> u16 {
         loop {}
     }
     /// Moves as many items as possible from `self` to `destination` while obeying item

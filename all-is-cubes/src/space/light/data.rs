@@ -57,10 +57,7 @@ impl PackedLight {
     pub(crate) fn value(&self) -> Rgb {
         loop {}
     }
-    #[cfg(test)]
-    pub(super) fn status(&self) -> LightStatus {
-        loop {}
-    }
+
     /// Returns true if the light value is meaningful, or false if it is
     /// inside an opaque block or in empty unlit air (in which case [`Self::value`]
     /// always returns zero).

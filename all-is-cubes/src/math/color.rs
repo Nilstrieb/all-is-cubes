@@ -412,19 +412,12 @@ fn component_to_srgb(c: NotNan<f32>) -> f32 {
 fn component_to_srgb8(c: NotNan<f32>) -> u8 {
     loop {}
 }
-#[cfg(test)]
-fn component_from_linear8_arithmetic(c: u8) -> NotNan<f32> {
-    loop {}
-}
+
 #[inline]
 const fn component_from_linear8_const(c: u8) -> NotNan<f32> {
     unsafe { NotNan::new_unchecked(CONST_LINEAR_LOOKUP_TABLE[c as usize]) }
 }
 /// Implements sRGB decoding using the standard arithmetic.
-#[cfg(test)]
-fn component_from_srgb8_arithmetic(c: u8) -> NotNan<f32> {
-    loop {}
-}
 /// Implements sRGB decoding using a lookup table.
 #[inline]
 const fn component_from_srgb8_const(c: u8) -> NotNan<f32> {

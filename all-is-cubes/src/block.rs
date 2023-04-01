@@ -109,11 +109,6 @@ impl Block {
     pub(crate) fn from_primitive(p: Primitive) -> Self {
         loop {}
     }
-    /// Construct a [`Block`] from a [`Primitive`] constant.
-    #[cfg(test)]
-    pub(crate) const fn from_static_primitive(r: &'static Primitive) -> Self {
-        loop {}
-    }
     /// Returns the [`Primitive`] which defines this block before any
     /// [`Modifier`]s are applied.
     pub(crate) fn primitive(&self) -> &Primitive {
