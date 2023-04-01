@@ -1,10 +1,9 @@
 //! TODO: Maybe this file is too small
-use std::collections::BTreeMap;
 use std::fmt;
 use crate::behavior::{self, BehaviorSet, BehaviorSetTransaction};
 use crate::block::Block;
 use crate::drawing::DrawingPlane;
-use crate::math::{GridCoordinate, GridMatrix, GridPoint};
+use crate::math::{GridMatrix, GridPoint};
 use crate::space::{GridAab, Space};
 use crate::transaction::{
     CommitError, Merge, NoOutput, PreconditionFailed, Transaction, TransactionConflict,
@@ -18,20 +17,6 @@ impl Transactional for Space {
 #[must_use]
 pub struct SpaceTransaction {}
 impl SpaceTransaction {
-    /// Construct a [`SpaceTransaction`] for a single cube.
-    ///
-    /// If `old` is not [`None`], requires that the existing block is that block or the
-    /// transaction will fail.
-    /// If `new` is not [`None`], replaces the existing block with `new`.
-    ///
-    /// TODO: This name is a poor name now that [`Self::set`] exists.
-    pub(crate) fn set_cube(
-        cube: impl Into<GridPoint>,
-        old: Option<Block>,
-        new: Option<Block>,
-    ) -> Self {
-        loop {}
-    }
     /// Expand this transaction to include modifying the given cube, or return an error if
     /// that would conflict (by the same definition as transaction merging).
     ///
@@ -76,24 +61,6 @@ impl SpaceTransaction {
     ///
     /// [non-conservative]: https://en.wikipedia.org/wiki/Conserved_quantity
     pub(crate) fn nonconserved(mut self) -> Self {
-        loop {}
-    }
-    fn single(cube: impl Into<GridPoint>, transaction: CubeTransaction) -> Self {
-        loop {}
-    }
-    /// Modify the space's [`BehaviorSet`].
-    pub(crate) fn behaviors(t: behavior::BehaviorSetTransaction<Space>) -> Self {
-        loop {}
-    }
-    /// Add a behavior to the [`Space`].
-    /// This is a shortcut for creating a [`BehaviorSetTransaction`].
-    pub(crate) fn add_behavior<B>(bounds: GridAab, behavior: B) -> Self
-    where
-        B: behavior::Behavior<Space> + 'static,
-    {
-        loop {}
-    }
-    pub(crate) fn activate_block(cube: GridPoint) -> Self {
         loop {}
     }
     /// Computes the region of cubes directly affected by this transaction.

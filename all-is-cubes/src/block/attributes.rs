@@ -1,8 +1,5 @@
 //! [`BlockAttributes`] and closely related types.
-use std::borrow::Cow;
 use std::fmt;
-use crate::drawing::VoxelBrush;
-use crate::math::{Face6, Rgb};
 #[cfg(doc)]
 use crate::{
     block::{Block, BlockDef},
@@ -21,15 +18,7 @@ impl fmt::Debug for BlockAttributes {
         loop {}
     }
 }
-impl BlockAttributes {
-    /// Block attributes suitable as default values for in-game use.
-    ///
-    /// This function differs from the [`Default::default`] trait implementation only
-    /// in that it is a `const fn`.
-    pub(crate) const fn default() -> BlockAttributes {
-        loop {}
-    }
-}
+impl BlockAttributes {}
 impl Default for BlockAttributes {
     /// Block attributes suitable as default values for in-game use.
     fn default() -> BlockAttributes {

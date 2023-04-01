@@ -1,6 +1,6 @@
-use crate::block::Block;
-use crate::character::Spawn;
-use crate::space::{GridAab, SpacePhysics};
+
+
+use crate::space::{GridAab};
 /// Tool for constructing new [`Space`]s.
 ///
 /// To create one, call [`Space::builder()`](Space::builder).

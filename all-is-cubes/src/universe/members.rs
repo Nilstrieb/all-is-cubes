@@ -1,7 +1,7 @@
 use crate::block::BlockDef;
 use crate::character::Character;
 use crate::space::Space;
-use crate::universe::{InsertError, Name, URef, URootRef, Universe, UniverseIndex, UniverseIter};
+use crate::universe::{Name, URef, URootRef};
 use std::collections::BTreeMap;
 /// A `BTreeMap` is used to ensure that the iteration order is deterministic across
 /// runs/versions.

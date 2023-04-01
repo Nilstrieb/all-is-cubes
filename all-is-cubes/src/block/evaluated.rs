@@ -1,7 +1,7 @@
 //! [`EvaluatedBlock`] and [`Evoxel`].
 use std::fmt;
-use crate::block::{self, BlockAttributes, Resolution};
-use crate::math::{FaceMap, GridAab, GridArray, GridPoint, OpacityCategory, Rgba};
+use crate::block::{Resolution};
+use crate::math::{GridAab, GridPoint};
 use crate::universe::RefError;
 #[cfg(doc)]
 use super::{Block, Primitive, URef, AIR};

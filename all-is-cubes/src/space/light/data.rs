@@ -1,9 +1,9 @@
 //! Data structures for light storage and algorithms.
-use std::collections::BTreeSet;
+
 use std::fmt;
 use cgmath::{Vector3, Vector4};
 use crate::math::*;
-use crate::space::*;
+
 /// One component of a `PackedLight`.
 pub(crate) type PackedLightScalar = u8;
 /// Special reasons for a cube having zero light in it.

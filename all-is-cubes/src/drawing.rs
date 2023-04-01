@@ -16,10 +16,9 @@
 //!     exclusive upper bounds).
 use std::borrow::Cow;
 use std::marker::PhantomData;
-/// Re-export the version of the [`embedded_graphics`] crate we're using.
-pub(crate) use embedded_graphics;
+
 use crate::block::Block;
-use crate::math::{GridMatrix, GridPoint};
+use crate::math::{GridPoint};
 /// Adapter to use a [`Space`] or [`SpaceTransaction`] as a [`DrawTarget`].
 /// Use [`Space::draw_target`] to construct this.
 ///

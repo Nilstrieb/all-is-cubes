@@ -1,6 +1,6 @@
 //! Mesh vertices.
 use cgmath::Point3;
-use crate::math::{Face6, FreeCoordinate, GridPoint, Rgba};
+use crate::math::{GridPoint};
 /// Numeric type used to store texture coordinates in vertices.
 ///
 /// TODO: Delete this type alias now that we're generic over texture coordinates.

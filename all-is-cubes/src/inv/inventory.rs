@@ -1,8 +1,8 @@
 //! [`Inventory`] for storing items.
 use std::borrow::Cow;
-use std::collections::BTreeMap;
+
 use std::num::NonZeroU16;
-use std::sync::Arc;
+
 use crate::block::Block;
 use crate::character::{Character, Cursor};
 use crate::inv::{Icons, Tool, ToolError};

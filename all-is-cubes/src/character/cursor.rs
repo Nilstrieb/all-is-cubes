@@ -2,24 +2,13 @@
 //!
 //! TODO: It's unclear what the scope of this module should be.
 use std::fmt;
-use cgmath::Point3;
-use crate::block::{Block, EvaluatedBlock};
 use crate::math::{
     Face7, FreeCoordinate, Geometry, GridCoordinate, GridPoint, GridVector,
 };
 use crate::mesh::LineVertex;
 use crate::raycast::Ray;
-use crate::space::{PackedLight, Space};
+use crate::space::Space;
 use crate::universe::URef;
-/// Find the first selectable block the ray strikes and express the result in a [`Cursor`]
-/// value, or [`None`] if nothing was struck within the distance limit.
-pub(crate) fn cursor_raycast(
-    mut ray: Ray,
-    space_ref: &URef<Space>,
-    maximum_distance: FreeCoordinate,
-) -> Option<Cursor> {
-    loop {}
-}
 /// Data collected by [`cursor_raycast`] about the blocks struck by the ray; intended to be
 /// sufficient for various player interactions with blocks.
 ///

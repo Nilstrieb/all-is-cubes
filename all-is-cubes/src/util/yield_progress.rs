@@ -1,8 +1,7 @@
 use std::fmt;
 use std::panic::Location;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use futures_core::future::{BoxFuture, Future};
-use instant::Instant;
 /// Allows a long-running async task to report its progress, while also yielding to the
 /// scheduler (e.g. for single-threaded web environment) and introducing cancellation
 /// points.
@@ -39,24 +38,6 @@ impl fmt::Debug for YieldProgress {
     }
 }
 impl YieldProgress {
-    /// Construct a new [`YieldProgress`], which will call `yielder` to yield and
-    /// `progressor` to report progress.
-    ///
-    /// Note that it measures time intervals between yields starting from when this
-    /// function is called, as if this is the first yield.
-    #[track_caller]
-    pub(crate) fn new<Y, YFut, P>(yielder: Y, progressor: P) -> Self
-    where
-        Y: Fn() -> YFut + Send + Sync + 'static,
-        YFut: Future<Output = ()> + Send + 'static,
-        P: Fn(f32, &str) + Send + Sync + 'static,
-    {
-        loop {}
-    }
-    /// Returns a [`YieldProgress`] that does no progress reporting and no yielding.
-    pub(crate) fn noop() -> Self {
-        loop {}
-    }
     /// Add a name for the portion of work this [`YieldProgress`] covers.
     ///
     /// If there is already a label, it will be overwritten.

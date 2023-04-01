@@ -1,7 +1,7 @@
 use std::fmt;
 use std::hash;
 use std::sync::Mutex;
-use std::sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard, Weak};
+use std::sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard};
 use ouroboros::self_referencing;
 use crate::transaction::{ExecuteError, PreconditionFailed, Transaction, Transactional};
 use crate::universe::InsertError;

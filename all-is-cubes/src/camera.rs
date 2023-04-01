@@ -1,10 +1,10 @@
 //! Projection and view matrices, viewport and aspect ratio, visibility,
 //! raycasting into the scene, etc.
-use crate::chunking::OctantMask;
-use crate::math::{Aab, FreeCoordinate, GridAab, Rgba};
-use crate::raycast::Ray;
-use cgmath::{Basis3, Decomposed, Deg, Matrix4, Point2, Point3, Vector2, Vector3};
-use ordered_float::NotNan;
+
+use crate::math::{FreeCoordinate, GridAab};
+
+use cgmath::{Basis3, Decomposed, Matrix4, Point3, Vector3};
+
 mod flaws;
 pub(crate) use flaws::*;
 mod graphics_options;

@@ -2,8 +2,6 @@
 //!
 //! This module is internal and reexported by its parent.
 use std::fmt::Debug;
-use crate::camera::Flaws;
-use crate::math::{FaceMap, GridArray, OpacityCategory};
 use crate::mesh::{BlockVertex, MeshOptions, TextureAllocator, TextureTile};
 use crate::space::Space;
 /// Part of the triangle mesh calculated for a [`Block`], stored in a [`BlockMesh`] keyed
@@ -48,22 +46,6 @@ pub(crate) struct BlockMesh<V, T> {
     /// do. Convert this to an Option, unless we decide that e.g. we want the triangulator
     /// to be responsible for optimizing opaque blocks into 6 face textures.
     pub(super) textures_used: Vec<T>,
-}
-/// Computes [`BlockMeshes`] for blocks currently present in a [`Space`].
-/// Pass the result to [`SpaceMesh::new()`](super::SpaceMesh::new) to use it.
-///
-/// The resulting array is indexed by the `Space`'s
-/// [`BlockIndex`](crate::space::BlockIndex) values.
-pub(crate) fn block_meshes_for_space<V, A>(
-    space: &Space,
-    texture_allocator: &A,
-    options: &MeshOptions,
-) -> BlockMeshes<V, A::Tile>
-where
-    V: From<BlockVertex<<<A as TextureAllocator>::Tile as TextureTile>::Point>>,
-    A: TextureAllocator,
-{
-    loop {}
 }
 /// Array of [`BlockMesh`] indexed by a [`Space`]'s block indices; a convenience
 /// alias for the return type of [`block_meshes_for_space`].

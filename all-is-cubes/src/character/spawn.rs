@@ -11,29 +11,6 @@ use crate::universe::{RefVisitor, VisitRefs};
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Spawn {}
 impl Spawn {
-    /// Create the default Spawn configuration for a Space.
-    ///
-    /// TODO: There is no good default, really: we don't know if it is better to be
-    /// outside the space looking in or to be within it at some particular position.
-    /// Come up with some kind of hint that we can use to configure this better without
-    /// necessarily mandating a specification.
-    pub(crate) fn default_for_new_space(bounds: GridAab) -> Self {
-        loop {}
-    }
-    /// Constructs a [`Spawn`] point located outside the [`Space`] and with its bounds in
-    /// frame.
-    ///
-    /// `direction` gives the direction in which the character will lie relative to the
-    /// center of the space.
-    ///
-    /// TODO: This needs better-defined FOV/distance considerations before making it public
-    #[doc(hidden)]
-    pub(crate) fn looking_at_space(
-        space_bounds: GridAab,
-        direction: impl Into<Vector3<FreeCoordinate>>,
-    ) -> Self {
-        loop {}
-    }
     /// Sets the position at which the character will appear, in terms of its viewpoint.
     pub(crate) fn set_eye_position(
         &mut self,
@@ -58,9 +35,6 @@ impl Spawn {
     pub(crate) fn set_inventory(&mut self, inventory: Vec<Slot>) {
         loop {}
     }
-}
-fn notnan_or_zero(value: FreeCoordinate) -> NotNan<FreeCoordinate> {
-    loop {}
 }
 impl VisitRefs for Spawn {
     fn visit_refs(&self, visitor: &mut dyn RefVisitor) {

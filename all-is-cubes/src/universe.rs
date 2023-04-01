@@ -12,11 +12,11 @@
 //! For the time being, if you wish to use a [`Universe`] from multiple threads, you must
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
-use crate::block::BlockDef;
-use crate::character::Character;
-use crate::space::Space;
+
+
+
 use std::fmt;
-use std::sync::Arc;
+
 mod members;
 pub(crate) use members::*;
 mod universe_txn;

@@ -3,10 +3,10 @@
 //! Note: this module is currently private and a little crufty.
 //! We will probably want to expose it but clean up the API first, particularly
 //! clarifying the treatment of distances and squared distances.
-use std::ops::RangeTo;
-use std::sync::Arc;
+
+
 use cgmath::Vector3;
-use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint, GridVector};
+use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint};
 /// Type to distinguish chunk coordinates from cube coordinates.
 ///
 /// Parameter `CHUNK_SIZE` is the number of cubes along the edge of a chunk.

@@ -1,4 +1,4 @@
-use crate::math::Face6;
+
 use crate::universe;
 /// Data for [`Modifier::Move`]; displaces the block out of the grid, cropping it.
 /// A pair of `Move`s can depict a block moving between two cubes.

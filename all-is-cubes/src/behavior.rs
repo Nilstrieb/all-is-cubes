@@ -1,10 +1,10 @@
 //! Dynamic add-ons to game objects; we might also have called them “components”.
 use crate::transaction::{self, Transaction};
-use crate::universe::{UniverseTransaction, VisitRefs};
+use crate::universe::{VisitRefs};
 use downcast_rs::{impl_downcast, Downcast};
-use std::collections::BTreeMap;
+
 use std::fmt::{self, Debug};
-use std::sync::Arc;
+
 /// Dynamic add-ons to game objects; we might also have called them “components”.
 /// Each behavior is owned by a “host” of type `H` which determines when the behavior
 /// is invoked.

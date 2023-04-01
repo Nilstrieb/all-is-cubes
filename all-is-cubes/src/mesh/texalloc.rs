@@ -1,11 +1,8 @@
 //! Traits for texture atlas/array allocator for block textures.
-
-
 use cgmath::Point3;
 use crate::block::Evoxels;
 use crate::math::GridAab;
 use crate::mesh::TextureCoordinate;
-
 /// Color data accepted by [`TextureAllocator`].
 /// The components are sRGB `[R, G, B, A]`.
 pub(crate) type Texel = [u8; 4];
@@ -42,16 +39,4 @@ pub trait TextureTile: Clone {
     ///
     /// `data` must be of length `self.bounds().volume()`.
     fn write(&mut self, data: &[Texel]);
-}
-pub(super) fn copy_voxels_to_texture<A: TextureAllocator>(
-    texture_allocator: &A,
-    voxels: &Evoxels,
-) -> Option<A::Tile> {
-    loop {}
-}
-pub(super) fn copy_voxels_into_existing_texture<T: TextureTile>(
-    voxels: &Evoxels,
-    texture: &mut T,
-) {
-    loop {}
 }

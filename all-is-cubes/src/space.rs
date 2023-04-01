@@ -1,19 +1,19 @@
 //! That which contains many blocks.
-use crate::behavior::BehaviorSet;
-use crate::block::{Block, EvalBlockError, EvaluatedBlock};
+
+use crate::block::{Block, EvalBlockError};
 #[cfg(doc)]
 use crate::character::Character;
-use crate::character::Spawn;
-use cgmath::Vector3;
-use crate::listen::{Gate, Listen, Listener, Notifier};
-use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
+
+
+use crate::listen::{Listen, Listener};
+use crate::math::{GridAab, GridPoint};
 use crate::universe::{RefVisitor, VisitRefs};
-use std::collections::{HashMap, HashSet};
+
 use std::fmt;
-use std::sync::{Arc, Mutex};
+
 mod builder;
 mod light;
-use light::LightUpdateQueue;
+
 pub(crate) use light::PackedLight;
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”

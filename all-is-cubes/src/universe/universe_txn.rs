@@ -1,15 +1,15 @@
 use std::any::Any;
 use std::collections::HashMap;
 use std::fmt::{self, Debug};
-use crate::block::BlockDef;
-use crate::character::Character;
-use crate::space::Space;
+
+
+
 use crate::transaction::{
-    self, CommitError, Merge, PreconditionFailed, Transaction, TransactionConflict,
+    CommitError, Merge, PreconditionFailed, Transaction, TransactionConflict,
     Transactional,
 };
 use crate::universe::{
-    AnyURef, Name, UBorrowMutImpl, URef, URefErased as _, Universe, UniverseId,
+    Name, UBorrowMutImpl, URef, UniverseId,
 };
 /// Conversion from concrete transaction types to [`UniverseTransaction`].
 ///

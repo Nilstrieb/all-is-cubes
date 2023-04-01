@@ -1,5 +1,5 @@
 //! Lesser-used helpers for [`BlockBuilder`].
-use crate::block::{BlockAttributes, Modifier};
+
 /// Tool for constructing [`Block`] values conveniently.
 ///
 /// To create one, call [`Block::builder()`].

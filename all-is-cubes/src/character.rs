@@ -1,13 +1,13 @@
 //! Player-character stuff.
 use crate::behavior::{BehaviorSet, BehaviorSetTransaction};
-use crate::inv::{Inventory, InventoryChange, InventoryTransaction, TOOL_SELECTIONS};
-use crate::physics::{Body, BodyStepInfo, BodyTransaction};
+use crate::inv::{Inventory, InventoryTransaction};
+use crate::physics::{Body, BodyTransaction};
 use crate::transaction::{
     self, CommitError, Merge, PreconditionFailed, Transaction, TransactionConflict,
     Transactional,
 };
-use crate::universe::{RefVisitor, URef, UniverseTransaction, VisitRefs};
-use crate::util::{CustomFormat, StatusText};
+
+
 use std::fmt;
 mod cursor;
 pub(crate) use cursor::*;

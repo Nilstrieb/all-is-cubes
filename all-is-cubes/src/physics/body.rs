@@ -1,8 +1,8 @@
-use super::collision::Contact;
-use crate::math::FreeCoordinate;
+
+
 use crate::transaction::{self, Transaction};
 use crate::util::{ConciseDebug, CustomFormat, StatusText};
-use cgmath::Vector3;
+
 use std::fmt;
 /// An object with a position, velocity, and collision volume.
 /// What it collides with is determined externally.

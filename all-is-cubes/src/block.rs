@@ -4,11 +4,11 @@
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
 use std::fmt;
-use std::sync::Arc;
+
 use crate::listen::Listener;
-use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
-use crate::space::Space;
-use crate::universe::URef;
+use crate::math::{GridRotation, Rgb, Rgba};
+
+
 mod attributes;
 pub(crate) use attributes::*;
 mod block_def;
