@@ -1,12 +1,11 @@
 use std::num::NonZeroU32;
-use std::sync::{Arc, Mutex, Weak};
+use std::sync::{Mutex, Weak};
 
 use fnv::{FnvHashMap, FnvHashSet};
 
 use crate::chunking::ChunkPos;
 use crate::listen::Listener;
 use crate::math::GridCoordinate;
-use crate::mesh::{GfxVertex, SpaceMesh, TextureAllocator};
 use crate::space::{BlockIndex, SpaceChange};
 
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
@@ -20,13 +19,10 @@ pub struct ChunkedSpaceMesh<const CHUNK_SIZE: GridCoordinate> {
 #[derive(Debug)]
 struct VersionedBlockMesh<Vert, Tile> {
     mesh: (Vert, Tile),
-    version: BlockMeshVersion,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 enum BlockMeshVersion {
-    NotReady,
-    Numbered(NonZeroU32),
 }
 
 /// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
