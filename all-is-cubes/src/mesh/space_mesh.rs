@@ -1,11 +1,11 @@
 use bitvec::vec::BitVec;
-use cgmath::{Vector3};
+use cgmath::Vector3;
 use std::fmt::Debug;
 use std::ops::Range;
 use crate::camera::Flaws;
 use crate::math::{Face6, GridCoordinate, GridPoint, GridRotation};
 use crate::mesh::{BlockMesh, GfxVertex, TextureTile};
-use crate::space::{BlockIndex};
+use crate::space::BlockIndex;
 /// A triangle mesh representation of a [`Space`] (or part of it) which may
 /// then be rasterized.
 ///
@@ -35,38 +35,6 @@ pub struct SpaceMesh<V, T> {
     textures_used: Vec<T>,
     /// Flaws in this mesh, that should be reported as flaws in any rendering containing it.
     flaws: Flaws,
-}
-/// Copy and adjust vertices from a [`BlockMesh`] into the storage of a [`SpaceMesh`].
-///
-/// This does not perform depth sorting and does not account for mesh or texture dependencies.
-///
-/// * `block_mesh` is the input mesh to copy.
-/// * `cube` is the position passed to `V::instantiate_block()`.
-/// * `vertices`, `opaque_indices`, and `transparent_indices` are the destination to append to.
-/// * `neighbor_is_fully_opaque` is called to determine whether this block's faces are
-///   obscured. It is a function so that lookups can be skipped if their answer would
-///   make no difference.
-fn write_block_mesh_to_space_mesh<V: GfxVertex, T: TextureTile>(
-    block_mesh: &BlockMesh<V, T>,
-    cube: GridPoint,
-    vertices: &mut Vec<V>,
-    opaque_indices: &mut Vec<u32>,
-    transparent_indices: &mut Vec<u32>,
-    mut neighbor_is_fully_opaque: impl FnMut(Face6) -> bool,
-) {
-    loop {}
-}
-/// Set the given element in the [`BitVec`] to `true`, and return the old
-/// value.
-fn bitset_set_and_get(v: &mut BitVec, index: usize) -> bool {
-    loop {}
-}
-/// `storage.extend(items)` plus reporting the added range of items
-fn extend_giving_range<T>(
-    storage: &mut Vec<T>,
-    items: impl IntoIterator<Item = T>,
-) -> Range<usize> {
-    loop {}
 }
 /// Source of [`BlockMesh`] values for [`SpaceMesh::compute`].
 ///
@@ -109,17 +77,6 @@ impl DepthOrdering {
         loop {}
     }
     fn to_index(self) -> usize {
-        loop {}
-    }
-    /// Calculates the `DepthOrdering` value for a particular viewing direction, expressed
-    /// as a vector from the camera to the geometry.
-    ///
-    /// If the vector is zero, [`DepthOrdering::Within`] will be returned. Thus, passing
-    /// coordinates in units of chunks will result in returning `Within` exactly when the
-    /// viewpoint is within the chunk (implying the need for finer-grained sorting).
-    pub(crate) fn from_view_direction(
-        direction: Vector3<GridCoordinate>,
-    ) -> DepthOrdering {
         loop {}
     }
     fn rev(self) -> Self {

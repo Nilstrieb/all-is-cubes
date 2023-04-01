@@ -14,12 +14,11 @@
 //! *   Coordinates are considered to refer to pixel centers rather than low corners,
 //!     and rectangles have inclusive upper bounds (whereas our [`GridAab`]s have
 //!     exclusive upper bounds).
-
-use embedded_graphics::geometry::{Dimensions};
-use embedded_graphics::pixelcolor::{PixelColor};
-use embedded_graphics::prelude::{Drawable};
+use embedded_graphics::geometry::Dimensions;
+use embedded_graphics::pixelcolor::PixelColor;
+use embedded_graphics::prelude::Drawable;
 use embedded_graphics::primitives::Rectangle;
-use std::borrow::{Cow};
+use std::borrow::Cow;
 use std::marker::PhantomData;
 use std::ops::Range;
 /// Re-export the version of the [`embedded_graphics`] crate we're using.
@@ -28,34 +27,6 @@ use crate::block::{Block, BlockAttributes, Resolution};
 use crate::math::{GridAab, GridCoordinate, GridMatrix, GridPoint};
 use crate::space::{SetCubeError, Space};
 use crate::universe::Universe;
-/// Convert a bounding-box rectangle, as from [`embedded_graphics::geometry::Dimensions`],
-/// to a [`GridAab`] which encloses the voxels that would be affected by drawing a
-/// [`Drawable`] with those bounds on a [`DrawingPlane`] with the given `transform`.
-///
-/// `max_brush` should be the union of bounds of [`VoxelBrush`]es used by the drawable.
-/// If using plain colors, `GridAab::ORIGIN_CUBE` is the appropriate
-/// input.
-///
-/// Please note that coordinate behavior may be surprising. [`embedded_graphics`]
-/// considers coordinates to refer to pixel centers, which is similar but not identical
-/// to our use of [`GridPoint`] to identify a cube by its low corner. The `transform` is
-/// then applied to those coordinates. So, for example, applying [`GridMatrix::FLIP_Y`]
-/// to a [`Rectangle`] whose top-left corner is `[0, 0]` will result in a [`GridAab`]
-/// which *includes* the <var>y</var> = 0 row — not one which abuts it and is strictly in
-/// the negative y range.
-///
-/// TODO: This function still has some bugs to work out
-///
-/// TODO: This function needs a better name
-///
-/// TODO: Handling zero-area rectangles is not implemented
-pub(crate) fn rectangle_to_aab(
-    rectangle: Rectangle,
-    transform: GridMatrix,
-    max_brush: GridAab,
-) -> GridAab {
-    loop {}
-}
 /// Adapter to use a [`Space`] or [`SpaceTransaction`] as a [`DrawTarget`].
 /// Use [`Space::draw_target`] to construct this.
 ///
@@ -85,31 +56,3 @@ pub(crate) trait VoxelColor<'a>: PixelColor {
 /// requires a value implementing [`Copy`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct VoxelBrush<'a>(Vec<(GridPoint, Cow<'a, Block>)>);
-/// Converts the return value of [`Space::set`] to the return value of
-/// [`DrawTarget::draw_pixel`], by making out-of-bounds not an error.
-fn ignore_out_of_bounds(result: Result<bool, SetCubeError>) -> Result<(), SetCubeError> {
-    loop {}
-}
-/// Generate a set of blocks which together display the given [`Drawable`] which may be
-/// larger than one block.
-///
-/// `z` specifies the origin z-coordinate within the blocks.
-/// `z_range` specifies the range which is available for drawing; keeping this small
-/// increases performance due to not processing many empty voxels.
-///
-/// Returns a `Space` containing all the blocks properly arranged, or an error if reading
-/// the `Drawable`'s color-blocks fails.
-pub(crate) fn draw_to_blocks<'c, D, C>(
-    universe: &mut Universe,
-    resolution: Resolution,
-    z: GridCoordinate,
-    z_range: Range<GridCoordinate>,
-    attributes: BlockAttributes,
-    object: &D,
-) -> Result<Space, SetCubeError>
-where
-    D: Drawable<Color = C> + Dimensions,
-    C: VoxelColor<'c>,
-{
-    loop {}
-}

@@ -98,15 +98,6 @@ impl fmt::Debug for Block {
     }
 }
 impl Block {
-    /// Returns a new [`BlockBuilder`] which may be used to construct a [`Block`] value
-    /// from various inputs with convenient syntax.
-    pub(crate) const fn builder() -> BlockBuilder<builder::NeedsPrimitive> {
-        loop {}
-    }
-    /// Construct a [`Block`] from a [`Primitive`] value.
-    pub(crate) fn from_primitive(p: Primitive) -> Self {
-        loop {}
-    }
     /// Returns the [`Primitive`] which defines this block before any
     /// [`Modifier`]s are applied.
     pub(crate) fn primitive(&self) -> &Primitive {
@@ -259,10 +250,6 @@ impl Block {
         loop {}
     }
 }
-/// Recursion limiter helper for evaluate.
-fn next_depth(depth: u8) -> Result<u8, EvalBlockError> {
-    loop {}
-}
 impl PartialEq for Block {
     fn eq(&self, other: &Self) -> bool {
         loop {}
@@ -296,13 +283,6 @@ impl From<Rgba> for Block {
         loop {}
     }
 }
-/// Given the `resolution` of some recursive block occupying `cube`, transform `ray`
-/// into an equivalent ray intersecting the recursive grid.
-///
-#[inline]
-pub(crate) fn recursive_ray(ray: Ray, cube: GridPoint, resolution: Resolution) -> Ray {
-    loop {}
-}
 /// Notification when an [`EvaluatedBlock`] result changes.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
@@ -311,25 +291,4 @@ pub(crate) struct BlockChange {
     /// this helps preserve the option of adding them.
     _not_public: (),
 }
-impl BlockChange {
-    #[allow(clippy::new_without_default)]
-    #[allow(missing_docs)]
-    pub(crate) fn new() -> BlockChange {
-        loop {}
-    }
-}
-/// Construct a set of [`Primitive::Recur`] blocks that form a miniature of the given `space`.
-/// The returned [`Space`] contains each of the blocks; its coordinates will correspond to
-/// those of the input, scaled down by `resolution`.
-///
-/// Returns [`SetCubeError::EvalBlock`] if the `Space` cannot be accessed, and
-/// [`SetCubeError::TooManyBlocks`] if the dimensions would result in too many blocks.
-///
-/// TODO: add doc test for this
-pub(crate) fn space_to_blocks(
-    resolution: Resolution,
-    attributes: BlockAttributes,
-    space_ref: URef<Space>,
-) -> Result<Space, SetCubeError> {
-    loop {}
-}
+impl BlockChange {}

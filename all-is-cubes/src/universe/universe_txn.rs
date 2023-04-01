@@ -190,32 +190,6 @@ pub(crate) struct UniverseCommitCheck {
     anonymous_insertions: Vec<MemberCommitCheck>,
 }
 impl UniverseTransaction {
-    /// Convert from a transaction on a single member to [`UniverseTransaction`].
-    ///
-    /// The public interface to this is the other methods and [`Transaction::bind()`].
-    fn from_member_txn(name: Name, transaction: MemberTxn) -> Self {
-        loop {}
-    }
-    /// Transaction which inserts the given object into the universe under
-    /// the reference's name.
-    ///
-    /// Note that this transaction can only ever succeed once.
-    pub(crate) fn insert<T: UniverseMember>(reference: URef<T>) -> Self {
-        loop {}
-    }
-    /// Delete this member from the universe.
-    ///
-    /// All existing references will become [`RefError::Gone`], even if a new member by
-    /// the same name is later added.
-    ///
-    /// This transaction will fail if the member is already gone, is anonymous
-    /// (only named entries can be deleted), or belongs to another universe.
-    /// In the future, there may be a policy such that in-use items cannot be deleted.
-    ///
-    /// [`RefError::Gone`]: crate::universe::RefError::Gone
-    pub(crate) fn delete<R: super::URefErased>(member_ref: R) -> Self {
-        loop {}
-    }
     /// If this transaction contains any operations that are on a specific member of a
     /// universe, then returns the ID of that universe.
     pub(crate) fn universe_id(&self) -> Option<UniverseId> {

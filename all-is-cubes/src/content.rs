@@ -50,11 +50,7 @@ pub(crate) fn make_some_voxel_blocks<const COUNT: usize>(
     loop {}
 }
 fn color_sequence_for_make_blocks(n: usize) -> impl Iterator<Item = (usize, Rgba)> {
-    (0..n)
-        .map(move |i| {
-            let luminance = if n > 1 { i as f32 / (n - 1) as f32 } else { 0.5 };
-            (i, Rgba::new(luminance, luminance, luminance, 1.0))
-        })
+    loop {}
 }
 /// Generate a block which fills some fraction of its cube volume, from the bottom (−Y) up.
 ///

@@ -1,7 +1,5 @@
-
 use std::fmt;
 use std::hash;
-
 use std::sync::Mutex;
 use std::sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard, Weak};
 use ouroboros::self_referencing;
@@ -67,31 +65,6 @@ enum State<T> {
     Gone { name: Name },
 }
 impl<T: 'static> URef<T> {
-    /// Constructs a new [`URef`] that is not yet associated with any [`Universe`],
-    /// and strongly references its value (until inserted into a universe).
-    ///
-    /// This may be used to construct subtrees that are later inserted into a
-    /// [`Universe`]. Caution: creating cyclic structure and never inserting it
-    /// will result in a memory leak.
-    ///
-    /// Note that specifying a [`Name::Anonym`] will create a `URef` which cannot actually
-    /// be inserted into another [`Universe`], even if the specified number is free.
-    ///
-    /// TODO: Actually inserting these into a [`Universe`] is not yet implemented.
-    pub(crate) fn new_pending(name: Name, initial_value: T) -> Self {
-        loop {}
-    }
-    /// Constructs a [`URef`] that does not refer to a value, as if it used to but
-    /// is now defunct.
-    ///
-    /// When dereferenced, this will always produce the error [`RefError::Gone`].
-    /// When compared, this will be equal only to clones of itself.
-    ///
-    /// This may be used in tests to exercise error handling.
-    #[doc(hidden)]
-    pub(crate) fn new_gone(name: Name) -> URef<T> {
-        loop {}
-    }
     /// Name by which the [`Universe`] knows this ref.
     ///
     /// This may change from [`Name::Pending`] to another name when the ref is inserted into

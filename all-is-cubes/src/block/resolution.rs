@@ -26,7 +26,7 @@ use crate::block::{EvaluatedBlock, Modifier, Primitive};
 #[allow(missing_docs)]
 #[repr(u8)]
 #[non_exhaustive]
-pub enum Resolution {
+pub(crate) enum Resolution {
     R1 = 0,
     R2 = 1,
     R4 = 2,
@@ -112,4 +112,4 @@ impl<'de> serde::Deserialize<'de> for Resolution {
 /// Error type produced by [`TryFrom`] for [`Resolution`], and deserializing resolutions,
 /// when the number is not a permitted resolution value.
 #[derive(Debug, Clone, Copy, Eq, Hash, PartialEq, thiserror::Error)]
-pub struct IntoResolutionError<N>(N);
+pub(crate) struct IntoResolutionError<N>(N);

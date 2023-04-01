@@ -1,6 +1,6 @@
 //! That which contains many blocks.
 use crate::behavior::BehaviorSet;
-use crate::block::{Block, BlockChange, EvalBlockError, EvaluatedBlock};
+use crate::block::{Block, EvalBlockError, EvaluatedBlock};
 #[cfg(doc)]
 use crate::character::Character;
 use crate::character::Spawn;
@@ -8,7 +8,7 @@ use cgmath::Vector3;
 use instant::Duration;
 use std::collections::{HashMap, HashSet};
 use std::fmt;
-use std::sync::{Arc, Mutex, Weak};
+use std::sync::{Arc, Mutex};
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{FreeCoordinate, GridAab, GridPoint, GridRotation, NotNan, Rgb};
 use crate::transaction::{Merge, Transaction as _};

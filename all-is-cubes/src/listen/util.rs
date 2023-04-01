@@ -1,6 +1,6 @@
 use std::fmt;
 use std::sync::{Arc, Weak};
-use crate::listen::{Notifier};
+use crate::listen::Notifier;
 /// A [`Listener`] which transforms or discards messages before passing them on.
 /// Construct this using [`Listener::filter`].
 ///
@@ -25,11 +25,7 @@ impl fmt::Debug for Gate {
         loop {}
     }
 }
-impl Gate {
-    pub(super) fn new<L>(listener: L) -> (Gate, GateListener<L>) {
-        loop {}
-    }
-}
+impl Gate {}
 /// [`Listener`] implementation which discards messages when the corresponding [`Gate`]
 /// is dropped. Construct this using [`Listener::gate()`].
 #[derive(Clone, Debug)]

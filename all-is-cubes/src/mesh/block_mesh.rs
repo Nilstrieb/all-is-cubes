@@ -2,9 +2,9 @@
 //!
 //! This module is internal and reexported by its parent.
 use std::fmt::Debug;
-use crate::block::EvaluatedBlock;
+
 use crate::camera::Flaws;
-use crate::math::{Face7, FaceMap, GridArray, OpacityCategory};
+use crate::math::{FaceMap, GridArray, OpacityCategory};
 use crate::mesh::{BlockVertex, MeshOptions, TextureAllocator, TextureTile};
 use crate::space::Space;
 /// Part of the triangle mesh calculated for a [`Block`], stored in a [`BlockMesh`] keyed

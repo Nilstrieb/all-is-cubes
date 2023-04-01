@@ -1,6 +1,6 @@
 //! Axis-aligned unit vectors: the [`Face6`] and [`Face7`] types.
 //! This module is private but reexported by its parent.
-use std::ops::{Index, IndexMut};
+
 use cgmath::{BaseNum, Vector3};
 use crate::math::*;
 /// Identifies a face of a cube or an orthogonal unit vector.

@@ -3,7 +3,6 @@
 //! Note: this module is currently private and a little crufty.
 //! We will probably want to expose it but clean up the API first, particularly
 //! clarifying the treatment of distances and squared distances.
-
 use std::ops::RangeTo;
 use std::sync::Arc;
 use cgmath::{Point3, Vector3};
@@ -22,15 +21,6 @@ impl<const CHUNK_SIZE: GridCoordinate> std::fmt::Debug for ChunkPos<CHUNK_SIZE> 
 }
 impl<const CHUNK_SIZE: GridCoordinate> ChunkPos<CHUNK_SIZE> {
     pub(crate) const ZERO: Self = Self(GridPoint::new(0, 0, 0));
-    /// Construct a [`ChunkPos`] from chunk coordinates
-    /// (i.e. successive numbers indicate adjacent chunks).
-    pub(crate) const fn new(
-        x: GridCoordinate,
-        y: GridCoordinate,
-        z: GridCoordinate,
-    ) -> Self {
-        loop {}
-    }
     /// Returns the bounds of this chunk as a [`GridAab`].
     pub(crate) fn bounds(self) -> GridAab {
         loop {}
@@ -49,18 +39,6 @@ impl<const CHUNK_SIZE: GridCoordinate> ChunkPos<CHUNK_SIZE> {
     ) -> GridCoordinate {
         loop {}
     }
-}
-/// Scale a cube position to obtain the containing chunk.
-pub(crate) fn cube_to_chunk<const CHUNK_SIZE: GridCoordinate>(
-    cube: GridPoint,
-) -> ChunkPos<CHUNK_SIZE> {
-    loop {}
-}
-/// Scale an arbitrary point to obtain the containing chunk.
-pub(crate) fn point_to_chunk<const CHUNK_SIZE: GridCoordinate>(
-    cube: Point3<FreeCoordinate>,
-) -> ChunkPos<CHUNK_SIZE> {
-    loop {}
 }
 /// A distance between two chunks, taking into consideration their entire volume.
 ///
@@ -123,14 +101,6 @@ pub struct ChunkChart<const CHUNK_SIZE: GridCoordinate> {
     octant_chunks: Arc<[GridVector]>,
     /// Range of elements of `octant_chunks` to actually use.
     octant_range: RangeTo<usize>,
-}
-fn compute_chart_octant(
-    view_distance_in_squared_chunks: GridCoordinate,
-) -> Arc<[GridVector]> {
-    loop {}
-}
-fn chunk_distance_squared_for_view(chunk: Vector3<i32>) -> Distance {
-    loop {}
 }
 /// A specification of which octants to include in [`ChunkChart::chunks()`].
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]

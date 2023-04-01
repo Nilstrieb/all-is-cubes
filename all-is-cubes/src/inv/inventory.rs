@@ -26,16 +26,6 @@ pub struct Inventory {
     pub(crate) slots: Vec<Slot>,
 }
 impl Inventory {
-    /// Construct an [`Inventory`] with the specified number of slots.
-    ///
-    /// Ordinary user actions cannot change the number of slots.
-    pub(crate) fn new(size: usize) -> Self {
-        loop {}
-    }
-    /// TODO: temporary interface, reevaluate design
-    pub(crate) fn from_slots(mut items: Vec<Slot>) -> Self {
-        loop {}
-    }
     /// Use a tool stored in this inventory.
     ///
     /// `character` must be the character containing the inventory. TODO: Bad API
@@ -64,17 +54,6 @@ pub(crate) enum Slot {
 }
 impl Slot {
     const COUNT_ONE: NonZeroU16 = { loop {} };
-    /// Construct a [`Slot`] containing `count` copies of `tool`.
-    ///
-    /// If `count` is zero, the `tool` will be ignored.
-    pub(crate) fn stack(count: u16, tool: Tool) -> Self {
-        loop {}
-    }
-    /// Temporary const version of [`<Slot as From<Tool>>::from`].
-    #[doc(hidden)]
-    pub(crate) const fn one(tool: Tool) -> Self {
-        loop {}
-    }
     /// Returns the icon to use for this tool in the user interface.
     ///
     /// Note that this is _not_ the same as the block that a [`Tool::Block`] places.
@@ -143,21 +122,7 @@ pub struct InventoryTransaction {
     replace: BTreeMap<usize, (Slot, Slot)>,
     insert: Vec<Slot>,
 }
-impl InventoryTransaction {
-    /// Transaction to insert items/stacks into an inventory, which will fail if there is
-    /// not sufficient space.
-    pub(crate) fn insert<S: Into<Slot>, I: IntoIterator<Item = S>>(stacks: I) -> Self {
-        loop {}
-    }
-    /// Transaction to replace the contents of an existing slot in an inventory, which
-    /// will fail if the existing slot is not as expected.
-    ///
-    /// TODO: Right now, this requires an exact match. In the future, we should be able
-    /// to compose multiple modifications like "add 1 item to stack" ×2 into "add 2 items".
-    pub(crate) fn replace(slot: usize, old: Slot, new: Slot) -> Self {
-        loop {}
-    }
-}
+impl InventoryTransaction {}
 impl Transaction<Inventory> for InventoryTransaction {
     type CommitCheck = Option<InventoryCheck>;
     type Output = InventoryChange;

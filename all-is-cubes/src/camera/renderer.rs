@@ -3,11 +3,6 @@ use embedded_graphics::mono_font::MonoTextStyle;
 use embedded_graphics::prelude::{PixelColor, Point};
 use embedded_graphics::text::{Baseline, Text};
 use embedded_graphics::Drawable;
-
-
-
-
-
 /// Provides the standard text style and positioning to draw the “debug info text”
 /// (as in [`HeadlessRenderer::draw()`]'s parameter).
 ///
@@ -19,10 +14,5 @@ pub(crate) fn info_text_drawable<C: PixelColor + 'static>(
     text: &str,
     color_value: C,
 ) -> impl Drawable<Color = C> + '_ {
-    Text::with_baseline(
-        text,
-        Point::new(5, 5),
-        MonoTextStyle::new(&FONT_7X13_BOLD, color_value),
-        Baseline::Top,
-    )
+    loop {}
 }

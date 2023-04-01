@@ -59,21 +59,13 @@ impl BlockAttributes {
     /// This function differs from the [`Default::default`] trait implementation only
     /// in that it is a `const fn`.
     pub(crate) const fn default() -> BlockAttributes {
-        BlockAttributes {
-            display_name: Cow::Borrowed(""),
-            selectable: true,
-            collision: BlockCollision::Hard,
-            rotation_rule: RotationPlacementRule::Never,
-            light_emission: Rgb::ZERO,
-            tick_action: None,
-            animation_hint: AnimationHint::UNCHANGING,
-        }
+        loop {}
     }
 }
 impl Default for BlockAttributes {
     /// Block attributes suitable as default values for in-game use.
     fn default() -> BlockAttributes {
-        BlockAttributes::default()
+        loop {}
     }
 }
 #[cfg(feature = "arbitrary")]

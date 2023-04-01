@@ -1,6 +1,4 @@
 use std::fmt;
-
-
 use exhaust::Exhaust;
 use crate::linking::{BlockModule, BlockProvider};
 use crate::universe::Universe;
@@ -44,14 +42,4 @@ impl fmt::Display for Icons {
         loop {}
     }
 }
-impl Icons {
-    /// Construct the standard icons, inserting block definitions into the given [`Universe`].
-    ///
-    /// TODO: Replace `&mut Universe` parameter with a transaction return value.
-    pub(crate) async fn new(
-        universe: &mut Universe,
-        p: YieldProgress,
-    ) -> BlockProvider<Icons> {
-        loop {}
-    }
-}
+impl Icons {}

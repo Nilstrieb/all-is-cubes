@@ -14,12 +14,9 @@
 //! run at the same time.
 use std::fmt;
 use std::sync::Arc;
-use std::time::Duration;
 use crate::block::BlockDef;
 use crate::character::Character;
-use crate::space::{Space, SpaceStepInfo};
-use crate::time::Tick;
-use crate::util::{CustomFormat, StatusText};
+use crate::space::Space;
 mod members;
 pub(crate) use members::*;
 mod universe_txn;
@@ -57,11 +54,7 @@ impl fmt::Display for Name {
 /// Used to check whether [`URef`]s belong to particular [`Universe`]s.
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 pub(crate) struct UniverseId(u64);
-impl UniverseId {
-    fn new() -> Self {
-        loop {}
-    }
-}
+impl UniverseId {}
 /// A collection of named objects which can refer to each other via [`URef`]. In the
 /// future, it will enable garbage collection and inter-object invariants.
 ///
