@@ -2,16 +2,13 @@ use std::fmt;
 use std::num::NonZeroU32;
 use std::sync::{Arc, Mutex, Weak};
 
-use cgmath::Point3;
 use fnv::{FnvHashMap, FnvHashSet};
 
 use crate::chunking::ChunkPos;
 use crate::listen::Listener;
 use crate::math::GridCoordinate;
-use crate::mesh::{
-    BlockMesh, BlockMeshProvider, GfxVertex, MeshOptions, SpaceMesh, TextureAllocator,
-};
-use crate::space::{BlockIndex, Space, SpaceChange};
+use crate::mesh::{BlockMesh, BlockMeshProvider, GfxVertex, SpaceMesh, TextureAllocator};
+use crate::space::{BlockIndex, SpaceChange};
 use crate::util::{CustomFormat, StatusText};
 
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
