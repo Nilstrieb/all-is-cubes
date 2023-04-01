@@ -118,7 +118,6 @@ pub struct ChunkMeshUpdate<'a, D, V, T, const CHUNK_SIZE: GridCoordinate> {
 /// [`ChunkedSpaceMesh`]'s set of things that need recomputing.
 #[derive(Debug, Default)]
 struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
-    all_blocks_and_chunks: bool,
     // TODO: Benchmark using a BitVec instead.
     blocks: FnvHashSet<BlockIndex>,
     /// Membership in this table indicates that the chunk *exists;* todos for chunks
@@ -130,15 +129,7 @@ struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
 #[derive(Clone, Debug)]
 struct TodoListener<const CHUNK_SIZE: GridCoordinate>(Weak<Mutex<CsmTodo<CHUNK_SIZE>>>);
 
-impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CHUNK_SIZE> {
-    fn receive(&self, message: SpaceChange) {
-        loop {}
-    }
-
-    fn alive(&self) -> bool {
-        self.0.strong_count() > 0
-    }
-}
+impl<const CHUNK_SIZE: GridCoordinate> Listener<SpaceChange> for TodoListener<CHUNK_SIZE> {}
 
 /////// MOVE START
 
