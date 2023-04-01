@@ -70,22 +70,7 @@ pub struct BlockDefTransaction {
     /// If `None`, no change is made and this transaction is only a precondition.
     new: Option<Block>,
 }
-impl BlockDefTransaction {
-    /// Returns a transaction which fails if the current value of the [`BlockDef`] is not
-    /// equal to `old`.
-    pub(crate) fn expect(old: Block) -> Self {
-        loop {}
-    }
-    /// Returns a transaction which replaces the current value of the [`BlockDef`] with `new`.
-    pub(crate) fn overwrite(new: Block) -> Self {
-        loop {}
-    }
-    /// Returns a transaction which replaces the value of the [`BlockDef`] with `new`,
-    /// if it is equal to `old`, and otherwise fails.
-    pub(crate) fn replace(old: Block, new: Block) -> Self {
-        loop {}
-    }
-}
+
 impl Transaction<BlockDef> for BlockDefTransaction {
     type CommitCheck = ();
     type Output = transaction::NoOutput;

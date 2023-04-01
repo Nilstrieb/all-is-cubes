@@ -21,64 +21,6 @@ pub(crate) struct Composite {
     /// Whether the block should come apart into its components when removed from its place.
     pub(crate) disassemblable: bool,
 }
-impl Composite {
-    /// Construct a new [`Composite`] modifier with the given source and operator, and
-    /// `reverse: false`.
-    pub(crate) fn new(source: Block, operator: CompositeOperator) -> Self {
-        loop {}
-    }
-    /// Set the disassemblable flag to true.
-    ///
-    /// This will allow the composite to be taken apart by player action.
-    /// TODO: explain further
-    #[must_use]
-    pub(crate) fn with_disassemblable(mut self) -> Self {
-        loop {}
-    }
-    /// Compose `self` and `destination`, except that:
-    ///
-    /// * If `destination` is [`AIR`], then the `self.source` block will be returned.
-    /// * If `self.source` is [`AIR`], then `destination` will be returned.
-    /// * If `destination` has a rotation modifier, it will be rearranged to be last.
-    ///   (In this way, there won't be any unequal-but-equivalent blocks generated due
-    ///   to rotation.)
-    ///
-    /// This operation is of limited use and is designed for world-generation purposes, not
-    /// player action (since it has no restrictions on what it can compose). Its particular
-    /// use is to build corner joint blocks.
-    ///
-    /// TODO: Generalize this so it has a filter on which things should be composed,
-    /// replaced, or left unchanged (failure).
-    ///
-    /// TODO: Figure out a way to express "sorting order" rules for swapping self and
-    /// destination, because for corner joints we don't care which is on top but we want
-    /// there to be only one kind of corner block, not two depending on operation order.
-    pub(crate) fn compose_or_replace(mut self, mut destination: Block) -> Block {
-        loop {}
-    }
-    /// Use [`Composite::compose_or_replace()`] repeatedly to assemble a block from parts.
-    pub(crate) fn stack(
-        destination: Block,
-        parts: impl IntoIterator<Item = Composite>,
-    ) -> Block {
-        loop {}
-    }
-    /// Called by [`Modifier::evaluate`].
-    pub(super) fn evaluate(
-        &self,
-        mut dst_evaluated: MinEval,
-        depth: u8,
-    ) -> Result<MinEval, block::EvalBlockError> {
-        loop {}
-    }
-    /// Called by [`Modifier::unspecialize()`].
-    pub(super) fn unspecialize(
-        &self,
-        entire_block: &Block,
-    ) -> block::ModifierUnspecialize {
-        loop {}
-    }
-}
 impl universe::VisitRefs for Composite {
     fn visit_refs(&self, visitor: &mut dyn universe::RefVisitor) {
         loop {}
@@ -95,12 +37,4 @@ pub(crate) enum CompositeOperator {
     /// Porter-Duff “over”. If both source and destination are opaque, the source is taken;
     /// otherwise the destination is taken.
     Over,
-}
-impl CompositeOperator {
-    fn blend_color(&self, source: Rgba, destination: Rgba) -> Rgba {
-        loop {}
-    }
-    fn blend_evoxel(&self, src_ev: Evoxel, dst_ev: Evoxel) -> Evoxel {
-        loop {}
-    }
 }

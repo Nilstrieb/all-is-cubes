@@ -44,45 +44,6 @@ impl fmt::Debug for EvaluatedBlock {
         loop {}
     }
 }
-impl EvaluatedBlock {
-    /// Computes the derived values of a voxel block.
-    ///
-    /// This is also available as `impl From<MinEval> for EvaluatedBlock`.
-    pub(crate) fn from_voxels(
-        attributes: BlockAttributes,
-        voxels: Evoxels,
-    ) -> EvaluatedBlock {
-        loop {}
-    }
-    /// Returns the resolution (scale factor) of this block's voxels.
-    /// See [`Resolution`] for more information.
-    #[inline]
-    pub(crate) fn resolution(&self) -> Resolution {
-        loop {}
-    }
-    /// Returns whether [`Self::visible`] is true (the block has some visible color/voxels)
-    /// or [`BlockAttributes::animation_hint`] indicates that the block might _become_
-    /// visible (by change of evaluation result rather than by being replaced).
-    #[inline]
-    pub(crate) fn visible_or_animated(&self) -> bool {
-        loop {}
-    }
-    /// Returns the bounding box of the voxels, or the full cube if no voxels,
-    /// scaled up by `resolution`.
-    ///
-    /// TODO: This isn't a great operation to be exposing because it “leaks” the implementation
-    /// detail of whether the bounds are tightly fitting or not, particularly for the purpose
-    /// it is being used for (cursor drawing). Figure out what we want to do instead.
-    #[doc(hidden)]
-    pub(crate) fn voxels_bounds(&self) -> GridAab {
-        loop {}
-    }
-    #[doc(hidden)]
-    #[track_caller]
-    pub(crate) fn consistency_check(&self) {
-        loop {}
-    }
-}
 /// Errors resulting from [`Block::evaluate`].
 #[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
 #[non_exhaustive]

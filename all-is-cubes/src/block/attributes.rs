@@ -205,9 +205,3 @@ pub(crate) enum AnimationChange {
     /// prepare to efficiently recompute the mesh (don't merge with neighbors).
     Shape,
 }
-impl AnimationChange {
-    /// Helper for [`AnimationHint::might_become_visible`].
-    fn might_become_visible(&self) -> bool {
-        loop {}
-    }
-}

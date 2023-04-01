@@ -25,35 +25,7 @@ pub(crate) struct Move {
     /// TODO: "Per tick" is a bad unit.
     pub(crate) velocity: i16,
 }
-impl Move {
-    /// TODO: make a cleaner, less internals-ish constructor
-    pub(crate) fn new(direction: Face6, distance: u16, velocity: i16) -> Self {
-        loop {}
-    }
-    /// Create a pair of [`Modifier::Move`]s to displace a block.
-    /// The first goes on the block being moved and the second on the air
-    /// it's moving into.
-    ///
-    /// TODO: This is going to need to change again in order to support
-    /// moving one block in and another out at the same time.
-    pub(crate) fn paired_move(
-        direction: Face6,
-        distance: u16,
-        velocity: i16,
-    ) -> [Modifier; 2] {
-        loop {}
-    }
-    /// Note that `Modifier::Move` does some preprocessing to keep this simpler.
-    pub(super) fn evaluate(
-        &self,
-        block: &Block,
-        this_modifier_index: usize,
-        mut input: MinEval,
-        depth: u8,
-    ) -> Result<MinEval, block::EvalBlockError> {
-        loop {}
-    }
-}
+
 impl universe::VisitRefs for Move {
     fn visit_refs(&self, _visitor: &mut dyn universe::RefVisitor) {
         loop {}

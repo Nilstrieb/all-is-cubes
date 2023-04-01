@@ -10,12 +10,7 @@ pub(crate) struct Quote {
     /// If true, also suppress light and sound effects.
     pub(crate) suppress_ambient: bool,
 }
-impl Quote {
-    /// Construct an instance of [`Quote`], the same as [`Quote::default()`].
-    pub(crate) fn new() -> Self {
-        loop {}
-    }
-}
+
 impl universe::VisitRefs for Quote {
     fn visit_refs(&self, _visitor: &mut dyn universe::RefVisitor) {
         loop {}

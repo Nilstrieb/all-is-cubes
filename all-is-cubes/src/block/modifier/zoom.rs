@@ -16,27 +16,7 @@ pub struct Zoom {
     /// and `scale - 1`).
     offset: Point3<u8>,
 }
-impl Zoom {
-    /// Construct a [`Zoom`] which enlarges the original block's voxels by `scale` and
-    /// selects the region of them whose lower corner is `offset * scale`.
-    ///
-    /// Panics if any of `offset`'s components are out of bounds, i.e. less than 0 or
-    /// greater than `scale - 1`.
-    #[track_caller]
-    pub fn new(scale: Resolution, offset: GridPoint) -> Self {
-        loop {}
-    }
-    /// Decompose into parts, for serialization.
-    pub(crate) fn to_serial_schema(&self) -> crate::save::schema::ModifierSer {
-        loop {}
-    }
-    pub(super) fn evaluate(
-        &self,
-        input: MinEval,
-    ) -> Result<MinEval, block::EvalBlockError> {
-        loop {}
-    }
-}
+
 impl From<Zoom> for block::Modifier {
     fn from(value: Zoom) -> Self {
         loop {}
