@@ -17,26 +17,3 @@ categories = ["games", "graphics", "rendering::engine"]
 bench = false
 
 [dependencies]
-arbitrary = { workspace = true, optional = true }
-bitflags = { workspace = true }
-bitvec = { version = "1.0.0", default-features = false, features = ["alloc"] }
-cgmath = "0.18.0"
-downcast-rs = "1.2.0"
-embedded-graphics = "0.7.0"
-exhaust = { workspace = true }
-fnv = "1.0.7"
-futures-core = { workspace = true }
-# image is used for its common image data types (for HeadlessRenderer),
-# and for PNG asset loading.
-indoc = { workspace = true }
-instant = { workspace = true }
-log = { workspace = true }
-mutants = { workspace = true }
-num-traits = { workspace = true }
-ordered-float = { workspace = true }
-ouroboros = { workspace = true }
-rand = { workspace = true }
-rayon = { workspace = true, optional = true }
-# std and rc features needed because we are [de]serializing `Arc`s
-serde = { workspace = true, features = ["derive", "std", "rc"] }
-thiserror = { workspace = true }
