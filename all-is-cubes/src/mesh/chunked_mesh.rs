@@ -1,4 +1,4 @@
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug)]
 pub struct ChunkMesh<const CHUNK_SIZE: usize> {
     position: [(); CHUNK_SIZE],
 }
@@ -6,8 +6,6 @@ pub struct ChunkMesh<const CHUNK_SIZE: usize> {
 /////// MOVE START
 
 impl<const CHUNK_SIZE: usize> ChunkMesh<CHUNK_SIZE> {}
-
-/// What might be dirty about a single chunk.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
 struct ChunkTodo {}
 
