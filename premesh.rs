@@ -1,4 +1,3 @@
-use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::num::NonZeroU32;
 use std::sync::{Arc, Mutex, Weak};
@@ -10,7 +9,7 @@ use instant::{Duration, Instant};
 use crate::camera::{Camera, Flaws};
 use crate::chunking::{ChunkChart, ChunkPos};
 use crate::listen::Listener;
-use crate::math::{GridCoordinate, GridPoint};
+use crate::math::{GridCoordinate};
 use crate::mesh::{
     BlockMesh, BlockMeshProvider, GfxVertex, LineVertex, MeshOptions, SpaceMesh, TextureAllocator,
     TextureTile,
