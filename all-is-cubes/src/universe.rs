@@ -12,29 +12,6 @@
 //! For the time being, if you wish to use a [`Universe`] from multiple threads, you must
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
-
-mod universe_txn;
 pub(crate) use universe_txn::*;
-mod uref;
 pub(crate) use uref::*;
-mod visit;
 pub(crate) use visit::*;
-/// Name/key of an object in a [`Universe`].
-///
-/// Internally uses [`Arc`] to be cheap to clone. Might be interned in future versions.
-#[allow(clippy::exhaustive_enums)]
-#[derive(Clone, Debug, Hash, Eq, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-pub(crate) enum Name {
-    /// An explicitly set name.
-    Specific(),
-    /// An automatically assigned name.
-    Anonym(),
-    /// Not yet been assigned a name; this may be replaced with `Anonym` but not `Specific`.
-    Pending,
-}
-/// Copiable unique (within this process) identifier for a [`Universe`].
-///
-/// Used to check whether [`URef`]s belong to particular [`Universe`]s.
-#[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
-pub(crate) struct UniverseId();

@@ -27,10 +27,4 @@
 #![warn(unused_lifetimes)]
 #![cfg_attr(test, allow(clippy::float_cmp), allow(clippy::redundant_clone))]
 #![warn(missing_docs)]
-#[macro_use]
-pub(crate) mod math;
-pub(crate) mod behavior;
 pub(crate) mod mesh;
-pub(crate) mod space;
-pub(crate) mod transaction;
-pub(crate) mod universe;
