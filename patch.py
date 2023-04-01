@@ -12,7 +12,6 @@ center = old[early:start]
 post = old[end:]
 
 result = f"{very_pre}\
-mod blocks {{}}\n\
 mod chunk;\n\
 pub use chunk::*;\n\
 {center}\
