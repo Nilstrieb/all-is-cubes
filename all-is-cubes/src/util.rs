@@ -1,6 +1,5 @@
 //! Tools that we could imagine being in the Rust standard library, but aren't.
 use std::fmt::{self, Debug};
-
 /// Generic extension to [`std::fmt`'s set of formatting traits](std::fmt#formatting-traits).
 ///
 /// This can be thought of as a mechanism to easily create a new special-purpose
@@ -29,14 +28,6 @@ pub(crate) struct CustomFormatWrapper<'a, F: Copy, T: CustomFormat<F> + ?Sized>(
     F,
     &'a T,
 );
-/// Format type for [`CustomFormat`] which is similar to [`Debug`], but uses an
-/// alternate concise format.
-///
-/// This format may be on one line despite the pretty-printing option, and may lose
-/// precision or Rust syntax in favor of a short at-a-glance representation.
-#[allow(clippy::exhaustive_structs)]
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub(crate) struct ConciseDebug;
 /// Format type for [`CustomFormat`] which provides an highly condensed, ideally
 /// constant-size, user-facing format for live-updating textual status messages.
 /// This format does not follow Rust [`Debug`](fmt::Debug) syntax, and when implemented

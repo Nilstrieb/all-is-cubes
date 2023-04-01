@@ -30,18 +30,11 @@
 #[macro_use]
 pub(crate) mod math;
 pub(crate) mod behavior;
-pub(crate) mod block;
 pub(crate) mod camera;
-pub(crate) mod character;
 #[doc(hidden)]
 pub(crate) mod chunking;
-pub(crate) mod drawing;
-pub(crate) mod inv;
-pub(crate) mod linking;
 pub(crate) mod listen;
 pub(crate) mod mesh;
-pub(crate) mod physics;
-pub(crate) mod raycast;
 pub(crate) mod space;
 pub(crate) mod transaction;
 pub(crate) mod universe;

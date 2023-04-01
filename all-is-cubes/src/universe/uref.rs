@@ -3,10 +3,6 @@ use std::hash;
 use std::sync::Mutex;
 use std::sync::{Arc, RwLock, RwLockWriteGuard};
 use ouroboros::self_referencing;
-
-
-
-
 use crate::universe::{Name, UniverseId};
 /// Type of a strong reference to an entry in a [`Universe`]. Defined to make types
 /// parameterized with this somewhat less hairy.
@@ -43,67 +39,10 @@ enum State<T> {
     /// State of [`URef::new_gone()`].
     Gone {},
 }
-impl<T: fmt::Debug + 'static> fmt::Debug for URef<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
-/// `URef`s are compared by pointer equality: they are equal only if they refer to
-/// the same mutable cell.
-impl<T> PartialEq for URef<T> {
-    fn eq(&self, other: &Self) -> bool {
-        loop {}
-    }
-}
-/// `URef`s are compared by pointer equality.
-impl<T> Eq for URef<T> {}
-impl<T> hash::Hash for URef<T> {
-    fn hash<H: hash::Hasher>(&self, state: &mut H) {
-        loop {}
-    }
-}
-impl<T> Clone for URef<T> {
-    /// Cloning a [`URef`] clones the reference only.
-    fn clone(&self) -> Self {
-        loop {}
-    }
-}
-/// Errors resulting from attempting to borrow/dereference a [`URef`].
-#[allow(clippy::exhaustive_enums)]
-#[derive(Clone, Debug, Eq, Hash, PartialEq, thiserror::Error)]
-pub(crate) enum RefError {
-    /// Target was deleted, or its entire universe was dropped.
-    #[error("object was deleted: {0}")]
-    Gone(Name),
-    /// Target is currently incompatibly borrowed.
-    #[error("object was in use at the same time: {0}")]
-    InUse(Name),
-}
-/// Parallel to [`UBorrowImpl`], but for mutable access.
-///
-/// This type is not exposed publicly, but only used in transactions to allow
-/// the check-then-commit pattern; use [`URef::try_modify`] instead for other
-/// purposes.
-#[self_referencing]
-#[derive(Debug)]
-pub(crate) struct UBorrowMutImpl<T: 'static> {
-    strong: StrongEntryRef<T>,
-    #[borrows(strong)]
-    #[not_covariant]
-    guard: RwLockWriteGuard<'this, UEntry<T>>,
-}
 /// The data of an entry in a `Universe`.
 #[derive(Debug)]
 struct UEntry<T> {
     data: T,
-}
-/// The unique reference to an entry in a [`Universe`] from that `Universe`.
-/// Normal usage is via `URef` instead.
-///
-/// This is essentially a strong-reference version of [`URef`] (which is weak).
-#[derive(Debug)]
-pub(super) struct URootRef<T> {
-    state: Arc<Mutex<State<T>>>,
 }
 /// Object-safe trait implemented for [`URef`], to allow code to operate on `URef<T>`
 /// regardless of `T`.

@@ -13,8 +13,6 @@
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
 use std::fmt;
-mod members;
-
 mod universe_txn;
 pub(crate) use universe_txn::*;
 mod uref;
@@ -35,26 +33,8 @@ pub(crate) enum Name {
     /// Not yet been assigned a name; this may be replaced with `Anonym` but not `Specific`.
     Pending,
 }
-impl fmt::Display for Name {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
 /// Copiable unique (within this process) identifier for a [`Universe`].
 ///
 /// Used to check whether [`URef`]s belong to particular [`Universe`]s.
 #[derive(Clone, Copy, Debug, Hash, Eq, PartialEq)]
 pub(crate) struct UniverseId();
-/// A collection of named objects which can refer to each other via [`URef`]. In the
-/// future, it will enable garbage collection and inter-object invariants.
-///
-/// See also the [`UniverseIndex`] trait for methods for adding and removing objects.
-///
-/// **Thread-safety caveat:** See the documentation on [avoiding deadlock].
-///
-/// [avoiding deadlock]: crate::universe#thread-safety
-pub(crate) struct Universe {}
-/// Errors resulting from attempting to insert an object in a [`Universe`].
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-#[non_exhaustive]
-pub(crate) struct InsertError {}

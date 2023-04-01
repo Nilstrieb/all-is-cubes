@@ -9,34 +9,9 @@
 //! significant state changes. The typical pattern is for a listener to contain a
 //! `Weak<Mutex<...>>` or similar multiply-owned mutable structure to aggregate incoming
 //! messages, which will then be read and cleared by a later task.
-
 use std::sync::{Arc, RwLock};
 mod util;
 pub(crate) use util::*;
-/// Ability to subscribe to a source of messages, causing a [`Listener`] to receive them
-/// as long as it wishes to.
-pub(crate) trait Listen {
-    /// The type of message which may be obtained from this source.
-    type Msg: Clone + Send;
-    /// Subscribe the given [`Listener`] to this source of messages.
-    ///
-    /// Note that listeners are removed only via their returning false from
-    /// [`Listener::alive()`]; there is no `unlisten()` operation, and identical listeners
-    /// are not deduplicated.
-    fn listen<L: Listener<Self::Msg> + Send + Sync + 'static>(&self, listener: L);
-}
-/// Mechanism for observing changes to objects. A [`Notifier`] delivers messages
-/// of type `M` to a set of listeners, each of which usually holds a weak reference
-/// to allow it to be removed when the actual recipient is gone or uninterested.
-///
-/// TODO: Currently, each message is [`Clone`]d for each recipient. This is fine for
-/// most cases, but in some cases it would be cheaper to pass a reference. We could
-/// make Notifier and Listener always take `&M`, but it's not clear how to use
-/// references *some* of the time — making `M` be a reference type can't have a
-/// satisfactory lifetime.
-pub(crate) struct Notifier<M> {
-    listeners: RwLock<Vec<DynListener<M>>>,
-}
 /// A receiver of messages (typically from something implementing [`Listen`]) which can
 /// indicate when it is no longer interested in them (typically because the associated
 /// recipient has been dropped).

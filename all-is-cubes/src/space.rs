@@ -1,22 +1,12 @@
 //! That which contains many blocks.
-
 #[cfg(doc)]
 use crate::character::Character;
-
-use crate::math::{GridAab};
-
+use crate::math::GridAab;
 use std::fmt;
-mod light;
-
 mod space_txn;
 /// Container for [`Block`]s arranged in three-dimensional space. The main “game world”
 /// data structure.
 pub struct Space {}
-impl fmt::Debug for Space {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop {}
-    }
-}
 /// Number used to identify distinct blocks within a [`Space`].
 pub(crate) type BlockIndex = u16;
 impl crate::behavior::BehaviorHost for Space {
