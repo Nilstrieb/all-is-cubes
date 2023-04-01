@@ -148,14 +148,10 @@ where
     Vert: GfxVertex,
     Tex: TextureAllocator,
 {
-
-
 }
 
 /// What might be dirty about a single chunk.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
-struct ChunkTodo {
-    recompute_mesh: bool,
-}
+struct ChunkTodo {}
 
 /////// MOVE END

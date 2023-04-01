@@ -9,7 +9,7 @@
 //! significant state changes. The typical pattern is for a listener to contain a
 //! `Weak<Mutex<...>>` or similar multiply-owned mutable structure to aggregate incoming
 //! messages, which will then be read and cleared by a later task.
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 mod util;
 pub(crate) use util::*;
 /// A receiver of messages (typically from something implementing [`Listen`]) which can
