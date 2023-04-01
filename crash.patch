@@ -1,0 +1,13 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 96a3850a..966d6627 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -3,8 +3,4 @@ pub struct ChunkMesh<const CHUNK_SIZE: usize> {
+     position: [(); CHUNK_SIZE],
+ }
+ 
+-/////// MOVE START
+-impl<const CHUNK_SIZE: usize> ChunkMesh<CHUNK_SIZE> {}
+-#[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
+-struct ChunkTodo {}
+ /////// MOVE END
