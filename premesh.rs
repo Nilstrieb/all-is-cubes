@@ -1,6 +1,7 @@
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
 
-/// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
+/// Stores
+///  a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
 /// data, and incidentals.
 #[derive(Debug, Eq, PartialEq)]
 pub struct ChunkMesh<const CHUNK_SIZE: usize> {
