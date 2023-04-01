@@ -14,19 +14,19 @@
 //! *   Coordinates are considered to refer to pixel centers rather than low corners,
 //!     and rectangles have inclusive upper bounds (whereas our [`GridAab`]s have
 //!     exclusive upper bounds).
-use cgmath::{EuclideanSpace as _, Transform as _};
-use embedded_graphics::geometry::{Dimensions, Point};
-use embedded_graphics::pixelcolor::{PixelColor, Rgb888, RgbColor};
-use embedded_graphics::prelude::{DrawTarget, Drawable, Pixel};
+
+use embedded_graphics::geometry::{Dimensions};
+use embedded_graphics::pixelcolor::{PixelColor};
+use embedded_graphics::prelude::{Drawable};
 use embedded_graphics::primitives::Rectangle;
-use std::borrow::{Borrow, Cow};
+use std::borrow::{Cow};
 use std::marker::PhantomData;
 use std::ops::Range;
 /// Re-export the version of the [`embedded_graphics`] crate we're using.
 pub(crate) use embedded_graphics;
 use crate::block::{Block, BlockAttributes, Resolution};
-use crate::math::{GridAab, GridCoordinate, GridMatrix, GridPoint, GridVector, Rgb, Rgba};
-use crate::space::{SetCubeError, Space, SpaceTransaction};
+use crate::math::{GridAab, GridCoordinate, GridMatrix, GridPoint};
+use crate::space::{SetCubeError, Space};
 use crate::universe::Universe;
 /// Convert a bounding-box rectangle, as from [`embedded_graphics::geometry::Dimensions`],
 /// to a [`GridAab`] which encloses the voxels that would be affected by drawing a

@@ -3,6 +3,6 @@ pub(crate) use data::PackedLight;
 pub(crate) use data::{LightUpdateQueue, PackedLightScalar};
 mod debug;
 #[doc(hidden)]
-pub(crate) use debug::{LightUpdateCubeInfo, LightUpdateRayInfo};
+pub(crate) use debug::{LightUpdateCubeInfo};
 mod updater;
 pub(crate) use updater::LightUpdatesInfo;

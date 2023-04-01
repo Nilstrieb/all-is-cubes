@@ -1,12 +1,12 @@
 //! Dynamic add-ons to game objects; we might also have called them “components”.
-use std::any::TypeId;
+
 use std::collections::BTreeMap;
 use std::fmt::{self, Debug};
 use std::sync::Arc;
 use downcast_rs::{impl_downcast, Downcast};
 use crate::time::Tick;
-use crate::transaction::{self, Merge as _, Transaction};
-use crate::universe::{RefVisitor, UniverseTransaction, VisitRefs};
+use crate::transaction::{self, Transaction};
+use crate::universe::{UniverseTransaction, VisitRefs};
 /// Dynamic add-ons to game objects; we might also have called them “components”.
 /// Each behavior is owned by a “host” of type `H` which determines when the behavior
 /// is invoked.

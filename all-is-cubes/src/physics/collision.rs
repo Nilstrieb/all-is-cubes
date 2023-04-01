@@ -2,14 +2,14 @@
 use std::fmt;
 use cgmath::Vector3;
 use crate::block::Evoxels;
-use crate::block::{BlockCollision, EvaluatedBlock, Evoxel, Resolution};
+use crate::block::{BlockCollision, Resolution};
 use crate::math::{
-    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridArray, GridCoordinate,
+    Aab, CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridCoordinate,
     GridPoint,
 };
 use crate::mesh::LineVertex;
 use crate::raycast::{Ray, Raycaster};
-use crate::space::Space;
+
 /// An individual collision contact; something in a [`Space`] that a moving [`Aab`]
 /// collided with.
 ///

@@ -1,4 +1,4 @@
-use cgmath::One;
+
 use ordered_float::NotNan;
 use crate::math::{FreeCoordinate, Rgb, Rgba};
 /// Options for controlling rendering (not affecting gameplay except informationally).

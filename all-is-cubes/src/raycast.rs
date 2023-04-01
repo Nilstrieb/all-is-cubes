@@ -4,7 +4,7 @@
 //! and does not concern itself with what might occupy those cubes. If you're
 //! looking for *raytracing*, forming an image from many rays, that's
 //! `all_is_cubes::raytracer`.
-use cgmath::{EuclideanSpace as _, InnerSpace as _, Point3, Vector3, Zero as _};
+use cgmath::{EuclideanSpace as _, Point3, Vector3};
 use crate::math::{
     CubeFace, Face7, FreeCoordinate, Geometry, GridAab, GridCoordinate, GridPoint,
 };

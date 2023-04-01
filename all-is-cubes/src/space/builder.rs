@@ -1,8 +1,8 @@
-use cgmath::{EuclideanSpace, InnerSpace, Point3};
+
 use crate::block::Block;
 use crate::character::Spawn;
-use crate::math::{FreeCoordinate, Rgb};
-use crate::space::{GridAab, LightPhysics, Space, SpacePhysics};
+
+use crate::space::{GridAab, SpacePhysics};
 /// Tool for constructing new [`Space`]s.
 ///
 /// To create one, call [`Space::builder()`](Space::builder).

@@ -1,11 +1,11 @@
 //! Traits for texture atlas/array allocator for block textures.
-use std::fmt;
-use std::sync::atomic::AtomicUsize;
+
+
 use cgmath::Point3;
 use crate::block::Evoxels;
 use crate::math::GridAab;
 use crate::mesh::TextureCoordinate;
-use crate::util::{ConciseDebug, CustomFormat};
+
 /// Color data accepted by [`TextureAllocator`].
 /// The components are sRGB `[R, G, B, A]`.
 pub(crate) type Texel = [u8; 4];

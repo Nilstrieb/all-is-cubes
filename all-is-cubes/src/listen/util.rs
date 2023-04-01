@@ -1,6 +1,6 @@
 use std::fmt;
 use std::sync::{Arc, Weak};
-use crate::listen::{Listener, Notifier};
+use crate::listen::{Notifier};
 /// A [`Listener`] which transforms or discards messages before passing them on.
 /// Construct this using [`Listener::filter`].
 ///

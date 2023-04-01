@@ -3,10 +3,10 @@
 //! Note: this module is currently private and a little crufty.
 //! We will probably want to expose it but clean up the API first, particularly
 //! clarifying the treatment of distances and squared distances.
-use std::iter::FusedIterator;
+
 use std::ops::RangeTo;
 use std::sync::Arc;
-use cgmath::{EuclideanSpace as _, Point3, Vector3};
+use cgmath::{Point3, Vector3};
 use crate::math::{FreeCoordinate, GridAab, GridCoordinate, GridPoint, GridVector};
 /// Type to distinguish chunk coordinates from cube coordinates.
 ///

@@ -2,7 +2,7 @@
 use std::fmt;
 use std::iter::Sum;
 use std::ops::{Add, AddAssign, Mul, Sub};
-use cgmath::{ElementWise as _, Vector3, Vector4, Zero as _};
+use cgmath::{Vector3, Vector4};
 pub(crate) use ordered_float::{FloatIsNan, NotNan};
 use crate::notnan;
 /// Allows writing a constant [`Rgb`] color value, provided that its components are float

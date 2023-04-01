@@ -3,11 +3,11 @@
 //!
 //! The types of most interest in this module are [`Block`], [`Primitive`],
 //! [`BlockAttributes`], and [`Modifier`].
-use std::borrow::Cow;
+
 use std::fmt;
 use std::sync::Arc;
-use cgmath::EuclideanSpace as _;
-use crate::listen::{Listen, Listener};
+
+use crate::listen::{Listener};
 use crate::math::{GridPoint, GridRotation, Rgb, Rgba};
 use crate::raycast::Ray;
 use crate::space::{SetCubeError, Space};

@@ -1,6 +1,6 @@
 //! [`EvaluatedBlock`] and [`Evoxel`].
 use std::fmt;
-use cgmath::Zero as _;
+
 use crate::block::{self, BlockAttributes, Resolution};
 use crate::math::{FaceMap, GridAab, GridArray, GridPoint, OpacityCategory, Rgb, Rgba};
 use crate::universe::RefError;

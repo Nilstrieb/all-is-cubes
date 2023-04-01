@@ -1,10 +1,7 @@
 //! Player-character stuff.
 use std::collections::HashSet;
 use std::fmt;
-use cgmath::{
-    Angle as _, ElementWise as _, EuclideanSpace as _, Rotation3, Transform, Vector3,
-};
-use num_traits::identities::Zero;
+use cgmath::Vector3;
 use crate::behavior::{Behavior, BehaviorSet, BehaviorSetTransaction};
 use crate::camera::ViewTransform;
 use crate::inv::{
@@ -78,16 +75,6 @@ impl CustomFormat<StatusText> for Character {
     }
 }
 impl Character {
-    /// Constructs a [`Character`] within/looking at the given `space`
-    /// with the initial state specified by `spawn`.
-    pub(crate) fn spawn(spawn: &Spawn, space: URef<Space>) -> Self {
-        loop {}
-    }
-    /// Constructs a [`Character`] within/looking at the given `space`
-    /// with the initial state specified by [`Space::spawn`].
-    pub(crate) fn spawn_default(space: URef<Space>) -> Self {
-        loop {}
-    }
     /// Computes the view transform for this character's eye; translation and rotation from
     /// the camera coordinate system (whose look direction is the -Z axis) to the [`Space`]'s
     /// coordinate system.
@@ -142,18 +129,6 @@ impl Character {
     pub(crate) fn set_velocity_input(&mut self, velocity: Vector3<FreeCoordinate>) {
         loop {}
     }
-    /// Use this character's selected tool on the given cursor.
-    ///
-    /// Return an error if:
-    /// * The tool is not usable.
-    /// * The cursor does not refer to the same space as this character occupies.
-    pub(crate) fn click(
-        this: URef<Character>,
-        cursor: Option<&Cursor>,
-        button: usize,
-    ) -> Result<UniverseTransaction, ToolError> {
-        loop {}
-    }
     /// Make the character jump, if they are on ground to jump from as of the last [`step()`](Self::step).
     ///
     /// TODO: this code's location is driven by `colliding_cubes` being here, which is probably wrong.
@@ -192,20 +167,7 @@ pub struct CharacterTransaction {
     inventory: InventoryTransaction,
     behaviors: BehaviorSetTransaction<Character>,
 }
-impl CharacterTransaction {
-    /// Modify the character's [`Body`].
-    pub(crate) fn body(t: BodyTransaction) -> Self {
-        loop {}
-    }
-    /// Modify the character's [`Inventory`].
-    pub(crate) fn inventory(t: InventoryTransaction) -> Self {
-        loop {}
-    }
-    /// Modify the character's [`BehaviorSet`].
-    fn behaviors(t: BehaviorSetTransaction<Character>) -> Self {
-        loop {}
-    }
-}
+impl CharacterTransaction {}
 #[allow(clippy::type_complexity)]
 impl Transaction<Character> for CharacterTransaction {
     type CommitCheck = (
@@ -259,17 +221,4 @@ pub(crate) enum CharacterChange {
     Inventory(InventoryChange),
     /// Which inventory slots are selected.
     Selections,
-}
-fn find_jetpacks(inventory: &Inventory) -> impl Iterator<Item = (usize, bool)> + '_ {
-    inventory
-        .slots
-        .iter()
-        .enumerate()
-        .filter_map(|(index, slot)| {
-            if let Slot::Stack(_, Tool::Jetpack { active }) = *slot {
-                Some((index, active))
-            } else {
-                None
-            }
-        })
 }

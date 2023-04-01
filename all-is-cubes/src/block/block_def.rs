@@ -1,6 +1,6 @@
 use std::ops::Deref;
 use std::sync::Arc;
-use crate::block::{Block, BlockChange, Primitive};
+use crate::block::{Block, BlockChange};
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::transaction::{self, Transaction};
 use crate::universe::{RefVisitor, VisitRefs};

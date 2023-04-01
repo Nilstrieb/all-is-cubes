@@ -3,10 +3,10 @@
 use std::fmt;
 use std::iter::FusedIterator;
 use std::ops::Range;
-use cgmath::{EuclideanSpace, Point3, Transform, Vector3};
+use cgmath::{Point3, Vector3};
 use crate::block::Resolution;
 use crate::math::{
-    Aab, Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint,
+    Face6, FaceMap, FreeCoordinate, GridCoordinate, GridMatrix, GridPoint,
     GridVector,
 };
 /// An axis-aligned box with integer coordinates, whose volume is no larger than [`usize::MAX`].

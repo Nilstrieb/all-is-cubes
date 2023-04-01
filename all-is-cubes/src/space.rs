@@ -5,7 +5,7 @@ use std::fmt;
 use std::sync::{Arc, Mutex, Weak};
 use cgmath::Vector3;
 use instant::Duration;
-use crate::behavior::{self, BehaviorSet};
+use crate::behavior::{BehaviorSet};
 use crate::block::{
     Block, BlockChange, EvalBlockError, EvaluatedBlock, Resolution, AIR, AIR_EVALUATED,
 };
@@ -14,7 +14,7 @@ use crate::character::Character;
 use crate::character::Spawn;
 use crate::content::palette;
 use crate::drawing::DrawingPlane;
-use crate::inv::EphemeralOpaque;
+
 use crate::listen::{Gate, Listen, Listener, Notifier};
 use crate::math::{
     FreeCoordinate, GridAab, GridArray, GridCoordinate, GridMatrix, GridPoint,
@@ -28,8 +28,7 @@ use crate::util::{CustomFormat, StatusText};
 mod builder;
 pub(crate) use builder::{SpaceBuilder, SpaceBuilderBounds};
 mod light;
-#[doc(hidden)]
-pub(crate) use light::LightUpdateCubeInfo;
+
 use light::{LightUpdateQueue, PackedLightScalar};
 pub(crate) use light::{LightUpdatesInfo, PackedLight};
 mod space_txn;

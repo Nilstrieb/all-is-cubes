@@ -1,6 +1,6 @@
 use std::fmt;
 use std::iter::FusedIterator;
-use cgmath::{EuclideanSpace as _, Point3, Vector3, Zero as _};
+use cgmath::{Point3, Vector3};
 use crate::math::{Face6, FreeCoordinate, Geometry, GridAab, GridPoint};
 use crate::mesh::LineVertex;
 /// Axis-Aligned Box data type.

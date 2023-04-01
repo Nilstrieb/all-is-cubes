@@ -13,9 +13,9 @@
 //!
 //! * 3D vectors/points are represented as 3-element arrays
 //!   (and not, say, as structures with named fields).
-use std::sync::Arc;
+
 use serde::{Deserialize, Serialize};
-use crate::math::{Face6, GridAab, GridCoordinate, GridRotation};
+use crate::math::{Face6, GridRotation};
 use crate::universe::URef;
 use crate::{block, space, universe};
 /// Placeholder type for when we want to serialize the *contents* of a `URef`,

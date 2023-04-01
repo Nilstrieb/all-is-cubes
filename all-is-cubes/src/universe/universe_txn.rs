@@ -10,7 +10,7 @@ use crate::transaction::{
 };
 use crate::universe::{
     AnyURef, Name, UBorrowMutImpl, URef, URefErased as _, Universe, UniverseId,
-    UniverseMember, UniverseTable,
+    UniverseMember,
 };
 /// Conversion from concrete transaction types to [`UniverseTransaction`].
 ///

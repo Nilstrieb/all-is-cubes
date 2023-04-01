@@ -1,7 +1,7 @@
 //! Rotations which exchange axes (thus not leaving the integer grid).
 //! This module is private but reexported by its parent.
 use std::ops::Mul;
-use cgmath::{One, Vector3, Zero as _};
+use cgmath::{One, Vector3};
 use crate::math::*;
 /// Represents a discrete (grid-aligned) rotation, or exchange of axes.
 ///

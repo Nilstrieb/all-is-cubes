@@ -2,9 +2,9 @@
 //! This module is private but reexported by its parent.
 use std::ops::Mul;
 use cgmath::{
-    EuclideanSpace as _, InnerSpace, Matrix4, One, Transform, Vector3, Vector4, Zero as _,
+    Matrix4, One, Transform, Vector3, Vector4,
 };
-pub(crate) use ordered_float::{FloatIsNan, NotNan};
+
 use crate::math::{
     Face7, FreeCoordinate, GridCoordinate, GridPoint, GridRotation, GridVector,
 };

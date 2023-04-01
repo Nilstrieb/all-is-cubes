@@ -3,11 +3,11 @@ use embedded_graphics::mono_font::MonoTextStyle;
 use embedded_graphics::prelude::{PixelColor, Point};
 use embedded_graphics::text::{Baseline, Text};
 use embedded_graphics::Drawable;
-use futures_core::future::BoxFuture;
-use image::RgbaImage;
-use crate::camera::Flaws;
-use crate::character::Cursor;
-use crate::universe::RefError;
+
+
+
+
+
 /// Provides the standard text style and positioning to draw the “debug info text”
 /// (as in [`HeadlessRenderer::draw()`]'s parameter).
 ///

@@ -10,7 +10,7 @@ use crate::transaction::{
     CommitError, Merge, NoOutput, PreconditionFailed, Transaction, TransactionConflict,
     Transactional,
 };
-use crate::util::CustomFormat as _;
+
 impl Transactional for Space {
     type Transaction = SpaceTransaction;
 }

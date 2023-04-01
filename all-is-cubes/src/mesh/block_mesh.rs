@@ -1,7 +1,7 @@
 //! Algorithm for converting individual blocks to triangle meshes.
 //!
 //! This module is internal and reexported by its parent.
-use cgmath::Transform as _;
+
 use std::fmt::Debug;
 use crate::block::EvaluatedBlock;
 use crate::camera::Flaws;

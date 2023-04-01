@@ -13,14 +13,14 @@
 //! bring your own synchronization mechanisms to ensure that readers and writers do not
 //! run at the same time.
 use std::fmt;
-use std::sync::atomic::AtomicU64;
+
 use std::sync::Arc;
 use std::time::Duration;
 use crate::block::BlockDef;
 use crate::character::Character;
 use crate::space::{Space, SpaceStepInfo};
 use crate::time::Tick;
-use crate::transaction::Transaction as _;
+
 use crate::util::{CustomFormat, StatusText};
 mod members;
 pub(crate) use members::*;

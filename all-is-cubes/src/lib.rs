@@ -177,5 +177,4 @@ pub(crate) mod time;
 pub(crate) mod transaction;
 pub(crate) mod universe;
 pub(crate) mod util;
-/// Re-export the version of the `cgmath` crate we're using.
-pub(crate) use cgmath;
+

@@ -1,7 +1,7 @@
-use std::collections::VecDeque;
+
 use std::fmt;
 use std::sync::atomic::AtomicBool;
-use std::sync::{Arc, RwLock, Weak};
+use std::sync::{Arc, Weak};
 use crate::listen::{Listen, Listener};
 /// A [`Listener`] destination which only stores a single flag indicating if any messages
 /// were received.

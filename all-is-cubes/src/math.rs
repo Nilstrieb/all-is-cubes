@@ -1,9 +1,9 @@
 //! Mathematical utilities and decisions.
 use std::fmt;
-use cgmath::{EuclideanSpace as _, Vector3};
+use cgmath::{Vector3};
 use num_traits::identities::Zero;
-pub(crate) use ordered_float::{FloatIsNan, NotNan};
-use crate::util::CustomFormat;
+pub(crate) use ordered_float::{NotNan};
+
 mod aab;
 pub(crate) use aab::*;
 #[macro_use]

@@ -8,7 +8,7 @@ use crate::fluff::Fluff;
 use crate::inv::{self, Icons, StackLimit};
 use crate::linking::BlockProvider;
 use crate::math::GridPoint;
-use crate::transaction::{Merge, Transaction};
+
 use crate::universe::{RefError, RefVisitor, URef, UniverseTransaction, VisitRefs};
 /// A `Tool` is an object which a character can use to have some effect in the game,
 /// such as placing or removing a block. In particular, a tool use usually corresponds

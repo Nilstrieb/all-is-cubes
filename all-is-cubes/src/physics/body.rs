@@ -1,8 +1,8 @@
-use cgmath::{EuclideanSpace as _, InnerSpace as _, Point3, Vector3, Zero};
+use cgmath::{Point3, Vector3};
 use ordered_float::NotNan;
 use std::fmt;
 use super::collision::Contact;
-use crate::math::{Aab, FreeCoordinate, Geometry as _};
+use crate::math::{Aab, FreeCoordinate};
 use crate::space::Space;
 use crate::time::Tick;
 use crate::transaction::{self, Transaction};

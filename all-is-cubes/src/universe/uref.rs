@@ -1,7 +1,7 @@
-use std::borrow::Borrow;
+
 use std::fmt;
 use std::hash;
-use std::ops::Deref;
+
 use std::sync::Mutex;
 use std::sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard, Weak};
 use ouroboros::self_referencing;

@@ -8,16 +8,16 @@
 //! by becoming aware of dependencies between “modules”. For now, it's just enough to
 //! solve bootstrapping needs.
 use std::collections::HashMap;
-use std::error::Error;
+
 use std::fmt;
 use std::hash::Hash;
-use std::ops::Index;
+
 use exhaust::Exhaust;
 use crate::block::Block;
-use crate::space::SetCubeError;
-use crate::transaction::ExecuteError;
-use crate::universe::{InsertError, Name, Universe, UniverseIndex};
-use crate::util::YieldProgress;
+
+
+use crate::universe::{Name};
+
 fn name_in_module<E: BlockModule>(key: &E) -> Name {
     loop {}
 }

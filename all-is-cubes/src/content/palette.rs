@@ -5,7 +5,7 @@
 //! hardcoded colors if possible.
 //!
 //! TODO: Split "system UI" colors and "demo content" colors.
-use crate::math::Rgb;
+
 /// Define a color constant and preview it in the documentation.
 macro_rules! palette_entry {
     ($(#[doc = $doc:literal])* $name:ident = srgb[$r:literal $g:literal $b:literal]) => {

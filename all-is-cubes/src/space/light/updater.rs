@@ -1,12 +1,12 @@
 //! Lighting algorithms for `Space`. This module is closely tied to `Space`
 //! and separated out for readability, not modularity.
 use std::fmt;
-use once_cell::sync::Lazy;
-use super::debug::LightComputeOutput;
+
+
 use crate::block::EvaluatedBlock;
-use crate::math::{FaceMap, GridPoint, Rgb};
-use crate::raycast::{Ray, RaycastStep};
-use crate::space::{GridAab, LightPhysics, PackedLight, PackedLightScalar, Space};
+use crate::math::{FaceMap};
+
+
 use crate::util::{CustomFormat, StatusText};
 /// Given a block and its neighbors, which directions should we cast rays to find light
 /// falling on it?

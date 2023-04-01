@@ -1,14 +1,13 @@
 //! Lesser-used helpers for [`BlockBuilder`].
-use cgmath::EuclideanSpace as _;
-use std::borrow::Cow;
+
+
 use crate::block::{
-    AnimationHint, Block, BlockAttributes, BlockCollision, Modifier, Primitive,
-    Resolution, RotationPlacementRule,
+    BlockAttributes, Modifier,
 };
-use crate::drawing::VoxelBrush;
-use crate::math::{GridPoint, Rgb, Rgba};
-use crate::space::{SetCubeError, Space};
-use crate::universe::{Name, URef, Universe, UniverseIndex};
+
+
+
+
 /// Tool for constructing [`Block`] values conveniently.
 ///
 /// To create one, call [`Block::builder()`].
