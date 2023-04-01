@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-with open("all-is-cubes/src/chunked_mesh.rs") as fold:
+with open("all-is-cubes/src/lib.rs") as fold:
     old = fold.read()
 
 start = old.find("/////// MOVE START")
@@ -12,7 +12,7 @@ center = old[early:start]
 post = old[end:]
 
 result = f"{very_pre}\
-mod chunk;\n\
+mod chunked_mesh;\n\
 {center}\
 {post}"
 
