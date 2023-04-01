@@ -311,18 +311,6 @@ struct CsmTodo<const CHUNK_SIZE: GridCoordinate> {
     chunks: FnvHashMap<ChunkPos<CHUNK_SIZE>, ChunkTodo>,
 }
 
-impl<const CHUNK_SIZE: GridCoordinate> CsmTodo<CHUNK_SIZE> {
-    fn initially_dirty() -> Self {
-        loop {}
-    }
-
-    fn modify_block_and_adjacent<F>(&mut self, cube: GridPoint, mut f: F)
-    where
-        F: FnMut(&mut ChunkTodo),
-    {
-        loop {}
-    }
-}
 
 /// [`Listener`] adapter for [`CsmTodo`].
 #[derive(Clone, Debug)]
@@ -399,10 +387,5 @@ struct ChunkTodo {
     recompute_mesh: bool,
 }
 
-impl ChunkTodo {
-    const CLEAN: Self = Self {
-        recompute_mesh: false,
-    };
-}
 
 /////// MOVE END
