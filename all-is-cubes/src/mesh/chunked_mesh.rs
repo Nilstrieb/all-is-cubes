@@ -11,20 +11,6 @@ use crate::space::{BlockIndex, SpaceChange};
 /// If true, enables reporting chunk update timing at [`log::trace`] level.
 const LOG_CHUNK_UPDATES: bool = false;
 
-#[derive(Debug)]
-pub struct ChunkedSpaceMesh<const CHUNK_SIZE: GridCoordinate> {
-    chunks: [(); CHUNK_SIZE],
-}
-
-#[derive(Debug)]
-struct VersionedBlockMesh<Vert, Tile> {
-    mesh: (Vert, Tile),
-}
-
-#[derive(Copy, Clone, Debug, Eq, PartialEq)]
-enum BlockMeshVersion {
-}
-
 /// Stores a [`SpaceMesh`] covering one chunk of a [`Space`], caller-provided rendering
 /// data, and incidentals.
 #[derive(Debug, Eq, PartialEq)]
